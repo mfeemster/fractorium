@@ -49,7 +49,7 @@ link to the `.deb` from "Package Details".
 
 ## Narrative
 
-Starting with a fresh clone from bitbucket.org:
+Starting with a fresh clone from bitbucket.org. It will not work unless it's totally fresh:
 
 ```
 $ git clone https://mfeemster@bitbucket.org/mfeemster/fractorium.git
