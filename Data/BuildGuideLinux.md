@@ -19,7 +19,7 @@ git clone --depth=1 https://mfeemster@bitbucket.org/mfeemster/fractorium.git
 Install the dependencies.
 
 ```
-sudo apt-get install g++ libgl1-mesa-dev libgl-dev libglm-dev libjpeg-dev libpng12-dev libqt5opengl5-dev libtbb-dev libxml2-dev ocl-icd-libopencl1 ocl-icd-opencl-dev opencl-headers qt5-default qt5-qmake qtbase5-dev libopenexr22 libopenexr-dev
+sudo apt-get install g++ libgl1-mesa-dev libgl-dev libglm-dev libjpeg-dev libpng16-dev libqt5opengl5-dev libtbb-dev libxml2-dev ocl-icd-libopencl1 ocl-icd-opencl-dev opencl-headers qt5-default qt5-qmake qtbase5-dev libopenexr22 libopenexr-dev
 ```
 
 Install the OpenCL drivers and opencl support for your hardware.
