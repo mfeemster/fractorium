@@ -17,25 +17,20 @@ Download: [Fractorium_24.24.12.1.dmg](https://drive.google.com/file/d/1P7tZ_LT_Z
 
 ## Linux
 
-### Install from App Image .deb
-
-Install ubuntu 20 or greater.
-
-Download: [Fractorium-25.25.12.1.x86_64.AppImage](https://drive.google.com/file/d/1vjGxouHRzDkfY6-nRUz4dCmGY9fv1pSP/view?usp=sharing)
-
-### Install from App Image .rpm
-
-Download: [Fractorium-25.25.12.1.x86_64.rpm](https://drive.google.com/file/d/1eFynIUYNW-a9BjxWoeRrty0ym0Slzg3m/view?usp=sharing)
-
-### Install from .deb
+### Install App Image from .deb
 
 Install ubuntu 20 or greater.
 
 Download: [Fractorium-25.25.12.1.x86_64.deb](https://drive.google.com/file/d/1GIwCinL6T81J9gq39-zvoMo8vcJwqIly/view?usp=sharing)
+
 ```
 cd ~/Downloads
 sudo dpkg -i Fractorium-25.25.12.1.x86_64.deb
 ```
+
+### Install App Image .rpm
+
+Download: [Fractorium-25.25.12.1.x86_64.rpm](https://drive.google.com/file/d/1eFynIUYNW-a9BjxWoeRrty0ym0Slzg3m/view?usp=sharing)
 
 # Building from git
 
