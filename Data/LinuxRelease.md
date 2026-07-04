@@ -114,6 +114,8 @@ These will contain an AppImage file inside of them. Just copy the file to the ma
 
 ## Narrative
 
+The following are notes for building the release, some of which are no longer used since we stopped publishing to the PPA several versions ago.
+
 Test that the package creator script:
 
 `package-linux.sh` with no arguments builds a signed source for the Launchpad PPA.
