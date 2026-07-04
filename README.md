@@ -21,6 +21,10 @@ Download: [Fractorium_25.25.12.1.dmg](https://drive.google.com/file/d/1LcqFFiDwg
 
 Install ubuntu 20 or greater.
 
+If you don't have OpenCL installed on your system, you'll need to run this to enable OpenCL support in Fractorium:
+
+`sudo apt install mesa-opencl-idc`
+
 Download: [Fractorium-25.25.12.1.x86_64.deb](https://drive.google.com/file/d/1GIwCinL6T81J9gq39-zvoMo8vcJwqIly/view?usp=sharing)
 
 ```
