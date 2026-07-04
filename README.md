@@ -13,7 +13,7 @@ Download: [Fractorium_25.25.12.1.msi](https://drive.google.com/file/d/1LZHAR2j5I
 
 ## Mac
 
-Download: [Fractorium_24.24.12.1.dmg](https://drive.google.com/file/d/1P7tZ_LT_ZYcwIsPE6gSOnofT-sH2jEQB/view?usp=sharing)
+Download: [Fractorium_25.25.12.1.dmg](https://drive.google.com/file/d/1LcqFFiDwgjKOrNtf9Ce8l7fLn5xlVRzm/view?usp=sharing)
 
 ## Linux
 
