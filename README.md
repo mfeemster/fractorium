@@ -21,10 +21,6 @@ Download: [Fractorium_25.25.12.1.dmg](https://drive.google.com/file/d/1LcqFFiDwg
 
 Install ubuntu 20 or greater.
 
-If you don't have OpenCL installed on your system, you'll need to run this to enable OpenCL support in Fractorium:
-
-`sudo apt install mesa-opencl-idc`
-
 Download: [Fractorium-25.25.12.1.x86_64.deb](https://drive.google.com/file/d/1GIwCinL6T81J9gq39-zvoMo8vcJwqIly/view?usp=sharing)
 
 ```
@@ -35,6 +31,19 @@ sudo dpkg -i Fractorium-25.25.12.1.x86_64.deb
 ### Install App Image .rpm
 
 Download: [Fractorium-25.25.12.1.x86_64.rpm](https://drive.google.com/file/d/1eFynIUYNW-a9BjxWoeRrty0ym0Slzg3m/view?usp=sharing)
+
+### Final configuration
+
+
+If you don't have OpenCL installed on your system, you need to run this to enable OpenCL support in Fractorium:
+
+`sudo apt install mesa-opencl-idc`
+
+If your system is using rusticl then you must add this environment variable in `~/.profile` to allow double precision support:
+
+`export RUSTICL_FEATURES=fp64`
+
+Without it, douple precision mode will fail to compile in OpenCL and revert to the CPU renderer. Additionally, some variations such as Elliptic will fail even in single precision mode.
 
 # Building from git
 
