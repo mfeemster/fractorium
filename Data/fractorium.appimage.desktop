@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Fractorium
-Comment=Fractal flame editor
+GenericName=Fractal flame editor
 Exec=fractorium
 TryExec=fractorium
 Icon=fractorium

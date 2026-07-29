@@ -11,8 +11,8 @@ FRACTORIUM_PACKAGE=$BUILD_PATH/../Bin/Fractorium
 FRACTORIUM_RPM_PACKAGE=$BUILD_PATH/../Bin/rpmbuild
 EXTRA_LIBS=/usr/lib/x86_64-linux-gnu
 
-# replace 6.5.1 with your QT version, and ensure the installation path is the same
-QT_PATH=/home/$USER/Dev/Qt/6.5.1/gcc_64/bin
+#Your Qt6 installation location should be similar to this.
+QT_PATH=/usr/lib/qt6/bin/
 
 LINUX_DEPLOY_QT=/home/$USER/Dev/linuxdeploy-plugin-qt-x86_64.AppImage
 APP_IMAGE_TOOL=/home/$USER/Dev/linuxdeploy-x86_64.AppImage
@@ -88,7 +88,6 @@ cp $EXTRA_LIBS/libjpeg.so.8 $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libpng16.so.16 $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libOpenCL.so.1 $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libxcb-cursor.so.0 $FRACTORIUM_LIB
-
 cp $EXTRA_LIBS/libz.so $FRACTORIUM_LIB
 
 cp $DATA_PATH/*.qss $FRACTORIUM_BIN

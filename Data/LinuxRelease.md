@@ -1,17 +1,82 @@
 # Linux Release
 
-These are instructions for publishing a Linux deb package. It can be built locally or the PPA repository can build it. The latter is preferable.
+These are instructions for building a Linux AppImage and deb/rpm packages which contain the AppImage.
+They are only supported on Ubuntu 24+, such as Mint 22+.
+The instructions for publishing a .deb to a PPA are for archival purposes only and are no longer supported.
 
 ## Summary
 
-
 Starting with a fresh clone from github. It will not work unless it's totally fresh:
+Note that you may need to explicitly use `/usr/lib/qt6/bin/qmake` below because Qt sometimes has trouble finding itself.
 
 ```
 $ git clone https://github.com/mfeemster/fractorium.git
 $ cd fractorium
 $ qmake main.pro -r -spec linux-g++-64 CONFIG+=release
 ```
+
+### Building an AppImage `.deb` and `.rpm` locally
+
+The deb/rpm are encapsulations of an AppImage file which makes installation much easier and more likely to succeed due to the library dependencies being contained within.
+
+Because of how AppImage works, the build cannot be done on a shared folder from within a VM that points back to the host OS’s file system (usually in /mnt/hgfs).
+So be sure to checkout the source into a location that exists directly in the VM if you are using one.
+
+To build the AppImage after `qmake` succeeds above, do the following:
+
+Ensure you these have two files in the folder one level up from the fractorium folder:
+
+`linuxdeploy-x86_64.AppImage`
+
+`linuxdeploy-plugin-qt-x86_64.AppImage`
+
+Which can be downloaded from:
+
+https://github.com/linuxdeploy/linuxdeploy/releases
+
+https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases
+
+Make them executable by running this command in the folder they reside in:
+
+`chmod +x ./*.AppImage`
+
+Once those are copied to the correct location, ensure the version is correct in the following files:
+```
+fractorium/Builds/QtCreator/defaults.pri
+fractorium/Data/control.package
+fractorium/Data/Fractorium.spec
+```
+
+Ensure copyright and website links are correct in:
+```
+fractorium/debian/copyright
+fractorium/debian/control
+```
+
+Install the rpm tools to build the rpm if you don't already have them:
+`sudo apt install rpm build-essential`
+
+Then run these commands from the root of the fractorium folder:
+
+`make`
+
+`cd archive`
+
+`./build_linux.sh`
+
+In fractorium/Bin the output is contained in the following files:
+
+`Fractorium-x.y.z.w.x86_64.AppImage`
+`Fractorium-x.y.z.w.x86_64.AppImage.tar.gz`
+`Fractorium-x.y.z.w.x86_64.deb`
+`Fractorium-x.y.z.w.x86_64.rpm`
+
+The AppImage file can be run just by double clicking on it. However, keep in mind this does not install the command line program shortcuts, so you always have to run from the AppImage file. The palette files are mounted internally and the `.qss` files are copied to `~/.config/fractorium`.
+For a full install which contains the AppImage file and the shortcuts to it, use either the `.deb` for Ubuntu-based systems or the `.rpm` for Red Hat systems.
+* These will create shortcuts for `emberrender`, `emberanimate` and `embergenome` which call into the installed AppImage file.
+The last option is the tar.gz file, which is a portable version of the .deb/.rpm installers. When extracted, it contains the AppImage and a shortcut for each executable. These can be run directly from this folder.
+
+## Archive - no longer supported
 
 ### Building a `.deb` locally
 
@@ -26,6 +91,7 @@ $ ./package-linux.sh --binary-only --unsigned
 Type `s` for single binary, `Enter`. It displays a confirm message, `Enter`.
 
 When the build finished, find the `.deb` in `~/PPA/fractorium-VERSION`.
+Note that the deb used here in the PPA is different than the one created above for the AppImage which is available on the website.
 
 ### Publishing to Launchpad PPA
 
@@ -55,62 +121,6 @@ An email will arrive to say if the package was accepted or rejected.
 
 Wait for the autobuild to complete, and when the package is published, copy the
 link to the `.deb` from "Package Details".
-
-
-### Building an AppImage `.deb` and `.rpm` locally
-
-The deb used in the PPA is different than the one downloaded from the website.
-The latter is an encapsulation of an AppImage file which makes installation much easier and more likely to succeed due to the library dependencies being contained within.
-
-Because of how AppImage works, the build cannot be done on a shared folder from within a VM that points back to the host OS’s file system (usually in /mnt/hgfs).
-So be sure to checkout the source into a location that exists directly in the VM if you are using one.
-
-To build the AppImage after successfully building using the make after qmake has ben run, do the following:
-
-Ensure you these have two files in the folder up one level from the fractorium folder:
-
-`linuxdeployqt-continuous-x86_64.AppImage`
-
-`appimagetool-x86_64.AppImage`
-
-Which can be downloaded from:
-
-https://github.com/probonopd/linuxdeployqt/releases
-
-https://appimage.github.io/appimagetool/
-
-Make them executable by running this command in the folder they reside in:
-
-`chmod +x ./*.AppImage`
-
-Once those are installed, ensure the version is correct in the following files:
-```
-fractorium/Builds/QtCreator/defaults.pri
-fractorium/Data/Fractorium.spec
-```
-
-Ensure copyright and website links are correct in:
-```
-fractorium/debian/copyright
-fractorium/debian/control
-```
-
-Then run these commands from the root of the fractorium folder:
-
-`make`
-
-`cd archive`
-
-`./build_linux.sh`
-
-In fractorium/Bin the output is contained in the following file:
-
-`Fractorium-x.y.z.w-.x86_64.deb`
-
-Alternatively, select the `.rpm` file for Red Hat.
-
-These will contain an AppImage file inside of them. Just copy the file to the machine you want to install on and double click it. Follow the installer instructions.
-
 
 ## Narrative
 
