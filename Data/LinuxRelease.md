@@ -12,6 +12,7 @@ Note that you may need to explicitly use `/usr/lib/qt6/bin/qmake` below because 
 ```
 $ git clone https://github.com/mfeemster/fractorium.git
 $ cd fractorium
+# Note that you may need to explicitly use /usr/lib/qt6/bin/qmake here because Qt sometimes has trouble finding itself.
 $ qmake main.pro -r -spec linux-g++-64 CONFIG+=release
 ```
 
