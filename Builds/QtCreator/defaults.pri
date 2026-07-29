@@ -106,15 +106,15 @@ win32 {
 	LIBS += -lpthread
 	LIBS += -lImath
 	LIBS += -lIex
-	
+
 #For systems with older versions of OpenEXR < 3.0, use this.
-	LIBS += -lIlmImf
-    LIBS += -lHalf
+#	LIBS += -lIlmImf
+#    LIBS += -lHalf
 
 #For systems with OpenEXR >= 3.0, use this.
-#   LIBS += -lz
-#   LIBS += -lIlmThread
-#   LIBS += -lOpenEXR
+   LIBS += -lz
+   LIBS += -lIlmThread
+   LIBS += -lOpenEXR
 }
 
 macx {

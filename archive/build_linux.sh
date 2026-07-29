@@ -14,8 +14,8 @@ EXTRA_LIBS=/usr/lib/x86_64-linux-gnu
 # replace 6.5.1 with your QT version, and ensure the installation path is the same
 QT_PATH=/home/$USER/Dev/Qt/6.5.1/gcc_64/bin
 
-LINUX_DEPLOY_QT=/home/$USER/Dev/linuxdeployqt-continuous-x86_64.AppImage
-APP_IMAGE_TOOL=/home/$USER/Dev/appimagetool-x86_64.AppImage
+LINUX_DEPLOY_QT=/home/$USER/Dev/linuxdeploy-plugin-qt-x86_64.AppImage
+APP_IMAGE_TOOL=/home/$USER/Dev/linuxdeploy-x86_64.AppImage
 
 #######################
 #simple check
@@ -27,25 +27,22 @@ fi
 
 
 if [ -d "$APP_DIR" ]; then
-   echo "Fractorium.AppDir folder already exists in Bin: $APP_DIR"
-   echo "Move this folder aside or remove it."
-   exit 2
+   echo "Fractorium.AppDir folder already exists at $APP_DIR and will be removed now."
+   rm -rf $APP_DIR
 fi
 
 if [ -d "$FRACTORIUM_PACKAGE" ]; then
-   echo "Fractorium folder already exists in Bin: $FRACTORIUM_PACKAGE"
-   echo "Move this folder aside or remove it."
-   exit 2
+   echo "Fractorium folder already exists in at $FRACTORIUM_PACKAGE and will be removed now"
+   rm -rf $FRACTORIUM_PACKAGE
 fi
 
 if [ -d "$FRACTORIUM_RPM_PACKAGE" ]; then
-   echo "rpmbuild folder already exists in Bin: $FRACTORIUM_RPM_PACKAGE"
-   echo "Move this folder aside or remove it."
-   exit 2
+   echo "rpmbuild folder already exists in Bin: $FRACTORIUM_RPM_PACKAGE and will be removed now"
+   rm -rf $FRACTORIUM_RPM_PACKAGE
 fi
 
 if [ ! -d "$QT_PATH" ]; then
-   echo "QT folder not found. Please, change QT_PATH."
+   echo "QT folder $QT_PATH not found. Please, change QT_PATH."
    exit 2
 fi
 
@@ -84,10 +81,7 @@ cp $FRACTORIUM_RELEASE_ROOT/ember* $FRACTORIUM_BIN
 cp $FRACTORIUM_RELEASE_ROOT/fractorium $FRACTORIUM_BIN
 cp $FRACTORIUM_RELEASE_ROOT/lib* $FRACTORIUM_LIB
 
-cp $EXTRA_LIBS/libHalf.so $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libIex.so $FRACTORIUM_LIB
-cp $EXTRA_LIBS/libIexMath.so $FRACTORIUM_LIB
-cp $EXTRA_LIBS/libIlmImf.so $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libIlmThread.so $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libImath.so $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libjpeg.so.8 $FRACTORIUM_LIB
@@ -95,9 +89,9 @@ cp $EXTRA_LIBS/libpng16.so.16 $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libOpenCL.so.1 $FRACTORIUM_LIB
 cp $EXTRA_LIBS/libxcb-cursor.so.0 $FRACTORIUM_LIB
 
-cp $DATA_PATH/dark_linux.qss $FRACTORIUM_BIN
-cp $DATA_PATH/lightdark.qss $FRACTORIUM_BIN
-cp $DATA_PATH/uranium.qss $FRACTORIUM_BIN
+cp $EXTRA_LIBS/libz.so $FRACTORIUM_LIB
+
+cp $DATA_PATH/*.qss $FRACTORIUM_BIN
 cp $DATA_PATH/flam3-palettes.xml $FRACTORIUM_BIN
 cp $DATA_PATH/*.gradient $FRACTORIUM_BIN
 cp $DATA_PATH/*.ugr $FRACTORIUM_BIN
@@ -107,19 +101,13 @@ cp $DATA_PATH/fractorium.appimage.desktop $FRACTORIUM_SHR/fractorium.desktop
 
 cd ../
 
-# LINUX_DEPLOY_QT OPTIONS
-
-# -unsupported-bundle-everything:    Bundles ALL dependency libraries, down to and including the ld-linux.so loader and glibc. This will allow applications built on newer systems to run on older target systems, but it is not recommended since it leads to bundles that are larger than necessary
-
-# -unsupported-allow-new-glibc: Allows linuxdeployqt to run on distributions newer than the oldest still-supported Ubuntu LTS release. This will result in AppImages that will not run on all still-supported distributions, and is neither recommended nor tested or supported
-
-$LINUX_DEPLOY_QT $APP_DIR/usr/share/applications/fractorium.desktop -executable=Fractorium.AppDir/usr/bin/emberrender -executable=Fractorium.AppDir/usr/bin/embergenome -executable=Fractorium.AppDir/usr/bin/emberanimate -always-overwrite -bundle-non-qt-libs #-unsupported-allow-new-glibc
-
-rm $APP_DIR/AppRun
+#This is critical because otherwise it can't find libember.so and libembercl.so in the lib folder.
+export LD_LIBRARY_PATH="${APP_DIR}/usr/lib:${LD_LIBRARY_PATH}"
+echo "LD_LIBRARY_PATH is" $LD_LIBRARY_PATH
 
 cp $DATA_PATH/AppRun $APP_DIR
 
-$APP_IMAGE_TOOL $APP_DIR
+$APP_IMAGE_TOOL --appdir $APP_DIR --output appimage --executable $APP_DIR/usr/bin/fractorium --desktop-file $APP_DIR/usr/share/applications/fractorium.desktop --plugin qt
 
 echo ""
 echo "Creating the DEB package."

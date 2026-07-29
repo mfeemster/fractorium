@@ -1,4 +1,5 @@
 #!/bin/bash
+#Archival, no longer supported
 
 REBUILD=''
 NVIDIA=''

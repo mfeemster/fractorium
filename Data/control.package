@@ -1,10 +1,10 @@
 Package: Fractorium
-Version: 24.24.12.1
+Version: 25.25.12.1
 Architecture: amd64
 Source: Fractorium
 Section: graphics
 Priority: optional
-Maintainer: Matt Feemster <matt.feemster@gmail.com>
+Maintainer: Matt Feemster <mfeemster@protonmail.com>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
 Homepage: http://fractorium.com/

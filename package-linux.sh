@@ -1,4 +1,5 @@
 #!/bin/bash
+#Archival, no longer supported
 
 USAGE="`basename $0`
 Run this script from the project root.
