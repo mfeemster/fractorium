@@ -43,9 +43,9 @@ export QT_SELECT=qt6
 ```
 
 Compile the binaries, they will be created in the `Bin/release` folder.
-Note that you may need to explicitly use `/usr/lib/qt6/bin/qmake` below because Qt sometimes has trouble finding itself.
 ```
 cd fractorium
+# Note that you may need to explicitly use /usr/lib/qt6/bin/qmake here because Qt sometimes has trouble finding itself.
 qmake main.pro -r -spec linux-g++-64 CONFIG+="release native"
 make
 ```
