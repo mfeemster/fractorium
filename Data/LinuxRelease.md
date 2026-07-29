@@ -89,7 +89,7 @@ Update `debian/changelog` with a new log message. Update version number. Use the
 Build:
 
 ```
-$ ./package-linux.sh --binary-only --unsigned
+$ ./package_linux.sh --binary-only --unsigned
 ```
 
 Type `s` for single binary, `Enter`. It displays a confirm message, `Enter`.
@@ -107,7 +107,7 @@ Make sure `debian/changelog` was updated.
 Build:
 
 ```
-$ ./package-linux.sh
+$ ./package_linux.sh
 ```
 
 Type `s` for single binary, `Enter`. It displays a confirm message, `Enter`.
@@ -132,12 +132,12 @@ The following are notes for building the release, some of which are no longer us
 
 Test that the package creator script:
 
-`package-linux.sh` with no arguments builds a signed source for the Launchpad PPA.
+`package_linux.sh` with no arguments builds a signed source for the Launchpad PPA.
 
 Instead, now we want an unsigned binary `.deb`:
 
 ```
-$ ./package-linux.sh --binary-only --unsigned
+$ ./package_linux.sh --binary-only --unsigned
 ```
 
 ```
@@ -172,7 +172,7 @@ fractorium (w.x.y.z-0ubuntu1) xenial; urgency=low
 Now try again:
 
 ```
-$ ./package-linux.sh --binary-only --unsigned
+$ ./package_linux.sh --binary-only --unsigned
 ```
 
 You will be prompted with a question about the type of build:
@@ -237,7 +237,7 @@ Upload the source to the Launchpad PPA for the auto-build.
 In the original fractorium source folder:
 
 ```
-$ ./package-linux.sh
+$ ./package_linux.sh
 PPA work folder already exists: /home/yume/PPA/fractorium-w.x.y.z
 Move this folder aside or remove it.
 ```
@@ -251,7 +251,7 @@ $ rm -r ~/PPA/fractorium-1.0.0.0
 Try again:
 
 ```
-$ ./package-linux.sh
+$ ./package_linux.sh
 ```
 
 Press `s` at the type of package question.
@@ -289,7 +289,7 @@ If the package had been rejected, or if the autobuild now fails, then fix the bu
 message to the top of `debian/changelog`, with a modified version number and
 time. For these minor changes it is enough to append a letter to the version
 number, such as `fractorium 1.0.0.0a`. Then create a tarball again with
-`package-linux.sh`, and upload to Launchpad with `dput`.
+`package_linux.sh`, and upload to Launchpad with `dput`.
 
 Update the project links and description in
 `debian/control`. Bump the version number to `fractorium 1.0.0.0a` and update the time to `date -R`.
@@ -297,7 +297,7 @@ Update the project links and description in
 Publish update:
 
 ```
-$ ./package-linux.sh
+$ ./package_linux.sh
 $ cd ~/PPA/fractorium-w.x.y.za
 $ dput ppa:fractorium/ppa fractorium_w.x.y.za-0ubuntu1_source.changes
 ```
