@@ -17,6 +17,8 @@ Download: [Fractorium_25.25.12.1.dmg](https://drive.google.com/file/d/1LcqFFiDwg
 
 ## Linux
 
+Fractorium is supported on Ubuntu and Red Hat linux distributions. It is not supported on Arch or any other distributions due to severe unaddressed issues with AppImage. If you need to run it elsewhere, please build from source.
+
 ### Install App Image from .deb
 
 Install ubuntu 20 or greater.
