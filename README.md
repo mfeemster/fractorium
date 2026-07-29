@@ -37,7 +37,7 @@ Download: [Fractorium-25.25.12.1.x86_64.rpm](https://drive.google.com/file/d/1eF
 
 If you don't have OpenCL installed on your system, you need to run this to enable OpenCL support:
 
-`sudo apt install mesa-opencl-idc`
+`sudo apt install mesa-opencl-icd`
 
 If your system is using rusticl then you need to add this environment variable in `~/.profile` to allow double precision support:
 
