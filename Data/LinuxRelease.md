@@ -25,10 +25,10 @@ So be sure to checkout the source into a location that exists directly in the VM
 To build the AppImage after `qmake` succeeds above, do the following:
 
 Ensure you these have two files in the folder one level up from the fractorium folder:
-
-`linuxdeploy-x86_64.AppImage`
-
-`linuxdeploy-plugin-qt-x86_64.AppImage`
+```
+linuxdeploy-x86_64.AppImage
+linuxdeploy-plugin-qt-x86_64.AppImage
+```
 
 Which can be downloaded from:
 
@@ -54,26 +54,29 @@ fractorium/debian/control
 ```
 
 Install the rpm tools to build the rpm if you don't already have them:
+
 `sudo apt install rpm build-essential`
 
 Then run these commands from the root of the fractorium folder:
-
-`make`
-
-`cd archive`
-
-`./build_linux.sh`
+```
+make
+cd archive
+./build_linux.sh
+```
 
 In fractorium/Bin the output is contained in the following files:
+```
+Fractorium-x.y.z.w.x86_64.AppImage
+Fractorium-x.y.z.w.x86_64.AppImage.tar.gz
+Fractorium-x.y.z.w.x86_64.deb
+Fractorium-x.y.z.w.x86_64.rpm
+```
 
-`Fractorium-x.y.z.w.x86_64.AppImage`
-`Fractorium-x.y.z.w.x86_64.AppImage.tar.gz`
-`Fractorium-x.y.z.w.x86_64.deb`
-`Fractorium-x.y.z.w.x86_64.rpm`
+The AppImage file can be run just by double clicking on it. However, keep in mind this does not install the command line program shortcuts, so you always have to run from the AppImage file. The palette and example files are mounted internally and the `.qss` files are copied to `~/.config/fractorium`.
 
-The AppImage file can be run just by double clicking on it. However, keep in mind this does not install the command line program shortcuts, so you always have to run from the AppImage file. The palette files are mounted internally and the `.qss` files are copied to `~/.config/fractorium`.
-For a full install which contains the AppImage file and the shortcuts to it, use either the `.deb` for Ubuntu-based systems or the `.rpm` for Red Hat systems.
-* These will create shortcuts for `emberrender`, `emberanimate` and `embergenome` which call into the installed AppImage file.
+For a full install which contains the AppImage file and the shortcuts to it, use either the `.deb` for Ubuntu systems or the `.rpm` for Red Hat systems.
+* These will create shortcuts for `fractorium`, `emberrender`, `emberanimate` and `embergenome` which call into the installed AppImage file.
+
 The last option is the tar.gz file, which is a portable version of the .deb/.rpm installers. When extracted, it contains the AppImage and a shortcut for each executable. These can be run directly from this folder.
 
 ## Archive - no longer supported
