@@ -45,7 +45,7 @@ If your system is using rusticl then you need to add this environment variable i
 
 `export RUSTICL_FEATURES=fp64`
 
-Without it, douple precision mode will fail to compile in OpenCL and revert to the CPU renderer. Additionally, some variations such as Elliptic will fail even in single precision mode.
+Without it, double precision mode will fail to compile in OpenCL and revert to the CPU renderer. Additionally, some variations such as Elliptic will fail even in single precision mode.
 
 # Building from git
 
