@@ -299,7 +299,6 @@ template <typename T>
 void FractoriumEmberController<T>::DuplicateXform()
 {
 	bool forceFinal = m_Fractorium->HaveFinal();
-	const bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
 	vector<std::pair<Xform<T>, size_t>> vec;
 	vec.reserve(m_Ember.XformCount());
 	UpdateXform([&](Xform<T>* xform, size_t xfindex, size_t selIndex)
@@ -495,7 +494,7 @@ void Fractorium::OnEqualWeightButtonClicked(bool checked) { m_Controller->Equali
 template <typename T>
 void FractoriumEmberController<T>::XformNameChanged(const QString& s)
 {
-	const auto forceFinal = m_Fractorium->HaveFinal();
+    //const auto forceFinal = m_Fractorium->HaveFinal();
 	UpdateXform([&] (Xform<T>* xform, size_t xfindex, size_t selIndex)
 	{
 		xform->m_Name = s.toStdString();

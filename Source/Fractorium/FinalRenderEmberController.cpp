@@ -239,7 +239,6 @@ FinalRenderEmberController<T>::FinalRenderEmberController(FractoriumFinalRenderD
 		m_Run = true;
 		m_TotalTimer.Tic();//Begin timing for progress of all operations.
 		m_GuiState = m_FinalRenderDialog->State();//Cache render settings from the GUI before running.
-		size_t i = 0;
 		const auto doAll = m_GuiState.m_DoAll && m_EmberFile.Size() > 1;
 		const auto isBump = !doAll && m_IsQualityBump && m_GuiState.m_Strips == 1;//Should never get called with m_IsQualityBump otherwise, but check one last time to be safe.
 		size_t currentStripForProgress = 0;//Sort of a hack to get the strip value to the progress function.
@@ -752,7 +751,6 @@ tuple<size_t, size_t, size_t> FinalRenderEmberController<T>::SyncAndComputeMemor
 	size_t iterCount = 0;
 	pair<size_t, size_t> p(0, 0);
 	size_t strips;
-	const uint channels = m_FinalRenderDialog->Ext() == "png" ? 4 : 3;//4 channels for Png, else 3.
 	SyncGuiToEmbers();
 
 	if (m_Renderer.get())
@@ -975,7 +973,6 @@ template<typename T>
 void FinalRenderEmberController<T>::HandleFinishedProgress()
 {
 	const auto finishedCountCached = m_FinishedImageCount.load();//Make sure to use the same value throughout this function even if the atomic is changing.
-	const bool doAll = m_GuiState.m_DoAll && m_EmberFile.Size() > 1;
 
 	if (m_FinishedImageCount.load() != m_ImageCount)
 		ResetProgress(false);

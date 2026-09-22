@@ -175,8 +175,6 @@ void GLWidget::DrawQuad()
 	if (m_OutputTexID != 0)
 	{
 		glBindTexture(GL_TEXTURE_2D, m_OutputTexID);//The texture to draw to.
-		const auto scaledW = std::ceil(width() * devicePixelRatioF());
-		const auto scaledH = std::ceil(height() * devicePixelRatioF());
 
 		//Only draw if the dimensions match exactly.
 		if (m_TexWidth == m_Fractorium->m_Controller->FinalRasW() && m_TexHeight == m_Fractorium->m_Controller->FinalRasH())
@@ -889,7 +887,7 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 		const QPointF br(m_MouseWorldPos.x, m_MouseWorldPos.y);
 		const QRectF qrf(tl, br);
 		const T scale = m_FractoriumEmberController->AffineScaleCurrentToLocked();
-		const auto i = 0;
+
 		m_FractoriumEmberController->UpdateXform([&](Xform<T>* xform, size_t xfindex, size_t selIndex)
 		{
 			if (m_Fractorium->DrawAllPre() || xform == m_SelectedXform)//Draw all pre affine if specified.
@@ -1400,8 +1398,6 @@ void GLEmberController<T>::DrawAffine(const Xform<T>* xform, bool pre, bool sele
 /// <param name="background"></param>
 void GLWidget::DrawAffineHelper(int index, float circleWidth, float lineWidth, bool selected, bool hovered, bool pre, bool final, bool background)
 {
-	float px = 1.0f;
-	float py = 0.0f;
 	const auto col = final ? m_Fractorium->m_FinalXformComboColor : m_Fractorium->m_XformComboColors[index % XFORM_COLOR_COUNT];
 	QVector4D color;
 

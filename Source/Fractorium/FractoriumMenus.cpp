@@ -189,7 +189,6 @@ void Fractorium::OnActionCopyFlameInCurrentFile(bool checked) { m_Controller->Co
 template <typename T>
 void FractoriumEmberController<T>::CreateReferenceFile()
 {
-	bool nv = false;
 	StopAllPreviewRenderers();
 	auto temppal = m_Ember.m_Palette;
 	m_EmberFile.Clear();

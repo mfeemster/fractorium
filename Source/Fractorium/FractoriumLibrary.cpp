@@ -242,8 +242,6 @@ void FractoriumEmberController<T>::EmberTreeItemChanged(QTreeWidgetItem* item, i
 {
 	try
 	{
-		const auto tree = m_Fractorium->ui.LibraryTree;
-
 		if (auto emberItem = dynamic_cast<EmberTreeWidgetItem<T>*>(item))
 		{
 			auto oldName = emberItem->GetEmber()->m_Name;//First preserve the previous name.
@@ -325,10 +323,7 @@ void Fractorium::OnEmberTreeItemDoubleClicked(QTreeWidgetItem* item, int col)
 template <typename T>
 void FractoriumEmberController<T>::MoveLibraryItems(const QModelIndexList& items, int destRow)
 {
-	int i = 0;
-	const auto startRow = items[0].row();
 	const auto tree = m_Fractorium->ui.LibraryTree;
-	const auto top = tree->topLevelItem(0);
 	list<string> names;
 
 	for (auto& item : items)
@@ -612,7 +607,7 @@ void FractoriumEmberController<T>::SequenceGenerateButtonClicked()
 	const size_t start = ui.SequenceStartFlameSpinBox->value();
 	const size_t stop = ui.SequenceStopFlameSpinBox->value();
 	const size_t startCount = ui.SequenceStartCountSpinBox->value();
-	const size_t keyFrames = (stop - start) + 1;
+    //const size_t keyFrames = (stop - start) + 1;
 	size_t frameCount = 0;
 	size_t fps = ui.SequenceAnimationFpsSpinBox->value();
 	double frames = 0;

@@ -403,7 +403,6 @@ void PaletteEditor::OnNewPaletteFileButtonClicked()
 /// </summary>
 void PaletteEditor::OnCopyPaletteFileButtonClicked()
 {
-	auto& paletteFiles = m_PaletteList->Palettes();
 	const auto qscurr = QString::fromStdString(m_CurrentPaletteFilePath);
 	const auto qfilename = EmberFile<float>::UniqueFilename(GetDefaultUserPath() + "/" + qscurr);
 	const auto filename = qfilename.toStdString();

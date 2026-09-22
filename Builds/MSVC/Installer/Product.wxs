@@ -139,23 +139,23 @@
 			</Component>
 			
 			<Component Id="msvcp140.dll" Guid="8f1ffde7-c1bd-45fb-8bc8-26dde552eafd">
-				<File Id="msvcp140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\msvcp140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
+				<File Id="msvcp140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.51.36231\x64\Microsoft.VC145.CRT\msvcp140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
 			</Component>
 			
 			<Component Id="vcruntime140.dll" Guid="50c9bc27-c547-4a03-9f6c-cd416f449dd8">
-				<File Id="vcruntime140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\vcruntime140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
+				<File Id="vcruntime140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.51.36231\x64\Microsoft.VC145.CRT\vcruntime140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
 			</Component>
 			
 			<Component Id="vcruntime140_1.dll" Guid="a02507f8-326b-45b2-b734-e5091921559f">
-				<File Id="vcruntime140_1.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\vcruntime140_1.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
+				<File Id="vcruntime140_1.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.51.36231\x64\Microsoft.VC145.CRT\vcruntime140_1.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
 			</Component>
 			
 			<Component Id="vccorlib140.dll" Guid="affe33e7-1e64-4bb0-a062-2b56f77459b4">
-				<File Id="vccorlib140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\vccorlib140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
+				<File Id="vccorlib140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.51.36231\x64\Microsoft.VC145.CRT\vccorlib140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
 			</Component>
 			
 			<Component Id="concrt140.dll" Guid="7fb716a1-1b4f-42fb-89c7-4d216ebd6e2e">
-				<File Id="concrt140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\concrt140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
+				<File Id="concrt140.dll" Source="$(var.DevEnvDir)..\..\VC\Redist\MSVC\14.51.36231\x64\Microsoft.VC145.CRT\concrt140.dll" KeyPath="yes" Checksum="yes" ReadOnly="yes" />
 			</Component>
 			
 			<Component Id="flam3palettes.xml" Guid="d3adb0bb-14ef-4923-99d9-a5784b7ef04e">
