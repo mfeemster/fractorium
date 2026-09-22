@@ -556,9 +556,9 @@ struct SimpleGlobBase
 
 	SG_FileType GetFileTypeS(const char* a_pszPath) const
 	{
-		struct stat sb;
+        struct ::stat sb;
 
-		if (0 != stat(a_pszPath, &sb))
+        if (0 != ::stat(a_pszPath, &sb))
 		{
 			return SG_FILETYPE_INVALID;
 		}

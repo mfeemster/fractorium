@@ -12,7 +12,14 @@ FRACTORIUM_RPM_PACKAGE=$BUILD_PATH/../Bin/rpmbuild
 EXTRA_LIBS=/usr/lib/x86_64-linux-gnu
 
 #Your Qt6 installation location should be similar to this.
-QT_PATH=/usr/lib/qt6/bin/
+#QT_PATH=/usr/lib/qt6/bin/
+#But we normally use a custom install because it's not tied to whatever version linux ships with by default.
+QT_PATH=~/Dev/Qt/6.11.2/gcc_64/bin
+
+#Do these too just to ensure everything points to the same Qt instance.
+export PATH=~/Dev/Qt/6.11.2/gcc_64/bin:${PATH}
+export LD_LIBRARY_PATH=~/Dev/Qt/6.11.2/gcc_64/lib:${LD_LIBRARY_PATH}
+export QT_PLUGIN_PATH=~/Dev/Qt/6.11.2/gcc_64/plugins
 
 LINUX_DEPLOY_QT=/home/$USER/Dev/linuxdeploy-plugin-qt-x86_64.AppImage
 APP_IMAGE_TOOL=/home/$USER/Dev/linuxdeploy-x86_64.AppImage

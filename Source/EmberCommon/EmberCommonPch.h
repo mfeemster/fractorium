@@ -95,7 +95,9 @@
 
 using namespace Imf;
 using namespace Imath;
+#ifdef _WIN32
 using namespace Imf_3_4;
+#endif
 using namespace EmberNs;
 using namespace EmberCLns;
 #include "EmberCommon.h"
