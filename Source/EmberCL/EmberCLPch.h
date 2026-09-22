@@ -35,6 +35,12 @@
 #include "Timing.h"
 #include "Renderer.h"
 
+#ifdef  OCL_USE_1_2_V
+	#include <CL/cl.hpp>
+#else
+	#include <CL/opencl.hpp>
+#endif
+
 #if defined(_WIN32)
 	#pragma warning(disable : 4251; disable : 4661; disable : 4100)
 	#include <windows.h>
@@ -47,11 +53,6 @@
 #endif
 
 #include <utility>
-#ifdef  OCL_USE_1_2_V
-	#include <CL/cl.hpp>
-#else
-	#include <CL/opencl.hpp>
-#endif
 #include <algorithm>
 #include <atomic>
 #include <cstdio>

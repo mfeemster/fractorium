@@ -11,7 +11,7 @@ Install [Microsoft Visual Studio 2026 or later](https://www.visualstudio.com/dow
 
 ### Qt
 
-Install Qt for Windows 64-bit 6.5.1 or later (http://www.qt.io/download/). 
+Install []Qt for Windows 64-bit 6.11.2](http://www.qt.io/download/) or later.
 
 Add system environment variable named `QTPATH` and point it to the location of the Qt folder. On a default install, this will be something like:
 
