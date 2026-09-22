@@ -30,11 +30,6 @@ palettes.files = $$ASSETS_DIR/flam3-palettes.xml
 #message(PALETTE INSTALL SOURCE: $$palettes.files)
 INSTALLS += palettes
 
-themes.path = $$SHARE_INSTALL_DIR
-themes.files = $$ASSETS_DIR/dark.qss
-#message(THEMES INSTALL SOURCE: $$themes.files)
-INSTALLS += themes
-
 !win32 {
 	icon.path = $$SHARE_INSTALL_DIR
 	icon.files = $$absolute_path($$PRJ_SRC_DIR/Icons/Fractorium.png)

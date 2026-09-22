@@ -659,8 +659,8 @@ void FractoriumEmberController<T>::FillXforms(int index)
 		{
 			const auto cb1 = new QCheckBox(MakeXformCaption(i), m_Fractorium);
 			const auto cb2 = new QCheckBox(MakeXformCaption(i + 1), m_Fractorium);
-			QObject::connect(cb1, &QCheckBox::stateChanged, [&](int state) { m_Fractorium->ui.GLDisplay->update(); });//Ensure circles are drawn immediately after toggle.
-			QObject::connect(cb2, &QCheckBox::stateChanged, [&](int state) { m_Fractorium->ui.GLDisplay->update(); });
+			QObject::connect(cb1, &QCheckBox::checkStateChanged, [&](Qt::CheckState state) { m_Fractorium->ui.GLDisplay->update(); });//Ensure circles are drawn immediately after toggle.
+			QObject::connect(cb2, &QCheckBox::checkStateChanged, [&](Qt::CheckState state) { m_Fractorium->ui.GLDisplay->update(); });
 			m_Fractorium->m_XformSelections.push_back(cb1);
 			m_Fractorium->m_XformSelections.push_back(cb2);
 			m_Fractorium->m_XformsSelectionLayout->addRow(cb1, cb2);
@@ -669,7 +669,7 @@ void FractoriumEmberController<T>::FillXforms(int index)
 		else if (i < count)
 		{
 			const auto cb = new QCheckBox(MakeXformCaption(i), m_Fractorium);
-			QObject::connect(cb, &QCheckBox::stateChanged, [&](int state) { m_Fractorium->ui.GLDisplay->update(); });
+			QObject::connect(cb, &QCheckBox::checkStateChanged, [&](Qt::CheckState state) { m_Fractorium->ui.GLDisplay->update(); });
 			m_Fractorium->m_XformSelections.push_back(cb);
 			m_Fractorium->m_XformsSelectionLayout->addRow(cb, new QWidget(m_Fractorium));
 			i++;
@@ -680,7 +680,7 @@ void FractoriumEmberController<T>::FillXforms(int index)
 	if (UseFinalXform())
 	{
 		const auto cb = new QCheckBox(MakeXformCaption(i), m_Fractorium);
-		QObject::connect(cb, &QCheckBox::stateChanged, [&](int state) { m_Fractorium->ui.GLDisplay->update(); });
+		QObject::connect(cb, &QCheckBox::checkStateChanged, [&](Qt::CheckState state) { m_Fractorium->ui.GLDisplay->update(); });
 		m_Fractorium->m_XformSelections.push_back(cb);
 		m_Fractorium->m_XformsSelectionLayout->addRow(cb, new QWidget(m_Fractorium));
 		combo->addItem("Final");

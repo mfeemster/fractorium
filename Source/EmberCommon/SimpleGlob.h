@@ -83,6 +83,8 @@
 #ifndef INCLUDED_SimpleGlob
 #define INCLUDED_SimpleGlob
 
+namespace SimpleOpt
+{
 /*! @brief The operation of SimpleGlob is fine-tuned via the use of a
 	combination of the following flags.
 
@@ -1113,5 +1115,7 @@ typedef CSimpleGlobTempl<wchar_t> CSimpleGlobW;
 	/*! @brief TCHAR version dependent on if _UNICODE is defined */
 	#define CSimpleGlob CSimpleGlobA
 #endif
+
+} // namespace SimpleOpt
 
 #endif // INCLUDED_SimpleGlob

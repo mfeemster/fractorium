@@ -15,7 +15,7 @@ Install Qt for Windows 64-bit 6.5.1 or later (http://www.qt.io/download/).
 
 Add system environment variable named `QTPATH` and point it to the location of the Qt folder. On a default install, this will be something like:
 
-`C:\Qt\6.5.1\msvc2019_64`
+`C:\Qt\6.11.2\msvc2022_64`
 
 ### Wix
 
@@ -97,12 +97,12 @@ This will download and build `glm libopenexr libpng libxml zlib`. You will have 
 
 ### Begin build with Qt Creator
 
-Open the Qt Project `fractorium/main.pro` using Qt Creator with the default config of *Desktop Qt [version] MSVC2019 64bit*.
+Open the Qt Project `fractorium/main.pro` using Qt Creator with the default config of *Desktop Qt [version] MSVC2022 64bit*.
 Make sure *Shadow build* in *Edit build configuration* for both *Debug* and *Release* is unchecked.
 
 Switch to the *Release* configuration.
 
-Under *Build Steps*, add an additional argument of `install` to the `make` command to force all dependencies to be copied to the output folder. The final make command should look like:
+Under *Projects* -> *Build Steps*, add an additional argument of `install` to the `make`/`jom` command to force all dependencies to be copied to the output folder. The final make command should look like:
 
 `jom.exe install in /path/to/fractorium`
 
@@ -114,19 +114,11 @@ The outputs will be placed in `fractorium/Bin/release` several minutes later if 
 
 #### Visual Studio Qt Addon
 
-Install the [Visual Studio Qt Addon](http://www.qt.io/download/).
+Install the Visual Studio Qt Addon extension.
 
-Run Visual Studio and verify there is a menu item named *Qt6*. Click on it and click *Qt Options*.
+Click *Extensions* -> *Qt VS Tools* -> *Qt Versions* and point it to your installation. Autodetect usually works well.
 
-Add a new Qt version to the list with the exact name of "Qt6", and set its path to the same as `$QTPATH`, which will be something like:
-
-`C:\Qt\6.5.1\msvc2019_64`
-
-The name "Qt6" must match exactly and this step must be completed before the Fractorium solution is opened. If not, the Qt add-in will completely ruin all solution and project files that use Qt.
-
-Set the default version to the newly created Qt version and click *Ok*.
-
-Open the file Fractorium.sln under Builds/MSVC
+Open the file Fractorium.sln under Builds/MSVC/Solution
 
 Set the configuration to release, and build all.
 

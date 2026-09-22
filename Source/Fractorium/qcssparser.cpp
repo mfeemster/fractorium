@@ -3525,7 +3525,7 @@ bool Parser::parseHexColor(QColor* col)
 {
 	if (col != nullptr)
 	{
-		col->setNamedColor(lexem());
+		col->fromString(lexem());
 
 		if (!col->isValid())
 		{

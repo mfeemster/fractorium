@@ -3,6 +3,27 @@
 
 namespace EmberNs
 {
+static void parallel_for(size_t start, size_t end, size_t parlevel, std::function<void(size_t)> func)
+{
+    const auto ct = parlevel == 0 ? EmberNs::Timing::ProcessorCount() : parlevel;
+    std::vector<std::thread> threads(ct);
+    const auto chunkSize = (end - start) / ct;
+
+    for (size_t i = 0; i < ct; i++)
+    {
+        threads.push_back(std::thread([&](size_t _i, size_t _ct)
+                                      {
+                                          const auto chunkStart = chunkSize * _i;
+                                          const auto chunkEnd = _i == _ct - 1 ? end : std::min(chunkStart + chunkSize, end);
+
+                                          for (size_t j = chunkStart; j < chunkEnd; j++)
+                                              func(j);
+                                      }, i, ct));
+    }
+
+    EmberNs::Join(threads);
+}
+
 /// <summary>
 /// Constructor that allocates various pieces of memory.
 /// </summary>
@@ -143,7 +164,7 @@ void Renderer<T, bucketT>::ComputeCamera()
 	T carUrY = m_UpperRightY + t1 + shift;
 	m_RotMat.MakeID();
 	m_RotMat.Rotate(-Rotate() * DEG_2_RAD_T);
-	m_CarToRas.Init(carLlX, carLlY, carUrX, carUrY, m_SuperRasW, m_SuperRasH, PixelAspectRatio());
+	m_CarToRas.Init(carLlX, carLlY, carUrX, carUrY, m_SuperRasW, m_SuperRasH);
 }
 
 /// <summary>
@@ -1765,12 +1786,12 @@ void Renderer<T, bucketT>::CurveAdjust(bucketT& a, const glm::length_t& index)
 //This class had to be implemented in a cpp file because the compiler was breaking.
 //So the explicit instantiation must be declared here rather than in Ember.cpp where
 //all of the other classes are done.
-template EMBER_API class Renderer<float, float>;
-template EMBER_API void  Renderer<float, float>::SetEmber(const vector<Ember<float>>& embers);
-template EMBER_API void  Renderer<float, float>::SetEmber(const list<Ember<float>>& embers);
+template class EMBER_API Renderer<float, float>;
+template EMBER_API void Renderer<float, float>::SetEmber(const vector<Ember<float>>& embers);
+template EMBER_API void Renderer<float, float>::SetEmber(const list<Ember<float>>& embers);
 
 #ifdef DO_DOUBLE
-	template EMBER_API class Renderer<double, float>;
+    template class EMBER_API Renderer<double, float>;
 	template EMBER_API void  Renderer<double, float>::SetEmber(const vector<Ember<double>>& embers);
 	template EMBER_API void  Renderer<double, float>::SetEmber(const list<Ember<double>>& embers);
 #endif

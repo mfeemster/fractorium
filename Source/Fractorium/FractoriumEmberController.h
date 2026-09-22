@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "EmberFile.h"
-#include "DoubleSpinBox.h"
 #include "GLEmberController.h"
 
 /// <summary>

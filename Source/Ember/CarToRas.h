@@ -37,9 +37,9 @@ public:
 	/// <param name="rasW">The width in pixels of the raster image/histogram</param>
 	/// <param name="rasH">The height in pixels of the raster image/histogram</param>
 	/// <param name="aspectRatio">The aspect ratio, generally 1</param>
-	CarToRas(T carLlX, T carLlY, T carUrX, T carUrY, size_t rasW, size_t rasH, T aspectRatio)
+    CarToRas(T carLlX, T carLlY, T carUrX, T carUrY, size_t rasW, size_t rasH)
 	{
-		Init(carLlX, carLlY, carUrX, carUrY, rasW, rasH, aspectRatio);
+        Init(carLlX, carLlY, carUrX, carUrY, rasW, rasH);
 	}
 
 	/// <summary>
@@ -114,7 +114,7 @@ public:
 	/// <param name="rasW">The width in pixels of the raster image/histogram</param>
 	/// <param name="rasH">The height in pixels of the raster image/histogram</param>
 	/// <param name="aspectRatio">The aspect ratio, generally 1</param>
-	void Init(T carLlX, T carLlY, T carUrX, T carUrY, size_t rasW, size_t rasH, T aspectRatio)
+    void Init(T carLlX, T carLlY, T carUrX, T carUrY, size_t rasW, size_t rasH)
 	{
 		m_RasWidth = rasW;
 		m_RasHeight = rasH;

@@ -1,11 +1,8 @@
 #include "EmberCommonPch.h"
 #include "EmberGenome.h"
-#include "JpegUtils.h"
 #include <xmmintrin.h>
 #include <immintrin.h>
 #include <pmmintrin.h>
-
-using namespace EmberCommon;
 
 /// <summary>
 /// Set various default test values on the passed in ember.

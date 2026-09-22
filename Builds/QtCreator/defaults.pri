@@ -44,8 +44,8 @@ win32 {
 	INCLUDEPATH += $$EXTERNAL_DIR/libjpeg
 	INCLUDEPATH += $$EXTERNAL_DIR/libpng
 	INCLUDEPATH += $$EXTERNAL_DIR/libxml2/include
-	INCLUDEPATH += $$EXTERNAL_DIR/zlib
-	INCLUDEPATH += $$EXTERNAL_DIR/openexr/output/include/Imath
+	INCLUDEPATH += $$EXTERNAL_DIR/openexr/_deps/imath-build/config
+	INCLUDEPATH += $$EXTERNAL_DIR/openexr/_deps/imath-src/src/Imath
 	INCLUDEPATH += $$EXTERNAL_DIR/openexr/output/include/OpenEXR
 }
 
@@ -92,10 +92,9 @@ win32 {
 	LIBS += $$absolute_path($$EXTERNAL_LIB)/libpng.lib
 	LIBS += $$absolute_path($$EXTERNAL_LIB)/libxml2.lib
 	LIBS += $$absolute_path($$EXTERNAL_LIB)/zlib.lib
-	LIBS += $$absolute_path($$EXTERNAL_LIB)/Iex-3_1.lib
-	LIBS += $$absolute_path($$EXTERNAL_LIB)/IlmThread-3_1.lib
-	LIBS += $$absolute_path($$EXTERNAL_LIB)/Imath-3_1.lib
-	LIBS += $$absolute_path($$EXTERNAL_LIB)/OpenEXR-3_1.lib
+	LIBS += $$absolute_path($$EXTERNAL_LIB)/Iex-3_4.lib
+	LIBS += $$absolute_path($$EXTERNAL_LIB)/Imath-3_2.lib
+	LIBS += $$absolute_path($$EXTERNAL_LIB)/OpenEXR-3_4.lib
 }
 
 !win32 {
@@ -109,12 +108,12 @@ win32 {
 
 #For systems with older versions of OpenEXR < 3.0, use this.
 #	LIBS += -lIlmImf
-#    LIBS += -lHalf
+#	LIBS += -lHalf
 
 #For systems with OpenEXR >= 3.0, use this.
-   LIBS += -lz
-   LIBS += -lIlmThread
-   LIBS += -lOpenEXR
+        LIBS += -lz
+	LIBS += -lIlmThread
+	LIBS += -lOpenEXR
 }
 
 macx {
@@ -176,6 +175,7 @@ win32 {
 	QMAKE_CXXFLAGS += /Gd #Calling convention: __cdecl.
 	QMAKE_CXXFLAGS += /EHsc #Enable C++ exceptions.
 	QMAKE_CXXFLAGS += /nologo #Suppress compiler startup banner.
+	QMAKE_CXXFLAGS_WARN_ON += -wd4100 #Suppress unreferenced parameter warning.
 
 	QMAKE_CXXFLAGS_RELEASE += /GS- #Disable security check.
 	QMAKE_CXXFLAGS_RELEASE += /MD #Link to multi-threaded DLL.
@@ -190,7 +190,7 @@ win32 {
 	QMAKE_CXXFLAGS_DEBUG += /Od #Optimization disabled.
 	QMAKE_CXXFLAGS_DEBUG += /D "_DEBUG" #Debug mode.
 	QMAKE_CXXFLAGS_DEBUG += /RTC1 #Basic runtime checks: stack frames and uninitialized variables.
-    QMAKE_CXXFLAGS_DEBUG += /Ob2 #Inline function expansion: any suitable.
+	QMAKE_CXXFLAGS_DEBUG += /Ob2 #Inline function expansion: any suitable.
 }
 
 !win32 {
@@ -204,7 +204,7 @@ win32 {
 	QMAKE_CXXFLAGS += -fPIC
 	QMAKE_CXXFLAGS += -fpermissive
 	QMAKE_CXXFLAGS += -pedantic
-    QMAKE_CXXFLAGS += -std=c++2a
+	QMAKE_CXXFLAGS += -std=c++2a
 	QMAKE_CXXFLAGS += -Wnon-virtual-dtor
 	QMAKE_CXXFLAGS += -Wshadow
 	QMAKE_CXXFLAGS += -Winit-self
@@ -263,25 +263,9 @@ win32 {#For Windows, the install folder is just the output folder.
 
 #10) Add third party libraries to install dir.
 win32 {
-	libxml.path = $$BIN_INSTALL_DIR
-	libxml.files = $$absolute_path($$EMBER_ROOT/Deps/libxml2.dll)
-	INSTALLS += libxml
-
-    iex.path = $$BIN_INSTALL_DIR
-    iex.files = $$absolute_path($$EMBER_ROOT/Deps/Iex-3_1.dll)
-    INSTALLS += iex
-
-    imath.path = $$BIN_INSTALL_DIR
-    imath.files = $$absolute_path($$EMBER_ROOT/Deps/Imath-3_1.dll)
-    INSTALLS += imath
-
-    ilmthread.path = $$BIN_INSTALL_DIR
-    ilmthread.files = $$absolute_path($$EMBER_ROOT/Deps/IlmThread-3_1.dll)
-    INSTALLS += ilmthread
-
-    openexr.path = $$BIN_INSTALL_DIR
-    openexr.files = $$absolute_path($$EMBER_ROOT/Deps/OpenEXR-3_1.dll)
-    INSTALLS += openexr
+        depsdlls.path = $$BIN_INSTALL_DIR
+	depsdlls.files = $$absolute_path($$EMBER_ROOT/Deps/*.dll)
+	INSTALLS += depsdlls
 }
 
 #11) Print values of relevant variables for debugging.

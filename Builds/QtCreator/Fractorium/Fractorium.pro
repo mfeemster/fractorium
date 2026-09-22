@@ -64,29 +64,8 @@ INSTALLS += target
 
 palettes.path = $$SHARE_INSTALL_DIR
 palettes.files = $$ASSETS_DIR/flam3-palettes.xml \
-$$ASSETS_DIR/boxtail_pack_02.gradient \
-$$ASSETS_DIR/boxtail_pack_03_triangle.gradient \
-$$ASSETS_DIR/boxtail_pack_04_mineshack.gradient \
-$$ASSETS_DIR/fardareismai_pack_01_variety_number_128.gradient \
-$$ASSETS_DIR/fardareismai_pack_02_b_sides.gradient \
-$$ASSETS_DIR/fardareismai_pack_03_old_and_new.gradient \
-$$ASSETS_DIR/fardareismai_pack_04_hoard.gradient \
-$$ASSETS_DIR/fractaldesire_pack_01.gradient \
-$$ASSETS_DIR/rce_ordinary_pack_01_colornation.gradient \
-$$ASSETS_DIR/tatasz_pack_01.gradient \
-$$ASSETS_DIR/tatasz_pack_02_colder.gradient \
-$$ASSETS_DIR/tatasz_pack_02_dark.gradient \
-$$ASSETS_DIR/tatasz_pack_02_warmer.gradient \
-$$ASSETS_DIR/tatasz_pack_03.gradient \
-$$ASSETS_DIR/tatasz_pack_04.gradient \
-$$ASSETS_DIR/tatasz_pack_05.gradient \
-$$ASSETS_DIR/tatasz_pack_06.gradient \
-$$ASSETS_DIR/tatasz_pack_07.gradient \
-$$ASSETS_DIR/Amphibole_Supergroup.ugr \
-$$ASSETS_DIR/Apatite_Supergroup.ugr \
-$$ASSETS_DIR/Feldspar_Group.ugr \
-$$ASSETS_DIR/Mica_Group.ugr \
-$$ASSETS_DIR/Quartz_Varieties.ugr
+$$ASSETS_DIR/*.gradient \
+$$ASSETS_DIR/*.ugr
 
 #message(PALETTE INSTALL SOURCE: $$palettes.files)
 INSTALLS += palettes
@@ -230,26 +209,14 @@ RESOURCES += \
 bench.path = $$SHARE_INSTALL_DIR/bench
 bench.files += \
     $$ASSETS_DIR/Bench/EmberBench.ps1 \
-    $$ASSETS_DIR/Bench/golubaja_rippingfrominside_complexcode.flame \
-    $$ASSETS_DIR/Bench/mfeemster_basicmemory.flame \
-    $$ASSETS_DIR/Bench/tatasz_springcrown_manysimplexforms.flame \
-    $$ASSETS_DIR/Bench/tyrantwave_flippeddisc_normal.flame \
-    $$ASSETS_DIR/Bench/zy0rg_six_bigcomplexcode.flame
+    $$ASSETS_DIR/Bench/*.flame
 
 #message(BENCH INSTALL SOURCE: $$bench.files)
 INSTALLS += bench
 
 examples.path = $$SHARE_INSTALL_DIR/examples
 examples.files += \
-    $$ASSETS_DIR/examples/b33rheart_examples.flame \
-    $$ASSETS_DIR/examples/b33rheart_sierpinski.flame \
-    $$ASSETS_DIR/examples/c-91_examples.flame \
-    $$ASSETS_DIR/examples/pillemaster_hexagonal_tilings.flame \
-    $$ASSETS_DIR/examples/plangkye_examples.flame \
-    $$ASSETS_DIR/examples/tatasz_examples.flame \
-    $$ASSETS_DIR/examples/tatasz_substitution.flame \
-    $$ASSETS_DIR/examples/triptychaos_examples.flame \
-    $$ASSETS_DIR/examples/tyrantwave_base_forms.flame
+    $$ASSETS_DIR/examples/*.flame
 
 #message(EXAMPLES INSTALL SOURCE: $$examples.files)
 INSTALLS += examples

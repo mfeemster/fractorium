@@ -1581,49 +1581,49 @@ bool XmlToEmber<T>::ParseEmberElement(xmlNode* emberNode, Ember<T>& currentEmber
 		attStr = reinterpret_cast<char*>(xmlGetProp(emberNode, curAtt->name));
 
 		//First parse out simple float reads.
-		if (ParseAndAssign(curAtt->name, attStr, "time", currentEmber.m_Time, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "scale", currentEmber.m_PixelsPerUnit, ret)) { currentEmber.m_OrigPixPerUnit = currentEmber.m_PixelsPerUnit; }
-		else if (ParseAndAssign(curAtt->name, attStr, "rotate", currentEmber.m_Rotate, ret)) { currentEmber.m_Rotate = NormalizeDeg360<T>(currentEmber.m_Rotate); }
-		else if (ParseAndAssign(curAtt->name, attStr, "zoom", currentEmber.m_Zoom, ret)) { ClampGteRef<T>(currentEmber.m_Zoom, 0); }
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_zoom", currentEmber.m_Zoom, ret)) { ClampGteRef<T>(currentEmber.m_Zoom, 0); }//JWildfire uses cam_zoom.
-		else if (ParseAndAssign(curAtt->name, attStr, "filter", currentEmber.m_SpatialFilterRadius, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "temporal_filter_width", currentEmber.m_TemporalFilterWidth, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "temporal_filter_exp", currentEmber.m_TemporalFilterExp, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "quality", currentEmber.m_Quality, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "brightness", currentEmber.m_Brightness, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "gamma", currentEmber.m_Gamma, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "highlight_power", currentEmber.m_HighlightPower, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "logscale_k2", currentEmber.m_K2, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "vibrancy", currentEmber.m_Vibrancy, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "estimator_radius", currentEmber.m_MaxRadDE, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "estimator_minimum", currentEmber.m_MinRadDE, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "estimator_curve", currentEmber.m_CurveDE, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "gamma_threshold", currentEmber.m_GammaThresh, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_zpos", currentEmber.m_CamZPos, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_persp", currentEmber.m_CamPerspective, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_perspective", currentEmber.m_CamPerspective, ret)) {}//Apo bug.
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_yaw", currentEmber.m_CamYaw, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_pitch", currentEmber.m_CamPitch, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "cam_dof", currentEmber.m_CamDepthBlur, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "blur_curve", currentEmber.m_BlurCurve, ret)) {}
+        if (ParseAndAssign(curAtt->name, attStr, "time", currentEmber.m_Time)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "scale", currentEmber.m_PixelsPerUnit)) { currentEmber.m_OrigPixPerUnit = currentEmber.m_PixelsPerUnit; }
+        else if (ParseAndAssign(curAtt->name, attStr, "rotate", currentEmber.m_Rotate)) { currentEmber.m_Rotate = NormalizeDeg360<T>(currentEmber.m_Rotate); }
+        else if (ParseAndAssign(curAtt->name, attStr, "zoom", currentEmber.m_Zoom)) { ClampGteRef<T>(currentEmber.m_Zoom, 0); }
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_zoom", currentEmber.m_Zoom)) { ClampGteRef<T>(currentEmber.m_Zoom, 0); }//JWildfire uses cam_zoom.
+        else if (ParseAndAssign(curAtt->name, attStr, "filter", currentEmber.m_SpatialFilterRadius)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "temporal_filter_width", currentEmber.m_TemporalFilterWidth)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "temporal_filter_exp", currentEmber.m_TemporalFilterExp)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "quality", currentEmber.m_Quality)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "brightness", currentEmber.m_Brightness)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "gamma", currentEmber.m_Gamma)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "highlight_power", currentEmber.m_HighlightPower)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "logscale_k2", currentEmber.m_K2)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "vibrancy", currentEmber.m_Vibrancy)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "estimator_radius", currentEmber.m_MaxRadDE)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "estimator_minimum", currentEmber.m_MinRadDE)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "estimator_curve", currentEmber.m_CurveDE)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "gamma_threshold", currentEmber.m_GammaThresh)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_zpos", currentEmber.m_CamZPos)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_persp", currentEmber.m_CamPerspective)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_perspective", currentEmber.m_CamPerspective)) {}//Apo bug.
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_yaw", currentEmber.m_CamYaw)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_pitch", currentEmber.m_CamPitch)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "cam_dof", currentEmber.m_CamDepthBlur)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "blur_curve", currentEmber.m_BlurCurve)) {}
 		//Parse simple int reads.
-		else if (ParseAndAssign(curAtt->name, attStr, "palette", currentEmber.m_Palette.m_Index, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "oversample", currentEmber.m_Supersample, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "supersample", currentEmber.m_Supersample, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "temporal_samples", currentEmber.m_TemporalSamples, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "sub_batch_size", currentEmber.m_SubBatchSize, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "fuse", currentEmber.m_FuseCount, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "rand_range", currentEmber.m_RandPointRange, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "soloxform", soloXform, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "new_linear", newLinear, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "stagger", currentEmber.m_Stagger, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "rotations", currentEmber.m_Rotations, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "seconds_per_rotation", currentEmber.m_SecondsPerRotation, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "rotate_xforms_cw", currentEmber.m_RotateXformsCw, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "blend_seconds", currentEmber.m_BlendSeconds, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "rotations_per_blend", currentEmber.m_RotationsPerBlend, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "blend_rotate_xforms_cw", currentEmber.m_BlendRotateXformsCw, ret)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "linear_blend", currentEmber.m_Linear, ret)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "palette", currentEmber.m_Palette.m_Index)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "oversample", currentEmber.m_Supersample)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "supersample", currentEmber.m_Supersample)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "temporal_samples", currentEmber.m_TemporalSamples)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "sub_batch_size", currentEmber.m_SubBatchSize)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "fuse", currentEmber.m_FuseCount)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "rand_range", currentEmber.m_RandPointRange)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "soloxform", soloXform)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "new_linear", newLinear)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "stagger", currentEmber.m_Stagger)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "rotations", currentEmber.m_Rotations)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "seconds_per_rotation", currentEmber.m_SecondsPerRotation)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "rotate_xforms_cw", currentEmber.m_RotateXformsCw)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "blend_seconds", currentEmber.m_BlendSeconds)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "rotations_per_blend", currentEmber.m_RotationsPerBlend)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "blend_rotate_xforms_cw", currentEmber.m_BlendRotateXformsCw)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "linear_blend", currentEmber.m_Linear)) {}
 		//Parse more complicated reads that have multiple possible values.
 		else if (!Compare(curAtt->name, "interpolation"))
 		{
@@ -2113,8 +2113,8 @@ bool XmlToEmber<T>::ParseEmberElement(xmlNode* emberNode, Ember<T>& currentEmber
 			{
 				attStr = reinterpret_cast<char*>(xmlGetProp(childNode, curAtt->name));
 
-				if (ParseAndAssign(curAtt->name, attStr, "motion_frequency", motion.m_MotionFreq, ret)) {}
-				else if (ParseAndAssign(curAtt->name, attStr, "motion_offset", motion.m_MotionOffset, ret)) {}
+                if (ParseAndAssign(curAtt->name, attStr, "motion_frequency", motion.m_MotionFreq)) {}
+                else if (ParseAndAssign(curAtt->name, attStr, "motion_offset", motion.m_MotionOffset)) {}
 				else if (!Compare(curAtt->name, "motion_function"))
 				{
 					string func(attStr);
@@ -2270,14 +2270,14 @@ bool XmlToEmber<T>::ParseXform(xmlNode* childNode, Xform<T>& xform, bool motion,
 		attStr = reinterpret_cast<char*>(xmlGetProp(childNode, curAtt->name));
 
 		//First parse out simple float reads.
-		if (ParseAndAssign(curAtt->name, attStr, "weight", xform.m_Weight, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "color_speed", xform.m_ColorSpeed, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "animate", xform.m_Animate, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "animate_origin", xform.m_AnimateOrigin, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "opacity", xform.m_Opacity, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "var_color", xform.m_DirectColor, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "motion_frequency", xform.m_MotionFreq, success)) {}
-		else if (ParseAndAssign(curAtt->name, attStr, "motion_offset", xform.m_MotionOffset, success)) {}
+        if (ParseAndAssign(curAtt->name, attStr, "weight", xform.m_Weight)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "color_speed", xform.m_ColorSpeed)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "animate", xform.m_Animate)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "animate_origin", xform.m_AnimateOrigin)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "opacity", xform.m_Opacity)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "var_color", xform.m_DirectColor)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "motion_frequency", xform.m_MotionFreq)) {}
+        else if (ParseAndAssign(curAtt->name, attStr, "motion_offset", xform.m_MotionOffset)) {}
 		//Parse more complicated reads that have multiple possible values.
 		else if (!Compare(curAtt->name, "name"))
 		{
@@ -2658,7 +2658,7 @@ bool XmlToEmber<T>::ParseHexColors(const char* colstr, Ember<T>& ember, size_t n
 /// <returns>True if the tag was matched and the conversion succeeded, else false</returns>
 template <typename T>
 template <typename valT>
-bool XmlToEmber<T>::ParseAndAssign(const xmlChar* name, const char* attStr, const char* str, valT& val, bool& b)
+bool XmlToEmber<T>::ParseAndAssign(const xmlChar* name, const char* attStr, const char* str, valT& val)
 {
 	bool ret = false;
 

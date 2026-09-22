@@ -2,7 +2,7 @@
 
 #include "Curves.h"
 #include "Xform.h"
-#include "PaletteList.h"
+#include "Palette.h"
 #include "SpatialFilter.h"
 #include "TemporalFilter.h"
 #include "EmberMotion.h"
@@ -14,34 +14,13 @@
 /// </summary>
 namespace EmberNs
 {
-static void parallel_for(size_t start, size_t end, size_t parlevel, std::function<void(size_t)> func)
-{
-	const auto ct = parlevel == 0 ? EmberNs::Timing::ProcessorCount() : parlevel;
-	std::vector<std::thread> threads(ct);
-	const auto chunkSize = (end - start) / ct;
-
-	for (size_t i = 0; i < ct; i++)
-	{
-		threads.push_back(std::thread([&](size_t _i, size_t _ct)
-		{
-			const auto chunkStart = chunkSize * _i;
-			const auto chunkEnd = _i == _ct - 1 ? end : std::min(chunkStart + chunkSize, end);
-
-			for (size_t j = chunkStart; j < chunkEnd; j++)
-				func(j);
-		}, i, ct));
-	}
-
-	EmberNs::Join(threads);
-}
-
 template <typename T> class Interpolater;
 
 /// <summary>
 /// Bit position specifying the presence of each type of 3D parameter.
 /// One, none, some or all of these can be present.
 /// </summary>
-enum class eProjBits : unsigned char
+enum class eProjBits : et
 {
 	PROJBITS_ZPOS = 1,
 	PROJBITS_PERSP = 2,

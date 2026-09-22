@@ -1,8 +1,5 @@
 #pragma once
 
-#include "EmberCommonPch.h"
-#include "EmberOptions.h"
-
 /// <summary>
 /// Global utility classes and functions that are common to all programs that use
 /// Ember and its derivatives.

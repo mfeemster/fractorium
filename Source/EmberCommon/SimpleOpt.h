@@ -181,6 +181,8 @@
 #ifndef INCLUDED_SimpleOpt
 #define INCLUDED_SimpleOpt
 
+namespace SimpleOpt
+{
 // Default the max arguments to a fixed value. If you want to be able to
 // handle any number of arguments, then predefine this to 0 and it will
 // use an internal dynamically allocated buffer instead.
@@ -1150,5 +1152,5 @@ typedef CSimpleOptTempl<wchar_t> CSimpleOptW;
 	#define CSimpleOpt CSimpleOptA
 	#define CharT char
 #endif
-
+}
 #endif // INCLUDED_SimpleOpt

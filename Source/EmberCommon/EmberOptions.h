@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EmberCommon.h"
+using namespace SimpleOpt;
 
 /// <summary>
 /// EmberOptionEntry and EmberOptions classes.

@@ -54,9 +54,11 @@
 #include "RendererCL.h"
 #include "SheepTools.h"
 
-//Options.
-#include "SimpleGlob.h"
-#include "SimpleOpt.h"
+#ifndef FRACTORIUM_PCH_H
+	//Options.
+	#include "SimpleGlob.h"
+	#include "SimpleOpt.h"
+#endif
 
 //Exr
 #ifdef _WIN32
@@ -93,6 +95,8 @@
 
 using namespace Imf;
 using namespace Imath;
-
+using namespace Imf_3_4;
 using namespace EmberNs;
 using namespace EmberCLns;
+#include "EmberCommon.h"
+using namespace EmberCommon;

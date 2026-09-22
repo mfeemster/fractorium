@@ -70,7 +70,7 @@ private:
 	static bool XmlContainsTag(xmlAttrPtr att, const char* name);
 	bool ParseHexColors(const char* colstr, Ember<T>& ember, size_t numColors, intmax_t chan);
 	template <typename valT>
-	bool ParseAndAssign(const xmlChar* name, const char* attStr, const char* str, valT& val, bool& b);
+    bool ParseAndAssign(const xmlChar* name, const char* attStr, const char* str, valT& val);
 	template <typename valT>
 	bool ParseAndAssignContent(xmlNode* node, const char* fieldname, const char* fieldnameval, valT& val);
 	bool ParseAndAssignContent(xmlNode* node, const char* fieldname, const char* fieldnameval, std::string& val);
