@@ -97,10 +97,10 @@ void FractoriumEmberController<T>::FillAppliedXaos()
 
 			if (norm)
 			{
-				for (size_t i = 0; i < tempweights.size() && offset <= pixmap.height(); i++)
+                for (size_t wi = 0; wi < tempweights.size() && offset <= pixmap.height(); wi++)
 				{
-					offset = std::min<T>(offset + tempweights[i] * pixmap.height(), pixmap.height());
-					painter.fillRect(0, start, pixmap.width(), offset, m_Fractorium->m_XformComboColors[i % XFORM_COLOR_COUNT]);
+                    offset = std::min<T>(offset + tempweights[wi] * pixmap.height(), pixmap.height());
+                    painter.fillRect(0, start, pixmap.width(), offset, m_Fractorium->m_XformComboColors[wi % XFORM_COLOR_COUNT]);
 					start = offset;
 				}
 			}

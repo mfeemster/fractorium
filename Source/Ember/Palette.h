@@ -218,7 +218,7 @@ public:
 	/// <param name="black">Set all colors to black if true, else white</param>
 	void Clear(bool black = true)
 	{
-		for (glm::length_t i = 0; i < Size(); i++)
+        for (size_t i = 0; i < Size(); i++)
 		{
 			for (glm::length_t j = 0; j < 4; j++)
 			{
@@ -422,7 +422,7 @@ public:
 	/// <returns>True if all colors are black, else false if at least one component of one color is non zero.</returns>
 	bool IsEmpty()
 	{
-		for (glm::length_t i = 0; i < Size(); i++)
+        for (size_t i = 0; i < Size(); i++)
 			for (glm::length_t j = 0; j < 3; j++)
 				if (m_Entries[i][j] != 0)
 					return false;

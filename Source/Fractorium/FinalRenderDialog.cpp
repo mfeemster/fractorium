@@ -292,7 +292,7 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	w = SetTabOrder(this, w, ui.FinalRenderStartButton);
 	w = SetTabOrder(this, w, ui.FinalRenderPauseButton);
 	w = SetTabOrder(this, w, ui.FinalRenderStopButton);
-	w = SetTabOrder(this, w, ui.FinalRenderCloseButton);
+    w = SetTabOrder(this, w, ui.FinalRenderCloseButton);
 }
 
 FractoriumFinalRenderDialog::~FractoriumFinalRenderDialog()
@@ -696,7 +696,7 @@ void FractoriumFinalRenderDialog::OnDeviceTableRadioToggled(bool checked)
 	if (s)
 	{
 		for (row = 0; row < table->rowCount(); row++)
-			if (radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1)))
+            if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
 				if (s == radio)
 				{
 					HandleDeviceTableCheckChanged(ui.FinalRenderDeviceTable, row, 1);

@@ -61,6 +61,7 @@ struct DoubleColor
 	DoubleColor() : r(0.0), g(0.0), b(0.0) {}
 	DoubleColor(double red, double green, double blue) : r(red), g(green), b(blue) {}
 	DoubleColor(const DoubleColor& c) : r(c.r), g(c.g), b(c.b) {}
+    DoubleColor& operator = (const DoubleColor& carToRas) = default;
 };
 
 /// <summary>
@@ -109,6 +110,7 @@ protected:
 	void resizeEvent(QResizeEvent*) override;
 
 private:
+	void InnerPolish();
 	void GenBackground();
 	void DrawTrigon(QImage* p, const QPointF& a, const QPointF& b, const QPointF& c, const QColor& color);
 	double CalcOuterRadius() const;
@@ -123,10 +125,10 @@ private:
 	int penWidth;
 	int ellipseSize;
 	int outerRadius;
-	double a, b, c;
+    double _a, _b, _c;
 	QImage bg;
 	QColor curColor;
-	QPointF pa, pb, pc, pd;
+    QPointF _pa, _pb, _pc, _pd;
 	QPointF selectorPos;
 
 	enum SelectionMode

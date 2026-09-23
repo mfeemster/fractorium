@@ -740,7 +740,7 @@ public:
 			{
 				float t[3], s[4] = { 0, 0, 0, 0 };
 
-				for (glm::length_t k = 0; k < size; k++)
+                for (size_t k = 0; k < size; k++)
 				{
 					Palette<float>::RgbToHsv(glm::value_ptr(embers[k].m_Palette[i]), t);
 

@@ -171,7 +171,7 @@ void FractoriumEmberController<T>::FillSummary()
 			{
 				auto params = parVar->Params();
 
-				for (auto j = 0; j < parVar->ParamCount(); j++)
+                for (size_t j = 0; j < parVar->ParamCount(); j++)
 				{
 					if (!params[j].IsPrecalc())
 					{
@@ -262,8 +262,8 @@ void Fractorium::UpdateHistogramBounds()
 		auto urstr = ur.asprintf("UR: %3.3f, %3.3f", r->UpperRightX(), r->UpperRightY());
 		auto lrstr = lr.asprintf("LR: %3.3f, %3.3f", r->UpperRightX(), r->LowerLeftY());
 		auto llstr = ll.asprintf("LL: %3.3f, %3.3f", r->LowerLeftX(), r->LowerLeftY());
-		auto whstr = wh.asprintf("W x H: %4u x %4u", r->SuperRasW(), r->SuperRasH());
-		auto gstr = g.asprintf("%u", static_cast<uint>(r->GutterWidth()));
+        auto whstr = wh.asprintf("W x H: %4zu x %4zu", r->SuperRasW(), r->SuperRasH());
+        auto gstr = g.asprintf("%zu", r->GutterWidth());
 		ui.InfoBoundsLabelUL->setText(ulstr);
 		ui.InfoBoundsLabelUR->setText(urstr);
 		ui.InfoBoundsLabelLR->setText(lrstr);
@@ -274,7 +274,7 @@ void Fractorium::UpdateHistogramBounds()
 		if (r->GetDensityFilter())
 		{
 			const auto deWidth = (r->GetDensityFilter()->FilterWidth() * 2) + 1;
-			auto destr = de.asprintf("%d x %d", deWidth, deWidth);
+            auto destr = de.asprintf("%jd x %jd", deWidth, deWidth);
 			ui.InfoBoundsTable->item(1, 1)->setText(destr);
 		}
 		else

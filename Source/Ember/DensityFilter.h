@@ -108,7 +108,7 @@ public:
 		size_t w;
 		int intFilterCount, maxIndex;
 		int rowSize;
-		size_t filterLoop;
+        int filterLoop;
 		int keepThresh = 100;
 		uint filterCoefIndex = 0;
 		T decFilterCount;

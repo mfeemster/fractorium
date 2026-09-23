@@ -360,7 +360,7 @@ bool FractoriumEmberController<T>::Render()
 	//Take care of solo xforms and set the current ember and action.
 	if (action != eProcessAction::NOTHING)
 	{
-		size_t i = 0;
+        intmax_t i = 0;
 		const auto solo = m_Ember.m_Solo;
 		const bool forceFinal = m_Fractorium->HaveFinal();
 

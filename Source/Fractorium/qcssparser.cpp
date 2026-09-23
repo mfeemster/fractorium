@@ -384,8 +384,8 @@ static quint64 findKnownValue(const QString& name, const QCssKnownValue* start, 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Value Extractor
-ValueExtractor::ValueExtractor(const QVector<Declaration>& decls, const QPalette& pal)
-	: declarations(decls), adjustment(0), fontExtracted(false), pal(pal)
+ValueExtractor::ValueExtractor(const QVector<Declaration>& decls, const QPalette& palette)
+    : declarations(decls), adjustment(0), fontExtracted(false), pal(palette)
 {
 }
 
@@ -507,6 +507,104 @@ bool ValueExtractor::extractGeometry(int* w, int* h, int* minw, int* minh, int* 
 
 			case MaximumHeight: if (maxh != nullptr) *maxh = lengthValue(decl); break;
 
+            case BackgroundColor:
+            case UnknownProperty:
+            case Color:
+            case Float:
+            case Font:
+            case FontFamily:
+            case FontSize:
+            case FontStyle:
+            case FontWeight:
+            case Margin:
+            case MarginBottom:
+            case MarginLeft:
+            case MarginRight:
+            case MarginTop:
+            case QtBlockIndent:
+            case QtListIndent:
+            case QtParagraphType:
+            case QtTableType:
+            case QtUserState:
+            case TextDecoration:
+            case TextIndent:
+            case TextUnderlineStyle:
+            case VerticalAlignment:
+            case Whitespace:
+            case QtSelectionForeground:
+            case QtSelectionBackground:
+            case Border:
+            case BorderLeft:
+            case BorderRight:
+            case BorderTop:
+            case BorderBottom:
+            case Padding:
+            case PaddingLeft:
+            case PaddingRight:
+            case PaddingTop:
+            case PaddingBottom:
+            case PageBreakBefore:
+            case PageBreakAfter:
+            case QtAlternateBackground:
+            case BorderLeftStyle:
+            case BorderRightStyle:
+            case BorderTopStyle:
+            case BorderBottomStyle:
+            case BorderStyles:
+            case BorderLeftColor:
+            case BorderRightColor:
+            case BorderTopColor:
+            case BorderBottomColor:
+            case BorderColor:
+            case BorderLeftWidth:
+            case BorderRightWidth:
+            case BorderTopWidth:
+            case BorderBottomWidth:
+            case BorderWidth:
+            case BorderTopLeftRadius:
+            case BorderTopRightRadius:
+            case BorderBottomLeftRadius:
+            case BorderBottomRightRadius:
+            case BorderRadius:
+            case Background:
+            case BackgroundOrigin:
+            case BackgroundClip:
+            case BackgroundRepeat:
+            case BackgroundPosition:
+            case BackgroundAttachment:
+            case BackgroundImage:
+            case BorderImage:
+            case QtSpacing:
+            case QtImage:
+            case Left:
+            case Right:
+            case Top:
+            case Bottom:
+            case QtOrigin:
+            case QtPosition:
+            case Position:
+            case QtStyleFeatures:
+            case QtBackgroundRole:
+            case ListStyleType:
+            case ListStyle:
+            case QtImageAlignment:
+            case TextAlignment:
+            case Outline:
+            case OutlineOffset:
+            case OutlineWidth:
+            case OutlineColor:
+            case OutlineStyle:
+            case OutlineRadius:
+            case OutlineTopLeftRadius:
+            case OutlineTopRightRadius:
+            case OutlineBottomLeftRadius:
+            case OutlineBottomRightRadius:
+            case FontVariant:
+            case TextTransform:
+            case QtListNumberPrefix:
+            case QtListNumberSuffix:
+            case LineHeight:
+            case NumProperties:
 			default: continue;
 		}
 
@@ -544,6 +642,102 @@ bool ValueExtractor::extractPosition(int* left, int* top, int* right, int* botto
 
 			case Position: if (mode != nullptr) *mode = decl.positionValue(); break;
 
+            case BackgroundColor:
+            case UnknownProperty:
+            case Color:
+            case Float:
+            case Font:
+            case FontFamily:
+            case FontSize:
+            case FontStyle:
+            case FontWeight:
+            case Margin:
+            case MarginBottom:
+            case MarginLeft:
+            case MarginRight:
+            case MarginTop:
+            case QtBlockIndent:
+            case QtListIndent:
+            case QtParagraphType:
+            case QtTableType:
+            case QtUserState:
+            case TextDecoration:
+            case TextIndent:
+            case TextUnderlineStyle:
+            case VerticalAlignment:
+            case Whitespace:
+            case QtSelectionForeground:
+            case QtSelectionBackground:
+            case Border:
+            case BorderLeft:
+            case BorderRight:
+            case BorderTop:
+            case BorderBottom:
+            case Padding:
+            case PaddingLeft:
+            case PaddingRight:
+            case PaddingTop:
+            case PaddingBottom:
+            case PageBreakBefore:
+            case PageBreakAfter:
+            case QtAlternateBackground:
+            case BorderLeftStyle:
+            case BorderRightStyle:
+            case BorderTopStyle:
+            case BorderBottomStyle:
+            case BorderStyles:
+            case BorderLeftColor:
+            case BorderRightColor:
+            case BorderTopColor:
+            case BorderBottomColor:
+            case BorderColor:
+            case BorderLeftWidth:
+            case BorderRightWidth:
+            case BorderTopWidth:
+            case BorderBottomWidth:
+            case BorderWidth:
+            case BorderTopLeftRadius:
+            case BorderTopRightRadius:
+            case BorderBottomLeftRadius:
+            case BorderBottomRightRadius:
+            case BorderRadius:
+            case Background:
+            case BackgroundOrigin:
+            case BackgroundClip:
+            case BackgroundRepeat:
+            case BackgroundPosition:
+            case BackgroundAttachment:
+            case BackgroundImage:
+            case BorderImage:
+            case QtSpacing:
+            case Width:
+            case Height:
+            case MinimumWidth:
+            case MinimumHeight:
+            case MaximumWidth:
+            case MaximumHeight:
+            case QtImage:
+            case QtStyleFeatures:
+            case QtBackgroundRole:
+            case ListStyleType:
+            case ListStyle:
+            case QtImageAlignment:
+            case Outline:
+            case OutlineOffset:
+            case OutlineWidth:
+            case OutlineColor:
+            case OutlineStyle:
+            case OutlineRadius:
+            case OutlineTopLeftRadius:
+            case OutlineTopRightRadius:
+            case OutlineBottomLeftRadius:
+            case OutlineBottomRightRadius:
+            case FontVariant:
+            case TextTransform:
+            case QtListNumberPrefix:
+            case QtListNumberSuffix:
+            case LineHeight:
+            case NumProperties:
 			default: continue;
 		}
 
@@ -585,6 +779,100 @@ bool ValueExtractor::extractBox(int* margins, int* paddings, int* spacing)
 			case Margin: if (margins != nullptr) lengthValues(decl, margins); break;
 
 			case QtSpacing: if (spacing) *spacing = lengthValue(decl); break;
+
+            case UnknownProperty:
+            case BackgroundColor:
+            case Color:
+            case Float:
+            case Font:
+            case FontFamily:
+            case FontSize:
+            case FontStyle:
+            case FontWeight:
+            case QtBlockIndent:
+            case QtListIndent:
+            case QtParagraphType:
+            case QtTableType:
+            case QtUserState:
+            case TextDecoration:
+            case TextIndent:
+            case TextUnderlineStyle:
+            case VerticalAlignment:
+            case Whitespace:
+            case QtSelectionForeground:
+            case QtSelectionBackground:
+            case Border:
+            case BorderLeft:
+            case BorderRight:
+            case BorderTop:
+            case BorderBottom:
+            case PageBreakBefore:
+            case PageBreakAfter:
+            case QtAlternateBackground:
+            case BorderLeftStyle:
+            case BorderRightStyle:
+            case BorderTopStyle:
+            case BorderBottomStyle:
+            case BorderStyles:
+            case BorderLeftColor:
+            case BorderRightColor:
+            case BorderTopColor:
+            case BorderBottomColor:
+            case BorderColor:
+            case BorderLeftWidth:
+            case BorderRightWidth:
+            case BorderTopWidth:
+            case BorderBottomWidth:
+            case BorderWidth:
+            case BorderTopLeftRadius:
+            case BorderTopRightRadius:
+            case BorderBottomLeftRadius:
+            case BorderBottomRightRadius:
+            case BorderRadius:
+            case Background:
+            case BackgroundOrigin:
+            case BackgroundClip:
+            case BackgroundRepeat:
+            case BackgroundPosition:
+            case BackgroundAttachment:
+            case BackgroundImage:
+            case BorderImage:
+            case Width:
+            case Height:
+            case MinimumWidth:
+            case MinimumHeight:
+            case MaximumWidth:
+            case MaximumHeight:
+            case QtImage:
+            case Left:
+            case Right:
+            case Top:
+            case Bottom:
+            case QtOrigin:
+            case QtPosition:
+            case Position:
+            case QtStyleFeatures:
+            case QtBackgroundRole:
+            case ListStyleType:
+            case ListStyle:
+            case QtImageAlignment:
+            case TextAlignment:
+            case Outline:
+            case OutlineOffset:
+            case OutlineWidth:
+            case OutlineColor:
+            case OutlineStyle:
+            case OutlineRadius:
+            case OutlineTopLeftRadius:
+            case OutlineTopRightRadius:
+            case OutlineBottomLeftRadius:
+            case OutlineBottomRightRadius:
+            case FontVariant:
+            case TextTransform:
+            case QtListNumberPrefix:
+            case QtListNumberSuffix:
+            case LineHeight:
+            case NumProperties:
 
 			default: continue;
 		}
@@ -738,6 +1026,86 @@ bool ValueExtractor::extractBorder(int* borders, QBrush* colors, BorderStyle* st
 
 				break;
 
+            case UnknownProperty:
+            case BackgroundColor:
+            case Color:
+            case Float:
+            case Font:
+            case FontFamily:
+            case FontSize:
+            case FontStyle:
+            case FontWeight:
+            case Margin:
+            case MarginBottom:
+            case MarginLeft:
+            case MarginRight:
+            case MarginTop:
+            case QtBlockIndent:
+            case QtListIndent:
+            case QtParagraphType:
+            case QtTableType:
+            case QtUserState:
+            case TextDecoration:
+            case TextIndent:
+            case TextUnderlineStyle:
+            case VerticalAlignment:
+            case Whitespace:
+            case QtSelectionForeground:
+            case QtSelectionBackground:
+            case Padding:
+            case PaddingLeft:
+            case PaddingRight:
+            case PaddingTop:
+            case PaddingBottom:
+            case PageBreakBefore:
+            case PageBreakAfter:
+            case QtAlternateBackground:
+            case Background:
+            case BackgroundOrigin:
+            case BackgroundClip:
+            case BackgroundRepeat:
+            case BackgroundPosition:
+            case BackgroundAttachment:
+            case BackgroundImage:
+            case BorderImage:
+            case QtSpacing:
+            case Width:
+            case Height:
+            case MinimumWidth:
+            case MinimumHeight:
+            case MaximumWidth:
+            case MaximumHeight:
+            case QtImage:
+            case Left:
+            case Right:
+            case Top:
+            case Bottom:
+            case QtOrigin:
+            case QtPosition:
+            case Position:
+            case QtStyleFeatures:
+            case QtBackgroundRole:
+            case ListStyleType:
+            case ListStyle:
+            case QtImageAlignment:
+            case TextAlignment:
+            case Outline:
+            case OutlineOffset:
+            case OutlineWidth:
+            case OutlineColor:
+            case OutlineStyle:
+            case OutlineRadius:
+            case OutlineTopLeftRadius:
+            case OutlineTopRightRadius:
+            case OutlineBottomLeftRadius:
+            case OutlineBottomRightRadius:
+            case FontVariant:
+            case TextTransform:
+            case QtListNumberPrefix:
+            case QtListNumberSuffix:
+            case LineHeight:
+            case NumProperties:
+
 			default: continue;
 		}
 
@@ -788,6 +1156,101 @@ bool ValueExtractor::extractOutline(int* borders, QBrush* colors, BorderStyle* s
 
 				break;
 
+            case UnknownProperty:
+            case BackgroundColor:
+            case Color:
+            case Float:
+            case Font:
+            case FontFamily:
+            case FontSize:
+            case FontStyle:
+            case FontWeight:
+            case Margin:
+            case MarginBottom:
+            case MarginLeft:
+            case MarginRight:
+            case MarginTop:
+            case QtBlockIndent:
+            case QtListIndent:
+            case QtParagraphType:
+            case QtTableType:
+            case QtUserState:
+            case TextDecoration:
+            case TextIndent:
+            case TextUnderlineStyle:
+            case VerticalAlignment:
+            case Whitespace:
+            case QtSelectionForeground:
+            case QtSelectionBackground:
+            case Border:
+            case BorderLeft:
+            case BorderRight:
+            case BorderTop:
+            case BorderBottom:
+            case Padding:
+            case PaddingLeft:
+            case PaddingRight:
+            case PaddingTop:
+            case PaddingBottom:
+            case PageBreakBefore:
+            case PageBreakAfter:
+            case QtAlternateBackground:
+            case BorderLeftStyle:
+            case BorderRightStyle:
+            case BorderTopStyle:
+            case BorderBottomStyle:
+            case BorderStyles:
+            case BorderLeftColor:
+            case BorderRightColor:
+            case BorderTopColor:
+            case BorderBottomColor:
+            case BorderColor:
+            case BorderLeftWidth:
+            case BorderRightWidth:
+            case BorderTopWidth:
+            case BorderBottomWidth:
+            case BorderWidth:
+            case BorderTopLeftRadius:
+            case BorderTopRightRadius:
+            case BorderBottomLeftRadius:
+            case BorderBottomRightRadius:
+            case BorderRadius:
+            case Background:
+            case BackgroundOrigin:
+            case BackgroundClip:
+            case BackgroundRepeat:
+            case BackgroundPosition:
+            case BackgroundAttachment:
+            case BackgroundImage:
+            case BorderImage:
+            case QtSpacing:
+            case Width:
+            case Height:
+            case MinimumWidth:
+            case MinimumHeight:
+            case MaximumWidth:
+            case MaximumHeight:
+            case QtImage:
+            case Left:
+            case Right:
+            case Top:
+            case Bottom:
+            case QtOrigin:
+            case QtPosition:
+            case Position:
+            case QtStyleFeatures:
+            case QtBackgroundRole:
+            case ListStyleType:
+            case ListStyle:
+            case QtImageAlignment:
+            case TextAlignment:
+            case FontVariant:
+            case TextTransform:
+            case QtListNumberPrefix:
+            case QtListNumberSuffix:
+            case LineHeight:
+            case NumProperties:
+
 			default: continue;
 		}
 
@@ -797,18 +1260,18 @@ bool ValueExtractor::extractOutline(int* borders, QBrush* colors, BorderStyle* s
 	return hit;
 }
 
-static Qt::Alignment parseAlignment(const QCss::Value* values, int count)
+static Qt::Alignment parseAlignment(const QCss::Value* vals, int count)
 {
 	Qt::Alignment a[2] = { Qt::AlignLeft, Qt::AlignLeft };
 
-	if (values != nullptr)
+    if (vals != nullptr)
 	{
 		for (int i = 0; i < qMin(2, count); i++)
 		{
-			if (values[i].type != Value::KnownIdentifier)
+            if (vals[i].type != Value::KnownIdentifier)
 				break;
 
-			switch (values[i].variant.toInt())
+            switch (vals[i].variant.toInt())
 			{
 				case Value_Left: a[i] = Qt::AlignLeft; break;
 
@@ -1197,7 +1660,7 @@ void ValueExtractor::borderValue(const Declaration& decl, int* width, QCss::Bord
 	}
 }
 
-static void parseShorthandBackgroundProperty(const QVector<QCss::Value>& values, BrushData* brush, QString* image, Repeat* repeat, Qt::Alignment* alignment, const QPalette& pal)
+static void parseShorthandBackgroundProperty(const QVector<QCss::Value>& vals, BrushData* brush, QString* image, Repeat* repeat, Qt::Alignment* alignment, const QPalette& pal)
 {
 	if (brush != nullptr && image != nullptr && repeat != nullptr && alignment != nullptr)
 	{
@@ -1206,9 +1669,9 @@ static void parseShorthandBackgroundProperty(const QVector<QCss::Value>& values,
 		*repeat = Repeat_XY;
 		*alignment = Qt::AlignTop | Qt::AlignLeft;
 
-		for (int i = 0; i < values.count(); ++i)
+        for (int i = 0; i < vals.count(); ++i)
 		{
-			const QCss::Value& v = values.at(i);
+            const QCss::Value& v = vals.at(i);
 
 			if (v.type == Value::Uri)
 			{
@@ -1239,14 +1702,14 @@ static void parseShorthandBackgroundProperty(const QVector<QCss::Value>& values,
 				const int start = i;
 				int count = 1;
 
-				if (i < values.count() - 1
-						&& values.at(i + 1).type == Value::KnownIdentifier)
+                if (i < vals.count() - 1
+                        && vals.at(i + 1).type == Value::KnownIdentifier)
 				{
 					++i;
 					++count;
 				}
 
-				Qt::Alignment a = parseAlignment(values.constData() + start, count);
+                Qt::Alignment a = parseAlignment(vals.constData() + start, count);
 
 				if (int(a) != 0)
 				{
@@ -1344,6 +1807,103 @@ bool ValueExtractor::extractBackground(QBrush* brush, QString* image, Repeat* re
 				case BackgroundAttachment:
 					*attachment = decl.attachmentValue();
 					break;
+
+                case UnknownProperty:
+                case Color:
+                case Float:
+                case Font:
+                case FontFamily:
+                case FontSize:
+                case FontStyle:
+                case FontWeight:
+                case Margin:
+                case MarginBottom:
+                case MarginLeft:
+                case MarginRight:
+                case MarginTop:
+                case QtBlockIndent:
+                case QtListIndent:
+                case QtParagraphType:
+                case QtTableType:
+                case QtUserState:
+                case TextDecoration:
+                case TextIndent:
+                case TextUnderlineStyle:
+                case VerticalAlignment:
+                case Whitespace:
+                case QtSelectionForeground:
+                case QtSelectionBackground:
+                case Border:
+                case BorderLeft:
+                case BorderRight:
+                case BorderTop:
+                case BorderBottom:
+                case Padding:
+                case PaddingLeft:
+                case PaddingRight:
+                case PaddingTop:
+                case PaddingBottom:
+                case PageBreakBefore:
+                case PageBreakAfter:
+                case QtAlternateBackground:
+                case BorderLeftStyle:
+                case BorderRightStyle:
+                case BorderTopStyle:
+                case BorderBottomStyle:
+                case BorderStyles:
+                case BorderLeftColor:
+                case BorderRightColor:
+                case BorderTopColor:
+                case BorderBottomColor:
+                case BorderColor:
+                case BorderLeftWidth:
+                case BorderRightWidth:
+                case BorderTopWidth:
+                case BorderBottomWidth:
+                case BorderWidth:
+                case BorderTopLeftRadius:
+                case BorderTopRightRadius:
+                case BorderBottomLeftRadius:
+                case BorderBottomRightRadius:
+                case BorderRadius:
+                case BorderImage:
+                case QtSpacing:
+                case Width:
+                case Height:
+                case MinimumWidth:
+                case MinimumHeight:
+                case MaximumWidth:
+                case MaximumHeight:
+                case QtImage:
+                case Left:
+                case Right:
+                case Top:
+                case Bottom:
+                case QtOrigin:
+                case QtPosition:
+                case Position:
+                case QtStyleFeatures:
+                case QtBackgroundRole:
+                case ListStyleType:
+                case ListStyle:
+                case QtImageAlignment:
+                case TextAlignment:
+                case Outline:
+                case OutlineOffset:
+                case OutlineWidth:
+                case OutlineColor:
+                case OutlineStyle:
+                case OutlineRadius:
+                case OutlineTopLeftRadius:
+                case OutlineTopRightRadius:
+                case OutlineBottomLeftRadius:
+                case OutlineBottomRightRadius:
+                case FontVariant:
+                case TextTransform:
+                case QtListNumberPrefix:
+                case QtListNumberSuffix:
+                case LineHeight:
+                case NumProperties:
 
 				default: continue;
 			}
@@ -1492,14 +2052,14 @@ static bool setFontWeightFromValue(const QCss::Value& value, QFont* font)
     and set it the \a font
     The function returns \c true if a family was extracted.
 */
-static bool setFontFamilyFromValues(const QVector<QCss::Value>& values, QFont* font, int start = 0)
+static bool setFontFamilyFromValues(const QVector<QCss::Value>& vals, QFont* font, int start = 0)
 {
 	QString family;
 	bool shouldAddSpace = false;
 
-	for (int i = start; i < values.count(); ++i)
+    for (int i = start; i < vals.count(); ++i)
 	{
-		const QCss::Value& v = values.at(i);
+        const QCss::Value& v = vals.at(i);
 
 		if (v.type == Value::TermOperatorComma)
 		{
@@ -1529,16 +2089,16 @@ static bool setFontFamilyFromValues(const QVector<QCss::Value>& values, QFont* f
 	return true;
 }
 
-static void setTextDecorationFromValues(const QVector<QCss::Value>& values, QFont* font)
+static void setTextDecorationFromValues(const QVector<QCss::Value>& vals, QFont* font)
 {
 	if (font != nullptr)
 	{
-		for (int i = 0; i < values.count(); ++i)
+        for (int i = 0; i < vals.count(); ++i)
 		{
-			if (values.at(i).type != Value::KnownIdentifier)
+            if (vals.at(i).type != Value::KnownIdentifier)
 				continue;
 
-			switch (values.at(i).variant.toInt())
+            switch (vals.at(i).variant.toInt())
 			{
 				case Value_Underline: font->setUnderline(true); break;
 
@@ -1558,7 +2118,7 @@ static void setTextDecorationFromValues(const QVector<QCss::Value>& values, QFon
 	}
 }
 
-static void parseShorthandFontProperty(const QVector<QCss::Value>& values, QFont* font, int* fontSizeAdjustment)
+static void parseShorthandFontProperty(const QVector<QCss::Value>& vals, QFont* font, int* fontSizeAdjustment)
 {
 	if (font != nullptr)
 	{
@@ -1567,24 +2127,24 @@ static void parseShorthandFontProperty(const QVector<QCss::Value>& values, QFont
 		*fontSizeAdjustment = -255;
 		int i = 0;
 
-		while (i < values.count())
+        while (i < vals.count())
 		{
-			if (setFontStyleFromValue(values.at(i), font)
-					|| setFontWeightFromValue(values.at(i), font))
+            if (setFontStyleFromValue(vals.at(i), font)
+                    || setFontWeightFromValue(vals.at(i), font))
 				++i;
 			else
 				break;
 		}
 
-		if (i < values.count())
+        if (i < vals.count())
 		{
-			setFontSizeFromValue(values.at(i), font, fontSizeAdjustment);
+            setFontSizeFromValue(vals.at(i), font, fontSizeAdjustment);
 			++i;
 		}
 
-		if (i < values.count())
+        if (i < vals.count())
 		{
-			setFontFamilyFromValues(values, font, i);
+            setFontFamilyFromValues(vals, font, i);
 		}
 	}
 }
@@ -1667,6 +2227,103 @@ bool ValueExtractor::extractFont(QFont* font, int* fontSizeAdjustment)
 
 				case TextTransform: setTextTransformFromValue(val, font); break;
 
+                case UnknownProperty:
+                case BackgroundColor:
+                case Color:
+                case Float:
+                case Margin:
+                case MarginBottom:
+                case MarginLeft:
+                case MarginRight:
+                case MarginTop:
+                case QtBlockIndent:
+                case QtListIndent:
+                case QtParagraphType:
+                case QtTableType:
+                case QtUserState:
+                case TextIndent:
+                case TextUnderlineStyle:
+                case VerticalAlignment:
+                case Whitespace:
+                case QtSelectionForeground:
+                case QtSelectionBackground:
+                case Border:
+                case BorderLeft:
+                case BorderRight:
+                case BorderTop:
+                case BorderBottom:
+                case Padding:
+                case PaddingLeft:
+                case PaddingRight:
+                case PaddingTop:
+                case PaddingBottom:
+                case PageBreakBefore:
+                case PageBreakAfter:
+                case QtAlternateBackground:
+                case BorderLeftStyle:
+                case BorderRightStyle:
+                case BorderTopStyle:
+                case BorderBottomStyle:
+                case BorderStyles:
+                case BorderLeftColor:
+                case BorderRightColor:
+                case BorderTopColor:
+                case BorderBottomColor:
+                case BorderColor:
+                case BorderLeftWidth:
+                case BorderRightWidth:
+                case BorderTopWidth:
+                case BorderBottomWidth:
+                case BorderWidth:
+                case BorderTopLeftRadius:
+                case BorderTopRightRadius:
+                case BorderBottomLeftRadius:
+                case BorderBottomRightRadius:
+                case BorderRadius:
+                case Background:
+                case BackgroundOrigin:
+                case BackgroundClip:
+                case BackgroundRepeat:
+                case BackgroundPosition:
+                case BackgroundAttachment:
+                case BackgroundImage:
+                case BorderImage:
+                case QtSpacing:
+                case Width:
+                case Height:
+                case MinimumWidth:
+                case MinimumHeight:
+                case MaximumWidth:
+                case MaximumHeight:
+                case QtImage:
+                case Left:
+                case Right:
+                case Top:
+                case Bottom:
+                case QtOrigin:
+                case QtPosition:
+                case Position:
+                case QtStyleFeatures:
+                case QtBackgroundRole:
+                case ListStyleType:
+                case ListStyle:
+                case QtImageAlignment:
+                case TextAlignment:
+                case Outline:
+                case OutlineOffset:
+                case OutlineWidth:
+                case OutlineColor:
+                case OutlineStyle:
+                case OutlineRadius:
+                case OutlineTopLeftRadius:
+                case OutlineTopRightRadius:
+                case OutlineBottomLeftRadius:
+                case OutlineBottomRightRadius:
+                case QtListNumberPrefix:
+                case QtListNumberSuffix:
+                case LineHeight:
+                case NumProperties:
+
 				default: continue;
 			}
 
@@ -1701,6 +2358,107 @@ bool ValueExtractor::extractPalette(QBrush* fg, QBrush* sfg, QBrush* sbg, QBrush
 				case QtSelectionBackground: *sbg = decl.brushValue(pal); break;
 
 				case QtAlternateBackground: *abg = decl.brushValue(pal); break;
+
+                case UnknownProperty:
+                case BackgroundColor:
+                case Float:
+                case Font:
+                case FontFamily:
+                case FontSize:
+                case FontStyle:
+                case FontWeight:
+                case Margin:
+                case MarginBottom:
+                case MarginLeft:
+                case MarginRight:
+                case MarginTop:
+                case QtBlockIndent:
+                case QtListIndent:
+                case QtParagraphType:
+                case QtTableType:
+                case QtUserState:
+                case TextDecoration:
+                case TextIndent:
+                case TextUnderlineStyle:
+                case VerticalAlignment:
+                case Whitespace:
+                case Border:
+                case BorderLeft:
+                case BorderRight:
+                case BorderTop:
+                case BorderBottom:
+                case Padding:
+                case PaddingLeft:
+                case PaddingRight:
+                case PaddingTop:
+                case PaddingBottom:
+                case PageBreakBefore:
+                case PageBreakAfter:
+                case BorderLeftStyle:
+                case BorderRightStyle:
+                case BorderTopStyle:
+                case BorderBottomStyle:
+                case BorderStyles:
+                case BorderLeftColor:
+                case BorderRightColor:
+                case BorderTopColor:
+                case BorderBottomColor:
+                case BorderColor:
+                case BorderLeftWidth:
+                case BorderRightWidth:
+                case BorderTopWidth:
+                case BorderBottomWidth:
+                case BorderWidth:
+                case BorderTopLeftRadius:
+                case BorderTopRightRadius:
+                case BorderBottomLeftRadius:
+                case BorderBottomRightRadius:
+                case BorderRadius:
+                case Background:
+                case BackgroundOrigin:
+                case BackgroundClip:
+                case BackgroundRepeat:
+                case BackgroundPosition:
+                case BackgroundAttachment:
+                case BackgroundImage:
+                case BorderImage:
+                case QtSpacing:
+                case Width:
+                case Height:
+                case MinimumWidth:
+                case MinimumHeight:
+                case MaximumWidth:
+                case MaximumHeight:
+                case QtImage:
+                case Left:
+                case Right:
+                case Top:
+                case Bottom:
+                case QtOrigin:
+                case QtPosition:
+                case Position:
+                case QtStyleFeatures:
+                case QtBackgroundRole:
+                case ListStyleType:
+                case ListStyle:
+                case QtImageAlignment:
+                case TextAlignment:
+                case Outline:
+                case OutlineOffset:
+                case OutlineWidth:
+                case OutlineColor:
+                case OutlineStyle:
+                case OutlineRadius:
+                case OutlineTopLeftRadius:
+                case OutlineTopRightRadius:
+                case OutlineBottomLeftRadius:
+                case OutlineBottomRightRadius:
+                case FontVariant:
+                case TextTransform:
+                case QtListNumberPrefix:
+                case QtListNumberSuffix:
+                case LineHeight:
+                case NumProperties:
 
 				default: continue;
 			}
@@ -1752,6 +2510,109 @@ bool ValueExtractor::extractImage(QIcon* icon, Qt::Alignment* a, QSize* size)
 					break;
 
 				case QtImageAlignment: *a = decl.alignmentValue();  break;
+
+                case UnknownProperty:
+                case BackgroundColor:
+                case Color:
+                case Float:
+                case Font:
+                case FontFamily:
+                case FontSize:
+                case FontStyle:
+                case FontWeight:
+                case Margin:
+                case MarginBottom:
+                case MarginLeft:
+                case MarginRight:
+                case MarginTop:
+                case QtBlockIndent:
+                case QtListIndent:
+                case QtParagraphType:
+                case QtTableType:
+                case QtUserState:
+                case TextDecoration:
+                case TextIndent:
+                case TextUnderlineStyle:
+                case VerticalAlignment:
+                case Whitespace:
+                case QtSelectionForeground:
+                case QtSelectionBackground:
+                case Border:
+                case BorderLeft:
+                case BorderRight:
+                case BorderTop:
+                case BorderBottom:
+                case Padding:
+                case PaddingLeft:
+                case PaddingRight:
+                case PaddingTop:
+                case PaddingBottom:
+                case PageBreakBefore:
+                case PageBreakAfter:
+                case QtAlternateBackground:
+                case BorderLeftStyle:
+                case BorderRightStyle:
+                case BorderTopStyle:
+                case BorderBottomStyle:
+                case BorderStyles:
+                case BorderLeftColor:
+                case BorderRightColor:
+                case BorderTopColor:
+                case BorderBottomColor:
+                case BorderColor:
+                case BorderLeftWidth:
+                case BorderRightWidth:
+                case BorderTopWidth:
+                case BorderBottomWidth:
+                case BorderWidth:
+                case BorderTopLeftRadius:
+                case BorderTopRightRadius:
+                case BorderBottomLeftRadius:
+                case BorderBottomRightRadius:
+                case BorderRadius:
+                case Background:
+                case BackgroundOrigin:
+                case BackgroundClip:
+                case BackgroundRepeat:
+                case BackgroundPosition:
+                case BackgroundAttachment:
+                case BackgroundImage:
+                case BorderImage:
+                case QtSpacing:
+                case Width:
+                case Height:
+                case MinimumWidth:
+                case MinimumHeight:
+                case MaximumWidth:
+                case MaximumHeight:
+                case Left:
+                case Right:
+                case Top:
+                case Bottom:
+                case QtOrigin:
+                case QtPosition:
+                case Position:
+                case QtStyleFeatures:
+                case QtBackgroundRole:
+                case ListStyleType:
+                case ListStyle:
+                case TextAlignment:
+                case Outline:
+                case OutlineOffset:
+                case OutlineWidth:
+                case OutlineColor:
+                case OutlineStyle:
+                case OutlineRadius:
+                case OutlineTopLeftRadius:
+                case OutlineTopRightRadius:
+                case OutlineBottomLeftRadius:
+                case OutlineBottomRightRadius:
+                case FontVariant:
+                case TextTransform:
+                case QtListNumberPrefix:
+                case QtListNumberSuffix:
+                case LineHeight:
+                case NumProperties:
 
 				default: continue;
 			}
@@ -2197,12 +3058,12 @@ void Declaration::borderImageValue(QString* image, int* cuts,
 
 			for (i = 0; i < qMin(d->values.count() - 1, 4); i++)
 			{
-				const Value& v = d->values.at(i + 1);
+                const Value& vv = d->values.at(i + 1);
 
-				if (v.type != Value::Number)
+                if (vv.type != Value::Number)
 					break;
 
-				cuts[i] = v.variant.toString().toInt();
+                cuts[i] = vv.variant.toString().toInt();
 			}
 
 			if (i == 0) cuts[0] = cuts[1] = cuts[2] = cuts[3] = 0;
@@ -2971,6 +3832,38 @@ bool Parser::parseNextOperator(Value* value)
 
 			case COMMA: value->type = Value::TermOperatorComma; skipSpace(); break;
 
+            case NONE:
+            case S:
+            case CDO:
+            case CDC:
+            case INCLUDES:
+            case DASHMATCH:
+            case LBRACE:
+            case PLUS:
+            case GREATER:
+            case STRING:
+            case INVALID:
+            case IDENT:
+            case HASH:
+            case ATKEYWORD_SYM:
+            case EXCLAMATION_SYM:
+            case LENGTH:
+            case PERCENTAGE:
+            case NUMBER:
+            case FUNCTION:
+            case COLON:
+            case SEMICOLON:
+            case RBRACE:
+            case MINUS:
+            case DOT:
+            case STAR:
+            case LBRACKET:
+            case RBRACKET:
+            case EQUAL:
+            case LPAREN:
+            case RPAREN:
+            case OR:
+
 			default: prev(); break;
 		}
 	}
@@ -3034,11 +3927,11 @@ bool Parser::parseRuleset(StyleRule* styleRule)
 		while (test(COMMA))
 		{
 			skipSpace();
-			Selector sel;
+            Selector sel2;
 
-			if (!parseNextSelector(&sel)) return false;
+            if (!parseNextSelector(&sel2)) return false;
 
-			styleRule->selectors.append(sel);
+            styleRule->selectors.append(sel2);
 		}
 
 		skipSpace();
@@ -3201,6 +4094,38 @@ bool Parser::parseElementName(QString* name)
 
 			case IDENT: *name = lexem(); break;
 
+            case NONE:
+            case S:
+            case CDO:
+            case CDC:
+            case INCLUDES:
+            case DASHMATCH:
+            case LBRACE:
+            case PLUS:
+            case GREATER:
+            case COMMA:
+            case STRING:
+            case INVALID:
+            case HASH:
+            case ATKEYWORD_SYM:
+            case EXCLAMATION_SYM:
+            case LENGTH:
+            case PERCENTAGE:
+            case NUMBER:
+            case FUNCTION:
+            case COLON:
+            case SEMICOLON:
+            case RBRACE:
+            case SLASH:
+            case MINUS:
+            case DOT:
+            case LBRACKET:
+            case RBRACKET:
+            case EQUAL:
+            case LPAREN:
+            case RPAREN:
+            case OR:
+
 			default: return false;
 		}
 	}
@@ -3332,15 +4257,15 @@ bool Parser::parsePrio(Declaration* declaration)
 	return true;
 }
 
-bool Parser::parseExpr(QVector<Value>* values)
+bool Parser::parseExpr(QVector<Value>* vals)
 {
 	Value val;
 
 	if (!parseTerm(&val)) return false;
 
-	if (values != nullptr)
+    if (vals != nullptr)
 	{
-		values->append(val);
+        vals->append(val);
 		bool onceMore;
 
 		do
@@ -3351,7 +4276,7 @@ bool Parser::parseExpr(QVector<Value>* values)
 			if (!parseNextOperator(&val)) return false;
 
 			if (val.type != QCss::Value::Unknown)
-				values->append(val);
+                vals->append(val);
 
 			if (testTerm())
 			{
@@ -3360,7 +4285,7 @@ bool Parser::parseExpr(QVector<Value>* values)
 
 				if (!parseTerm(&val)) return false;
 
-				values->append(val);
+                vals->append(val);
 			}
 		}
 		while (onceMore);
@@ -3442,6 +4367,35 @@ bool Parser::parseTerm(Value* value)
 
 				break;
 			}
+
+            case NONE:
+            case S:
+            case CDO:
+            case CDC:
+            case INCLUDES:
+            case DASHMATCH:
+            case LBRACE:
+            case PLUS:
+            case GREATER:
+            case COMMA:
+            case INVALID:
+            case HASH:
+            case ATKEYWORD_SYM:
+            case EXCLAMATION_SYM:
+            case FUNCTION:
+            case COLON:
+            case SEMICOLON:
+            case RBRACE:
+            case SLASH:
+            case MINUS:
+            case DOT:
+            case STAR:
+            case LBRACKET:
+            case RBRACKET:
+            case EQUAL:
+            case LPAREN:
+            case RPAREN:
+            case OR:
 
 			default:
 			{
@@ -3639,6 +4593,36 @@ bool Parser::until(QCss::TokenType target, QCss::TokenType target2) noexcept
 			case FUNCTION:
 			case LPAREN: ++parenCount; break;
 
+            case NONE:
+            case S:
+            case CDO:
+            case CDC:
+            case INCLUDES:
+            case DASHMATCH:
+            case PLUS:
+            case GREATER:
+            case COMMA:
+            case STRING:
+            case INVALID:
+            case IDENT:
+            case HASH:
+            case ATKEYWORD_SYM:
+            case EXCLAMATION_SYM:
+            case LENGTH:
+            case PERCENTAGE:
+            case NUMBER:
+            case COLON:
+            case SEMICOLON:
+            case RBRACE:
+            case SLASH:
+            case MINUS:
+            case DOT:
+            case STAR:
+            case RBRACKET:
+            case EQUAL:
+            case RPAREN:
+            case OR:
+
 			default: ;
 		}
 	}
@@ -3661,6 +4645,33 @@ bool Parser::until(QCss::TokenType target, QCss::TokenType target2) noexcept
 			case LPAREN: ++parenCount; break;
 
 			case RPAREN: --parenCount; break;
+
+            case NONE:
+            case S:
+            case CDO:
+            case CDC:
+            case INCLUDES:
+            case DASHMATCH:
+            case PLUS:
+            case GREATER:
+            case COMMA:
+            case STRING:
+            case INVALID:
+            case IDENT:
+            case HASH:
+            case ATKEYWORD_SYM:
+            case EXCLAMATION_SYM:
+            case LENGTH:
+            case PERCENTAGE:
+            case NUMBER:
+            case COLON:
+            case SEMICOLON:
+            case SLASH:
+            case MINUS:
+            case DOT:
+            case STAR:
+            case EQUAL:
+            case OR:
 
 			default: break;
 		}

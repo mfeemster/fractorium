@@ -62,8 +62,8 @@ public:
 	/// <param name="palettePath">The full path and filename of the palette file</param>
 	/// <param name="renderer">A pre-constructed renderer to use. The caller should not delete this.</param>
 	SheepTools(const string& palettePath, Renderer<T, bucketT>* renderer)
-		: m_VariationList(VariationList<T>::Instance()),
-		  m_PaletteList(PaletteList<float>::Instance())
+        : m_PaletteList(PaletteList<float>::Instance()),
+          m_VariationList(VariationList<T>::Instance())
 	{
 		Timing t;
 		m_PaletteList->Add(palettePath);
@@ -599,7 +599,8 @@ public:
 	{
 		bool postid, addfinal = false;
 		int var, samed, multid, samepost;
-		glm::length_t i, j, k, n;
+        size_t i, n;
+        glm::length_t k;
 		size_t varCount = m_VariationList->Size();
 		static size_t xformDistrib[] =
 		{
@@ -669,7 +670,7 @@ public:
 			{
 				if (!postid)
 				{
-					for (j = 0; j < 2; j++)
+                    for (glm::length_t j = 0; j < 2; j++)
 					{
 						for (k = 0; k < 3; k++)
 						{
@@ -698,7 +699,7 @@ public:
 						//Copy the same variations from the previous xform.
 						auto prevXform = ember.GetXform(i - 1);
 
-						for (j = 0; j < prevXform->TotalVariationCount(); j++)
+                        for (size_t j = 0; j < prevXform->TotalVariationCount(); j++)
 							if (xform->TotalVariationCount() < maxVars)
 								xform->AddVariation(prevXform->GetVariation(j)->Copy());
 					}
@@ -715,7 +716,7 @@ public:
 						//Randomly choose n variations, and change their weights.
 						//A var can be selected more than once, further reducing
 						//the probability that multiple vars are used.
-						for (j = 0; j < n; j++)
+                        for (size_t j = 0; j < n; j++)
 						{
 							if (xform->TotalVariationCount() < maxVars)
 							{
@@ -753,7 +754,7 @@ public:
 				//Randomly choose n variations, and change their weights.
 				//A var can be selected more than once, further reducing
 				//the probability that multiple vars are used.
-				for (j = 0; j < n; j++)
+                for (size_t j = 0; j < n; j++)
 				{
 					if (xform->TotalVariationCount() < maxVars)
 					{
@@ -774,7 +775,7 @@ public:
 			}
 
 			//Randomize parametric variations.
-			for (j = 0; j < xform->TotalVariationCount(); j++)
+            for (size_t j = 0; j < xform->TotalVariationCount(); j++)
 				xform->GetVariation(j)->Random(m_Rand);
 		}
 
@@ -903,8 +904,8 @@ public:
 			ember.GetTotalXform(i)->m_ColorY = m_Rand.Frand01<T>();
 		}
 
-		const auto xform0 = RandomXform(ember, -1);
-		const auto xform1 = RandomXform(ember, ember.GetXformIndex(xform0));
+        const auto xform0 = RandomXform(ember, nullptr);
+        const auto xform1 = RandomXform(ember, xform0);
 
 		if (xform0 && (m_Rand.RandBit()))
 		{
@@ -924,22 +925,24 @@ public:
 	/// Give up after 100 tries.
 	/// </summary>
 	/// <param name="ember">The ember to get a random xform from</param>
-	/// <param name="excluded">Optionally exclude an xform. Pass -1 to include all for consideration.</param>
+    /// <param name="excluded">Optionally exclude an xform. Pass null to include all for consideration.</param>
 	/// <returns>The random xform if successful, else nullptr.</returns>
-	Xform<T>* RandomXform(Ember<T>& ember, intmax_t excluded)
+    Xform<T>* RandomXform(Ember<T>& ember, Xform<T>* excluded)
 	{
 		size_t ntries = 0;
 
 		while (ntries++ < 100)
 		{
-			size_t i = m_Rand.Rand(ember.TotalXformCount());
+            auto i = m_Rand.Rand(ember.TotalXformCount());
 
-			if (i != excluded)
-			{
-				if (const auto xform = ember.GetTotalXform(i))
-					if (xform->m_Weight > 0)
-						return xform;
-			}
+            if (const auto xform = ember.GetTotalXform(i))
+            {
+                if (xform != nullptr && xform != excluded)
+                {
+                    if (xform->m_Weight > 0)
+                        return xform;
+                }
+            }
 		}
 
 		return nullptr;

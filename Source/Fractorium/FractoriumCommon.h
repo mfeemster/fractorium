@@ -161,11 +161,10 @@ static intmax_t IsXformLinked(Ember<T>& ember, Xform<T>* xform)
 	size_t toOneIndex = 0;
 	size_t fromOneCount = 0;
 	size_t fromZeroCount = 0;
-	size_t fromOneIndex = 0;
 
 	if (index >= 0)
 	{
-		for (auto i = 0; i < count; i++)
+		for (size_t i = 0; i < count; i++)
 		{
 			if (xform->Xaos(i) == 0)
 				toZeroCount++;
@@ -178,24 +177,19 @@ static intmax_t IsXformLinked(Ember<T>& ember, Xform<T>* xform)
 
 		if ((toZeroCount == (count - 1)) && toOneCount == 1)
 		{
-			for (auto i = 0; i < count; i++)
+			for (size_t i = 0; i < count; i++)
 			{
 				if (auto fromXform = ember.GetXform(i))
 				{
 					if (fromXform->Xaos(toOneIndex) == 0)
 						fromZeroCount++;
 					else if (fromXform->Xaos(toOneIndex) == 1)
-					{
-						fromOneIndex = i;
 						fromOneCount++;
-					}
 				}
 			}
 
 			if ((fromZeroCount == (count - 1)) && fromOneCount == 1)
-			{
 				linked = toOneIndex;
-			}
 		}
 	}
 
@@ -240,7 +234,7 @@ static void SetupDeviceTable(QTableWidget* table, const QList<QVariant>& setting
 	table->clearContents();
 	table->setRowCount(static_cast<int>(deviceNames.size()));
 
-	for (int i = 0; i < deviceNames.size(); i++)
+	for (int i = 0; i < (int)deviceNames.size(); i++)
 	{
 		const auto checkItem = new QTableWidgetItem();
 		const auto radio = new QRadioButton();
@@ -347,7 +341,6 @@ static QList<QVariant> DeviceTableToSettings(QTableWidget* table)
 static void HandleDeviceTableCheckChanged(QTableWidget* table, int row, int col)
 {
 	auto primaryRow = -1;
-	QRadioButton* primaryRadio = nullptr;
 
 	for (auto i = 0; i < table->rowCount(); i++)
 	{
@@ -356,13 +349,13 @@ static void HandleDeviceTableCheckChanged(QTableWidget* table, int row, int col)
 			if (radio->isChecked())
 			{
 				primaryRow = i;
-				primaryRadio = radio;
 				break;
 			}
 		}
 	}
 
-	if (primaryRow == -1) primaryRow = 0;
+	if (primaryRow == -1)
+		primaryRow = 0;
 
 	if (const auto primaryItem = table->item(primaryRow, 0))
 		if (primaryItem->checkState() == Qt::Unchecked)
@@ -419,7 +412,7 @@ static bool FillPaletteTable(const string& s, QTableWidget* paletteTable, shared
 			paletteTable->setHorizontalHeaderItem(1, paletteHeader.release());
 
 			//Palette list table.
-			for (auto i = 0; i < palettes->size(); i++)
+			for (auto i = 0; i < (int)palettes->size(); i++)
 				if (const auto palette = &(*palettes)[i])
 					AddPaletteToTable(paletteTable, palette, i);
 

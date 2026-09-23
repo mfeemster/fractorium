@@ -1003,7 +1003,7 @@ bool RendererCL<T, bucketT>::BuildIterProgramForEmber(bool doAccum)
 		};
 		threads.reserve(m_Devices.size() - 1);
 
-		for (size_t device = m_Devices.size() - 1; device >= 0 && device < m_Devices.size(); device--)//Check both extents because size_t will wrap.
+        for (size_t device = m_Devices.size() - 1; device < m_Devices.size(); device--)//size_t will wrap after 0 is reached and evaluate to false.
 		{
 			if (!device)//Secondary devices on their own threads.
 				threads.push_back(std::thread([&](RendererClDevice * dev) { func(dev); }, m_Devices[device].get()));
@@ -1186,7 +1186,7 @@ bool RendererCL<T, bucketT>::RunIter(size_t iterCount, size_t temporalSample, si
 	};
 
 	//Iterate backward to run all secondary devices on threads first, then finally the primary device on this thread.
-	for (size_t device = m_Devices.size() - 1; device >= 0 && device < m_Devices.size(); device--)//Check both extents because size_t will wrap.
+    for (size_t device = m_Devices.size() - 1; device < m_Devices.size(); device--)
 	{
 		int index = m_Devices[device]->m_Wrapper.FindKernelIndex(m_IterOpenCLKernelCreator.IterEntryPoint());
 
@@ -1698,7 +1698,7 @@ bool RendererCL<T, bucketT>::CreateHostBuffer()
 	const auto size = SuperSize() * sizeof(v4bT);//Size of histogram and density filter buffer.
 	static std::string loc = __FUNCTION__;
 
-	if (b = Renderer<T, bucketT>::Alloc(true))//Allocate the histogram memory to point this HOST_PTR buffer to, other buffers not needed.
+    if ((b = Renderer<T, bucketT>::Alloc(true)))//Allocate the histogram memory to point this HOST_PTR buffer to, other buffers not needed.
 	{
 		if (b && !(b = m_Devices[0]->m_Wrapper.AddHostBuffer(m_HostBufferName, size, reinterpret_cast<void*>(HistBuckets()))))//Host side histogram for temporary use with multiple devices.
 			ErrorStr(loc, "Creating OpenCL HOST_PTR buffer to point to host side histogram failed", m_Devices[0].get());

@@ -9,8 +9,8 @@
 /// <param name="p">The parent widget</param>
 PaletteEditor::PaletteEditor(QWidget* p) :
 	QDialog(p),
-	ui(make_unique<Ui::PaletteEditor>()),
-	m_PaletteList(PaletteList<float>::Instance())
+    m_PaletteList(PaletteList<float>::Instance()),
+    ui(make_unique<Ui::PaletteEditor>())
 {
 	ui->setupUi(this);
 	m_ColorPicker = new ColorPickerWidget(this);

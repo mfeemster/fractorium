@@ -498,7 +498,7 @@ void FractoriumEmberController<T>::XformNameChanged(const QString& s)
 	UpdateXform([&] (Xform<T>* xform, size_t xfindex, size_t selIndex)
 	{
 		xform->m_Name = s.toStdString();
-		XformCheckboxAt(static_cast<int>(xfindex), [&](QCheckBox * checkbox) { checkbox->setText(MakeXformCaption(xfindex)); });
+        XformCheckboxAt(xfindex, [&](QCheckBox * checkbox) { checkbox->setText(MakeXformCaption(xfindex)); });
 	}, eXformUpdate::UPDATE_CURRENT, false);
 	FillSummary();//Manually update because this does not trigger a render, which is where this would normally be called.
 	m_Fractorium->FillXaosTable();
@@ -533,35 +533,45 @@ void FractoriumEmberController<T>::XformAnimateChangedHelper(int state, bool loc
 			{
 				if (ember.UseFinalXform())
 				{
-					auto xform = ember.NonConstFinalXform();
+                    auto finalxf = ember.NonConstFinalXform();
 
 					if (local)
-						xform->m_Animate = animate;
+                        finalxf->m_Animate = animate;
 					else
-						xform->m_AnimateOrigin = animate;
+                        finalxf->m_AnimateOrigin = animate;
 				}
 
 				if (!m_Fractorium->ApplyAll())
+                {
 					if (m_EmberFilePointer && m_EmberFilePointer->UseFinalXform())
+                    {
 						if (local)
 							m_EmberFilePointer->NonConstFinalXform()->m_Animate = animate;
 						else
 							m_EmberFilePointer->NonConstFinalXform()->m_AnimateOrigin = animate;
+                    }
+                }
 			}
 			else//Current was not final, so apply to other embers which have a non-final xform at this index.
 			{
-				if (auto xform = ember.GetXform(xfindex))
+                if (auto xf = ember.GetXform(xfindex))
+                {
 					if (local)
-						xform->m_Animate = animate;
+                        xf->m_Animate = animate;
 					else
-						xform->m_AnimateOrigin = animate;
+                        xf->m_AnimateOrigin = animate;
+                }
 
 				if (!m_Fractorium->ApplyAll() && m_EmberFilePointer)
-					if (auto xform = m_EmberFilePointer->GetXform(xfindex))
+                {
+                    if (auto xf = m_EmberFilePointer->GetXform(xfindex))
+                    {
 						if (local)
-							xform->m_Animate = animate;
+                            xf->m_Animate = animate;
 						else
-							xform->m_AnimateOrigin = animate;
+                            xf->m_AnimateOrigin = animate;
+                    }
+                }
 			}
 		}, false, eProcessAction::NOTHING, m_Fractorium->ApplyAll());
 	}, eXformUpdate::UPDATE_SELECTED, false);

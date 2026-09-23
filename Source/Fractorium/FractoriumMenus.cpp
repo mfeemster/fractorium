@@ -712,7 +712,7 @@ void FractoriumEmberController<T>::PasteXmlAppend()
 
 	if (!embers.empty())
 	{
-		for (auto i = 0; i < embers.size(); i++)
+        for (size_t i = 0; i < embers.size(); i++)
 		{
 			embers[i].m_Index = m_EmberFile.Size();
 			ConstrainDimensions(embers[i]);//Do not exceed the max texture size.
@@ -742,7 +742,6 @@ void Fractorium::OnActionPasteXmlAppend(bool checked) { m_Controller->PasteXmlAp
 template <typename T>
 void FractoriumEmberController<T>::PasteXmlOver()
 {
-	size_t i = 0;
 	string s, errors;
 	XmlToEmber<T> parser;
 	list<Ember<T>> embers;
@@ -752,10 +751,10 @@ void FractoriumEmberController<T>::PasteXmlOver()
 	//auto b = codec->fromUnicode(QApplication::clipboard()->text());
 	s.reserve(b.size());
 
-	for (auto i = 0; i < b.size(); i++)
+    for (qsizetype i = 0; i < b.size(); i++)
 	{
-		if (uint(b[i]) < 128u)
-			s.push_back(b[i]);
+        if (uint(b[i]) < 128u)
+            s.push_back(b[i]);
 	}
 
 	b.clear();
@@ -771,6 +770,7 @@ void FractoriumEmberController<T>::PasteXmlOver()
 	if (embers.size())
 	{
 		m_EmberFile.m_Embers = std::move(embers);//Will invalidate the pointers contained in the EmberTreeWidgetItems, UpdateLibraryTree() will resync.
+        size_t i = 0;
 
 		for (auto it : m_EmberFile.m_Embers)
 		{

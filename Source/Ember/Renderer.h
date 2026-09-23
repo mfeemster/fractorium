@@ -84,20 +84,20 @@ protected:
 
 public:
 	//Non-virtual render properties, getters and setters.
-	inline T PixelAspectRatio() const;
+    T PixelAspectRatio() const;
 	void PixelAspectRatio(T pixelAspectRatio);
 
 	//Non-virtual renderer properties, getters only.
-	inline T                              Scale()               const;
-	inline T                              PixelsPerUnitX()      const;
-	inline T                              PixelsPerUnitY()      const;
-	inline bucketT                        K1()                  const;
-	inline bucketT                        K2()                  const;
-	inline const CarToRas<T>&             CoordMap()            const;
-	inline tvec4<bucketT, glm::defaultp>* HistBuckets();
-	inline tvec4<bucketT, glm::defaultp>* AccumulatorBuckets();
-	inline SpatialFilter<bucketT>*        GetSpatialFilter();
-	inline TemporalFilter<T>*             GetTemporalFilter();
+    T                              Scale()          const;
+    T                              PixelsPerUnitX() const;
+    T                              PixelsPerUnitY() const;
+    bucketT                        K1()             const;
+    bucketT                        K2()             const;
+    const CarToRas<T>&             CoordMap()       const;
+    tvec4<bucketT, glm::defaultp>* HistBuckets();
+    tvec4<bucketT, glm::defaultp>* AccumulatorBuckets();
+    SpatialFilter<bucketT>*        GetSpatialFilter();
+    TemporalFilter<T>*             GetTemporalFilter();
 
 	//Virtual renderer properties overridden from RendererBase, getters only.
 	double ScaledQuality()				   const override;
@@ -108,31 +108,31 @@ public:
 	DensityFilterBase* GetDensityFilter()        override;
 
 	//Non-virtual ember wrappers, getters only.
-	inline bool                  XaosPresent()		   const;
-	inline size_t			     Supersample()         const;
-	inline size_t			     PaletteIndex()        const;
-	inline T                     Time()                const;
-	inline T                     Quality()             const;
-	inline T                     SpatialFilterRadius() const;
-	inline T                     PixelsPerUnit()       const;
-	inline T                     Zoom()                const;
-	inline T                     CenterX()             const;
-	inline T                     CenterY()             const;
-	inline T                     Rotate()              const;
-	inline bucketT               Brightness()          const;
-	inline bucketT               Gamma()               const;
-	inline bucketT               Vibrancy()            const;
-	inline bucketT               GammaThresh()         const;
-	inline bucketT               HighlightPower()      const;
-	inline Color<T>			     Background()          const;
-	inline const Xform<T>*       Xforms()              const;
-	inline Xform<T>*             NonConstXforms();
-	inline size_t			     XformCount()          const;
-	inline const Xform<T>*       FinalXform()          const;
-	inline Xform<T>*             NonConstFinalXform();
-	inline bool                  UseFinalXform()       const;
-	inline const Palette<float>* GetPalette()          const;
-	inline ePaletteMode          PaletteMode()         const;
+    bool                  XaosPresent()		    const;
+    size_t			      Supersample()         const;
+    size_t			      PaletteIndex()        const;
+    T                     Time()                const;
+    T                     Quality()             const;
+    T                     SpatialFilterRadius() const;
+    T                     PixelsPerUnit()       const;
+    T                     Zoom()                const;
+    T                     CenterX()             const;
+    T                     CenterY()             const;
+    T                     Rotate()              const;
+    bucketT               Brightness()          const;
+    bucketT               Gamma()               const;
+    bucketT               Vibrancy()            const;
+    bucketT               GammaThresh()         const;
+    bucketT               HighlightPower()      const;
+    Color<T>			  Background()          const;
+    const Xform<T>*       Xforms()              const;
+    Xform<T>*             NonConstXforms();
+    size_t			      XformCount()          const;
+    const Xform<T>*       FinalXform()          const;
+    Xform<T>*             NonConstFinalXform();
+    bool                  UseFinalXform()       const;
+    const Palette<float>* GetPalette()          const;
+    ePaletteMode          PaletteMode()         const;
 
 	//Virtual ember wrappers overridden from RendererBase, getters only.
 	size_t TemporalSamples() const override;

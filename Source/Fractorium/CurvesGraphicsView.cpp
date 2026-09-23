@@ -36,7 +36,7 @@ CurvesGraphicsView::CurvesGraphicsView(QWidget* parent)
 /// <param name="point">The position of the point. X,Y will each be within 0-1.</param>
 void CurvesGraphicsView::PointChanged(int curveIndex, int pointIndex, const QPointF& point)
 {
-	if (curveIndex == m_Index)
+    if ((size_t)curveIndex == m_Index)
 	{
 		const auto x = point.x() / width();
 		const auto y = (height() - point.y()) / height();
@@ -52,7 +52,7 @@ void CurvesGraphicsView::PointChanged(int curveIndex, int pointIndex, const QPoi
 /// <returns>The position of the point. X,Y will each be within 0-1.</returns>
 QPointF CurvesGraphicsView::Get(int curveIndex, int pointIndex)
 {
-	if (curveIndex < 4 && pointIndex < m_Points[curveIndex].size())
+    if (curveIndex < 4 && (size_t)pointIndex < m_Points[curveIndex].size())
 	{
 		if (EllipseItem* item = m_Points[curveIndex][pointIndex])
 			return QPointF(item->pos().x() / width(), (height() - item->pos().y()) / height());
@@ -69,7 +69,7 @@ QPointF CurvesGraphicsView::Get(int curveIndex, int pointIndex)
 /// <param name="point">The position to set the point to. X,Y will each be within 0-1.</param>
 void CurvesGraphicsView::Set(int curveIndex, int pointIndex, const QPointF& point)
 {
-	if (curveIndex < 4 && pointIndex < m_Points[curveIndex].size())
+    if (curveIndex < 4 && (size_t)pointIndex < m_Points[curveIndex].size())
 	{
 		m_Points[curveIndex][pointIndex]->setPos(point.x() * width(), (1.0 - point.y()) * height());//Scale to scene dimensions, Y axis is flipped.
 	}
@@ -91,7 +91,7 @@ void CurvesGraphicsView::Set(Curves<float>& curves)
 		items.clear();
 		m_Points[index].clear();
 
-		for (int i = 0; i < curves.m_Points[index].size(); i++)
+        for (int i = 0; i < (int)curves.m_Points[index].size(); i++)
 		{
 			auto item = new EllipseItem(QRectF(-5, -5, 10, 10), index, i, this);
 			items.push_back(item);
@@ -223,15 +223,15 @@ void CurvesGraphicsView::mousePressEvent(QMouseEvent* e)
 		return;
 
 	const auto thresh = devicePixelRatioF() * 4;
-	auto findpoint = [&](int x, int y, double thresh) -> int
+    auto findpoint = [&](int x, int y, double threshParam) -> int
 	{
-		for (int i = 0; i < m_Points[m_Index].size(); i++)
+        for (size_t i = 0; i < m_Points[m_Index].size(); i++)
 		{
 			if (auto item = m_Points[m_Index][i])
 			{
 				const auto xdist = std::abs(item->pos().x() - x);
 				const auto ydist = std::abs(item->pos().y() - y);
-				const auto threshAgain = thresh;
+                const auto threshAgain = threshParam;
 
 				if (xdist < threshAgain && ydist < threshAgain)
 					return i;

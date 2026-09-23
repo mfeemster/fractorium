@@ -43,13 +43,13 @@ bool CaseInsensitiveLessThanQ(const QString& s1, const QString& s2)
 /// <param name="parent">The main Fractorium window.</param>
 QssDialog::QssDialog(Fractorium* parent) :
 	QDialog(parent),
-	ui(new Ui::QssDialog),
-	m_Parent(parent),
-	m_AddColorAction(new QAction(tr("Add Color"), this)),
-	m_AddGeomAction(new QAction(tr("Add Geometry"), this)),
-	m_AddBorderAction(new QAction(tr("Add Border"), this)),
-	m_AddFontAction(new QAction(tr("Add Font..."), this)),
-	m_AddStyleAction(new QAction(tr("Set Theme"), this))
+    m_AddColorAction(new QAction(tr("Add Color"), this)),
+    m_AddGeomAction(new QAction(tr("Add Geometry"), this)),
+    m_AddBorderAction(new QAction(tr("Add Border"), this)),
+    m_AddFontAction(new QAction(tr("Add Font..."), this)),
+    m_AddStyleAction(new QAction(tr("Set Theme"), this)),
+    m_Parent(parent),
+    ui(new Ui::QssDialog)
 {
 	ui->setupUi(this);
 	m_LastStyle = m_Parent->styleSheet();
@@ -225,14 +225,14 @@ QList<QString> QssDialog::GetClassNames(bool includeObjectNames)
 				dlgSet.insert(classAndName);//Add the basic dialog class name, opening curly brace will be added later.
 				classAndName += " ";
 
-				for (int i = 0; i < dlgWidgetList.size(); i++)
+                for (int j = 0; j < dlgWidgetList.size(); j++)
 				{
-					auto dlgClassAndName = classAndName + QString(dlgWidgetList[i]->metaObject()->className());
+                    auto dlgClassAndName = classAndName + QString(dlgWidgetList[j]->metaObject()->className());
 					dlgSet.insert(dlgClassAndName);
 
-					if (!dlgWidgetList[i]->objectName().isEmpty())//Add the class with object name for individual control customization.
+                    if (!dlgWidgetList[j]->objectName().isEmpty())//Add the class with object name for individual control customization.
 					{
-						dlgClassAndName += "#" + dlgWidgetList[i]->objectName();
+                        dlgClassAndName += "#" + dlgWidgetList[j]->objectName();
 						dlgSet.insert(dlgClassAndName);
 					}
 				}
@@ -439,6 +439,7 @@ void QssDialog::SlotAddFont()
 				fontStr += QStringLiteral("oblique ");
 				break;
 
+            case QFont::StyleNormal:
 			default:
 				break;
 		}

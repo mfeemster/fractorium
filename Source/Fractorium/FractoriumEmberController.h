@@ -124,7 +124,7 @@ public:
 	//Toolbar.
 
 	//Library.
-	virtual void SyncLibrary(eLibraryUpdate update) { }
+    virtual void SyncLibrary(uint update) { }
 	virtual void FillLibraryTree(int selectIndex = -1) { }
 	virtual void UpdateLibraryTree() { }
 	virtual void EmberTreeItemChanged(QTreeWidgetItem* item, int col) { }
@@ -434,7 +434,7 @@ public:
 	//Toolbar.
 
 	//Library.
-	void SyncLibrary(eLibraryUpdate update) override;
+    void SyncLibrary(uint update) override;
 	void FillLibraryTree(int selectIndex = -1) override;
 	void UpdateLibraryTree() override;
 	void MoveLibraryItems(const QModelIndexList& items, int destRow) override;
@@ -580,7 +580,7 @@ public:
 
 	//Xforms Selection.
 	virtual QString MakeXformCaption(size_t i) override;
-	bool XformCheckboxAt(int i, std::function<void(QCheckBox*)> func);
+    bool XformCheckboxAt(size_t i, std::function<void(QCheckBox*)> func);
 	bool XformCheckboxAt(Xform<T>* xform, std::function<void(QCheckBox*)> func);
 
 	//Palette.
@@ -742,10 +742,10 @@ public:
 	/// <param name="tree">A pointer to the tree to render to</param>
 	/// <param name="emberFile">A reference to the ember file to render</param>
 	TreePreviewRenderer(FractoriumEmberController<T>* controller, QTreeWidget* tree, EmberFile<T>& emberFile, QProgressBar* p) :
+        PreviewRenderer<T>(p),
 		m_Controller(controller),
 		m_Tree(tree),
-		m_EmberFile(emberFile),
-		PreviewRenderer<T>(p)
+        m_EmberFile(emberFile)
 	{
 		const auto f = m_Controller->m_Fractorium;
 		m_PreviewRenderer.Callback(nullptr);

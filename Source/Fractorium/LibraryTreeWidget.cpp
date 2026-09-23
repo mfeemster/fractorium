@@ -140,7 +140,7 @@ void InfoTreeWidget::dragMoveEvent(QDragMoveEvent* dme)
 							(par->text(0).startsWith("xform ", Qt::CaseInsensitive) ||
 							 par->text(0).startsWith("final", Qt::CaseInsensitive)))
 					{
-						if (auto vitemat = dynamic_cast<const VariationTreeWidgetItem*>(itemat))
+                        if (dynamic_cast<const VariationTreeWidgetItem*>(itemat) != nullptr)
 						{
 							bool const dopre = dragpre && droppre;
 							bool const dopost = dragpost && droppost;
@@ -189,9 +189,9 @@ void InfoTreeWidget::dropEvent(QDropEvent* de)
 			{
 				if (auto par = itemat->parent())
 				{
-					if (auto vdropitem = dynamic_cast<const VariationTreeWidgetItem*>(itemat))
+                    if (dynamic_cast<const VariationTreeWidgetItem*>(itemat) != nullptr)
 					{
-						if (auto vdragitem = dynamic_cast<const VariationTreeWidgetItem*>(drag0))
+                        if (dynamic_cast<const VariationTreeWidgetItem*>(drag0) != nullptr)
 						{
 							QTreeWidget::dropEvent(de);//This internally changes the order of the items.
 							m_Fractorium->ReorderVariations(par);

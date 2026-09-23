@@ -117,7 +117,7 @@ void Fractorium::ForEachXformCheckbox(std::function<void(int, QCheckBox*, bool)>
 /// <param name="func">The operation to perform</param>
 /// <returns>True if the checkbox was found, else false.</returns>
 template <typename T>
-bool FractoriumEmberController<T>::XformCheckboxAt(int i, std::function<void(QCheckBox*)> func)
+bool FractoriumEmberController<T>::XformCheckboxAt(size_t i, std::function<void(QCheckBox*)> func)
 {
 	if (i < m_Fractorium->m_XformSelections.size())
 	{

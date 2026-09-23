@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	/// <param name="id">The ID of the variation this widget will represent</param>
 	/// <param name="p">The parent widget</param>
-	VariationTreeWidgetItem(eVariationId id, QTreeWidgetItem* p = 0)
+    VariationTreeWidgetItem(eVariationId id, QTreeWidgetItem* p = nullptr)
 		: QTreeWidgetItem(p)
 	{
 		m_Id = id;

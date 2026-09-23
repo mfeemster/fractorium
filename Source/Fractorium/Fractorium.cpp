@@ -198,11 +198,11 @@ Fractorium::Fractorium(QWidget* p)
 		{
 			auto foundFusion = false;
 
-			for (auto& s : QStyleFactory::keys())
+            for (auto& key : QStyleFactory::keys())
 			{
-				if (s.compare("fusion", Qt::CaseInsensitive) == 0)//Default to fusion if it exists and the style has not been set yet.
+                if (key.compare("fusion", Qt::CaseInsensitive) == 0)//Default to fusion if it exists and the style has not been set yet.
 				{
-					m_Theme = QStyleFactory::create(s);
+                    m_Theme = QStyleFactory::create(key);
 					setStyle(m_Theme);
 					foundFusion = true;
 					break;
@@ -1189,7 +1189,7 @@ QString Fractorium::SetupSaveFolderDialog()
 /// <returns>True if created successfully, else false</returns>
 bool Fractorium::SetupFinalRenderDialog()
 {
-	if (m_FinalRenderDialog = std::make_unique<FractoriumFinalRenderDialog>(this))
+    if ((m_FinalRenderDialog = std::make_unique<FractoriumFinalRenderDialog>(this)))
 	{
 		connect(m_FinalRenderDialog.get(), SIGNAL(finished(int)), this, SLOT(OnFinalRenderClose(int)), Qt::QueuedConnection);
 		return true;
@@ -1262,7 +1262,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, m_StaggerSpin);
 	w = SetTabOrder(this, w, m_TemporalFilterWidthSpin);
 	w = SetTabOrder(this, w, m_TemporalFilterTypeCombo);
-	w = SetTabOrder(this, w, m_TemporalFilterExpSpin);
+    /*w = */SetTabOrder(this, w, m_TemporalFilterExpSpin);
 	w = SetTabOrder(this, ui.LibraryTree, ui.SequenceStartCountSpinBox);//Library.
 	w = SetTabOrder(this, w, ui.SequenceStartPreviewsButton);
 	w = SetTabOrder(this, w, ui.SequenceStopPreviewsButton);
@@ -1276,7 +1276,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.SequenceOpenButton);
 	w = SetTabOrder(this, w, ui.SequenceAnimateButton);
 	w = SetTabOrder(this, w, ui.SequenceClearButton);
-	w = SetTabOrder(this, w, ui.SequenceTree);
+    /*w = */SetTabOrder(this, w, ui.SequenceTree);
 	w = SetTabOrder(this, ui.CurrentXformCombo, ui.AddXformButton);//Xforms.
 	w = SetTabOrder(this, w, ui.AddLinkedXformButton);
 	w = SetTabOrder(this, w, ui.DuplicateXformButton);
@@ -1285,7 +1285,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.AddFinalXformButton);
 	w = SetTabOrder(this, w, m_XformWeightSpin);
 	w = SetTabOrder(this, w, m_XformWeightSpinnerButtonWidget->m_Button);
-	w = SetTabOrder(this, w, m_XformNameEdit);
+    /*w = */SetTabOrder(this, w, m_XformNameEdit);
 	w = SetTabOrder(this, m_XformColorIndexSpin, ui.XformColorScroll);//Xforms color.
 	w = SetTabOrder(this, w, ui.RandomColorIndicesButton);
 	w = SetTabOrder(this, w, ui.ToggleColorIndicesButton);
@@ -1347,14 +1347,14 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.PostRandomButton);
 	w = SetTabOrder(this, w, ui.PolarAffineCheckBox);
 	w = SetTabOrder(this, w, ui.LocalPivotRadio);
-	w = SetTabOrder(this, w, ui.WorldPivotRadio);
+    /*w = */SetTabOrder(this, w, ui.WorldPivotRadio);
 	w = SetTabOrder(this, ui.VariationsFilterLineEdit, ui.VariationsFilterClearButton);//Xforms variation.
 	w = SetTabOrder(this, w, ui.VariationsTree);
 	w = SetTabOrder(this, w, ui.ClearXaosButton);
 	w = SetTabOrder(this, w, ui.RandomXaosButton);
 	w = SetTabOrder(this, w, ui.AddLayerButton);
 	w = SetTabOrder(this, w, ui.AddLayerSpinBox);
-	w = SetTabOrder(this, w, ui.TransposeXaosButton);
+    /*w = */SetTabOrder(this, w, ui.TransposeXaosButton);
 	//Xforms xaos is done dynamically every time.
 	w = SetTabOrder(this, ui.PaletteFilenameCombo, m_PaletteHueSpin);//Palette.
 	w = SetTabOrder(this, w, m_PaletteContrastSpin);
@@ -1374,14 +1374,14 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.CurvesAllRadio);
 	w = SetTabOrder(this, w, ui.CurvesRedRadio);
 	w = SetTabOrder(this, w, ui.CurvesGreenRadio);
-	w = SetTabOrder(this, w, ui.CurvesBlueRadio);
-	w = SetTabOrder(this, ui.SummaryTable, ui.SummaryTree);//Info summary.
+    /*w = */SetTabOrder(this, w, ui.CurvesBlueRadio);
+    /*w = */SetTabOrder(this, ui.SummaryTable, ui.SummaryTree);//Info summary.
 	w = SetTabOrder(this, ui.InfoBoundsGroupBox, ui.InfoBoundsFrame);//Info bounds.
 	w = SetTabOrder(this, w, ui.InfoBoundsTable);
 	w = SetTabOrder(this, w, ui.InfoFileOpeningGroupBox);
 	w = SetTabOrder(this, w, ui.InfoFileOpeningTextEdit);
 	w = SetTabOrder(this, w, ui.InfoRenderingGroupBox);
-	w = SetTabOrder(this, w, ui.InfoRenderingTextEdit);
+    /*w = */SetTabOrder(this, w, ui.InfoRenderingTextEdit);
 }
 
 /// <summary>
@@ -1423,11 +1423,15 @@ void Fractorium::ToggleTableRow(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < cols; i++)
+        {
 			if (auto spinBox = qobject_cast<DoubleSpinBox*>(tableWidget->cellWidget(logicalIndex, i)))
+            {
 				if (ctrl)
 					spinBox->setValue(static_cast<double>(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()));
 				else
 					spinBox->setValue(val);
+            }
+        }
 	}
 	else
 	{
@@ -1446,10 +1450,12 @@ void Fractorium::ToggleTableRow(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < cols; i++)
+        {
 			if (ctrl)
 				model->setData(model->index(logicalIndex, i), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::EditRole);
 			else
 				model->setData(model->index(logicalIndex, i), val, Qt::EditRole);
+        }
 	}
 }
 
@@ -1492,11 +1498,15 @@ void Fractorium::ToggleTableCol(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < rows; i++)
+        {
 			if (auto spinBox = qobject_cast<DoubleSpinBox*>(tableWidget->cellWidget(i, logicalIndex)))
+            {
 				if (ctrl)
 					spinBox->setValue(static_cast<double>(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()));
 				else
 					spinBox->setValue(val);
+            }
+        }
 	}
 	else
 	{
@@ -1515,10 +1525,12 @@ void Fractorium::ToggleTableCol(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < rows; i++)
+        {
 			if (ctrl)
 				model->setData(model->index(i, logicalIndex), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::EditRole);
 			else
 				model->setData(model->index(i, logicalIndex), val, Qt::EditRole);
+        }
 	}
 }
 

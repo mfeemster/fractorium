@@ -178,7 +178,9 @@ public:
 	using PreviewRenderer<T>::m_PreviewRenderer;
 	using PreviewRenderer<T>::m_PreviewFinalImage;
 
-	FinalRenderPreviewRenderer(FinalRenderEmberController<T>* controller) : m_Controller(controller), PreviewRenderer<T>(nullptr)
+    FinalRenderPreviewRenderer(FinalRenderEmberController<T>* controller) :
+        PreviewRenderer<T>(nullptr),
+        m_Controller(controller)
 	{
 	}
 

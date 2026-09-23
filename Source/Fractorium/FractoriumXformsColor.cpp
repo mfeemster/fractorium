@@ -21,10 +21,10 @@ void Fractorium::InitXformsColorUI()
 	connect(ui.ToggleColorIndicesButton, SIGNAL(clicked(bool)),  this, SLOT(OnToggleColorIndicesButtonClicked(bool)), Qt::QueuedConnection);
 	connect(ui.RandomColorSpeedButton,   SIGNAL(clicked(bool)),  this, SLOT(OnRandomColorSpeedButtonClicked(bool)),   Qt::QueuedConnection);
 	connect(ui.ToggleColorSpeedsButton,   SIGNAL(clicked(bool)), this, SLOT(OnToggleColorSpeedsButtonClicked(bool)),  Qt::QueuedConnection);
-	SetupSpinner<DoubleSpinBox, double>(ui.XformColorIndexTable,  this, row, 1, m_XformColorIndexSpin,  spinHeight,  0, 1,   0.01, SIGNAL(valueChanged(double)), SLOT(OnXformColorIndexChanged(double)),  false,   0,   1, 0);
-	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformColorSpeedSpin,  spinHeight, -1, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformColorSpeedChanged(double)),   true, 0.5, 0.5, 0);
-	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformOpacitySpin,	    spinHeight,  0, 100, 0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformOpacityChanged(double)),	     true,   1,   1, 0);
-	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformDirectColorSpin, spinHeight,  0, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformDirectColorChanged(double)),	 true,	 1,   1, 0);
+    SetupSpinner<DoubleSpinBox, double>(ui.XformColorIndexTable,  this, row, 1, m_XformColorIndexSpin,  spinHeight,  0, 1,   0.01, SIGNAL(valueChanged(double)), SLOT(OnXformColorIndexChanged(double)),  false, 0,   1,   0);
+    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformColorSpeedSpin,  spinHeight, -1, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformColorSpeedChanged(double)),  true,  0.5, 0.5, 0);
+    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformOpacitySpin,	    spinHeight,  0, 100, 0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformOpacityChanged(double)),	  true,  1,   1,   0);
+    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformDirectColorSpin, spinHeight,  0, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformDirectColorChanged(double)), true,	 1,   1,   0);
 	m_XformColorIndexSpin->setDecimals(3);
 	m_XformColorSpeedSpin->setDecimals(3);
 	m_XformOpacitySpin->setDecimals(3);
@@ -48,7 +48,7 @@ void Fractorium::InitXformsColorUI()
 template <typename T>
 void FractoriumEmberController<T>::XformColorIndexChanged(double d, bool updateRender, bool updateSpinner, bool updateScroll, eXformUpdate update, size_t index)
 {
-	const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == m_Fractorium->ui.CurrentXformCombo->currentIndex();
+    const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == (size_t)m_Fractorium->ui.CurrentXformCombo->currentIndex();
 
 	if (updateRender)//False when just updating GUI in response to a change elsewhere, true when in response to a GUI change so update values and reset renderer.
 	{

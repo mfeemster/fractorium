@@ -118,7 +118,7 @@ uint FractoriumOptionsDialog::OpenClQuality() { return ui.OpenCLQualitySpin->val
 /// <param name="col">The column of the cell</param>
 void FractoriumOptionsDialog::OnDeviceTableCellChanged(int row, int col)
 {
-	if (auto item = ui.DeviceTable->item(row, col))
+    if (ui.DeviceTable->item(row, col) != nullptr)
 		HandleDeviceTableCheckChanged(ui.DeviceTable, row, col);
 }
 
@@ -138,7 +138,7 @@ void FractoriumOptionsDialog::OnDeviceTableRadioToggled(bool checked)
 	if (s)
 	{
 		for (row = 0; row < table->rowCount(); row++)
-			if (radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1)))
+            if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
 				if (s == radio)
 				{
 					HandleDeviceTableCheckChanged(ui.DeviceTable, row, 1);

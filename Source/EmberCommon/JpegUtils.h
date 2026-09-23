@@ -31,8 +31,9 @@ static bool WriteJpeg(const char* filename, unsigned char* image, size_t width, 
 		rlg l(fileCs);
 		fileResult = fopen_s(&file, filename, "wb");
 	}
-	catch (std::exception)
+    catch (const std::exception& e)
 	{
+        cout << e.what() << endl;
 		return false;
 	}
 
@@ -151,8 +152,9 @@ static bool WritePng(const char* filename, unsigned char* image, size_t width, s
 		rlg l(fileCs);
 		fileResult = fopen_s(&file, filename, "wb");
 	}
-	catch (std::exception)
+    catch (const std::exception& e)
 	{
+        cout << e.what() << endl;
 		return false;
 	}
 
@@ -330,8 +332,9 @@ static bool SaveBmp(const char* filename, const unsigned char* image, size_t wid
 			return false;
 		}
 	}
-	catch (std::exception)
+    catch (const std::exception& e)
 	{
+        cout << e.what() << endl;
 		CloseHandle(file);
 		return false;
 	}
@@ -404,8 +407,9 @@ static bool WriteExr16(const char* filename, Rgba* image, size_t width, size_t h
 			rlg l(fileCs);
 			file = std::make_unique<RgbaOutputFile>(filename, iw, ih, RgbaChannels::WRITE_RGBA);
 		}
-		catch (std::exception)
+        catch (const std::exception& e)
 		{
+            cout << e.what() << endl;
 			return false;
 		}
 
@@ -426,7 +430,7 @@ static bool WriteExr16(const char* filename, Rgba* image, size_t width, size_t h
 		file->writePixels(ih);
 		return true;
 	}
-	catch (std::exception e)
+    catch (const std::exception& e)
 	{
 		cout << e.what() << endl;
 		return false;
@@ -469,8 +473,9 @@ static bool WriteExr32(const char* filename, float* r, float* g, float* b, float
 			header.channels().insert("A", Channel(PixelType::FLOAT));
 			file = std::make_unique<OutputFile>(filename, header);
 		}
-		catch (std::exception)
+        catch (const std::exception& e)
 		{
+			cout << e.what() << endl;
 			return false;
 		}
 
@@ -512,7 +517,7 @@ static bool WriteExr32(const char* filename, float* r, float* g, float* b, float
 		file->writePixels(ih);
 		return true;
 	}
-	catch (std::exception e)
+    catch (const std::exception& e)
 	{
 		cout << e.what() << endl;
 		return false;

@@ -177,7 +177,7 @@ void GLWidget::DrawQuad()
 		glBindTexture(GL_TEXTURE_2D, m_OutputTexID);//The texture to draw to.
 
 		//Only draw if the dimensions match exactly.
-		if (m_TexWidth == m_Fractorium->m_Controller->FinalRasW() && m_TexHeight == m_Fractorium->m_Controller->FinalRasH())
+        if (static_cast<size_t>(m_TexWidth) == m_Fractorium->m_Controller->FinalRasW() && static_cast<size_t>(m_TexHeight) == m_Fractorium->m_Controller->FinalRasH())
 		{
 			//Copy data from CPU to OpenGL if using a CPU renderer. This is not needed when using OpenCL.
 			if (renderer->RendererType() == eRendererType::CPU_RENDERER || !renderer->Shared())
@@ -894,7 +894,7 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 			{
 				const QPointF cd(xform->m_Affine.C() * scale, xform->m_Affine.F() * scale);
 				bool b = qrf.contains(cd);
-				m_FractoriumEmberController->XformCheckboxAt(static_cast<int>(xfindex), [&](QCheckBox * cb)
+                m_FractoriumEmberController->XformCheckboxAt(xfindex, [&](QCheckBox * cb)
 				{
 					cb->setChecked(b);
 				});
@@ -904,7 +904,7 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 			{
 				const QPointF cd(xform->m_Post.C() * scale, xform->m_Post.F() * scale);
 				bool b = qrf.contains(cd);
-				m_FractoriumEmberController->XformCheckboxAt(static_cast<int>(xfindex), [&](QCheckBox * cb)
+                m_FractoriumEmberController->XformCheckboxAt(xfindex, [&](QCheckBox * cb)
 				{
 					if (!cb->isChecked() && b)
 						cb->setChecked(b);
@@ -914,13 +914,13 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 	}
 	else if (m_DragState == eDragState::DragPanning)//Translating the whole image.
 	{
-		const auto x = -(m_MouseWorldPos.x - m_MouseDownWorldPos.x);
-		const auto y = (m_MouseWorldPos.y - m_MouseDownWorldPos.y);
+        const auto x2 = -(m_MouseWorldPos.x - m_MouseDownWorldPos.x);
+        const auto y2 = (m_MouseWorldPos.y - m_MouseDownWorldPos.y);
 		Affine2D<T> rotMat;
 		rotMat.C(m_CenterDownX);
 		rotMat.F(m_CenterDownY);
 		rotMat.Rotate(ember->m_Rotate * DEG_2_RAD_T);
-		const v2T v1(x, y);
+        const v2T v1(x2, y2);
 		const v2T v2 = rotMat.TransformVector(v1);
 		ember->m_CenterX = v2.x;
 		ember->m_CenterY = ember->m_RotCenterY = v2.y;
@@ -1106,7 +1106,7 @@ bool GLWidget::Allocate(bool force)
 	//auto scaledW = std::ceil(width() * devicePixelRatioF());
 	const auto w = m_Fractorium->m_Controller->FinalRasW();
 	const auto h = m_Fractorium->m_Controller->FinalRasH();
-	bool const doResize = force || m_TexWidth != w || m_TexHeight != h;
+    bool const doResize = force || static_cast<size_t>(m_TexWidth) != w || static_cast<size_t>(m_TexHeight) != h;
 	bool const doIt = doResize || m_OutputTexID == 0;
 	if (doIt)
 	{
@@ -1190,8 +1190,8 @@ bool GLEmberController<T>::SizesMatch()
 	//auto scaledH = std::ceil(m_GL->height() * m_GL->devicePixelRatioF());
 	const auto ember = m_FractoriumEmberController->CurrentEmber();
 	return (ember &&
-			ember->m_FinalRasW == m_GL->m_TexWidth &&
-			ember->m_FinalRasH == m_GL->m_TexHeight &&
+            ember->m_FinalRasW == static_cast<size_t>(m_GL->m_TexWidth) &&
+            ember->m_FinalRasH == static_cast<size_t>(m_GL->m_TexHeight) &&
 			m_GL->m_TexWidth == m_GL->m_ViewWidth &&
 			m_GL->m_TexHeight == m_GL->m_ViewHeight);
 }

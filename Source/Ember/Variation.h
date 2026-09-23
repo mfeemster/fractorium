@@ -2231,19 +2231,19 @@ public:
 	/// <param name="index">The index of the parameter to assign to</param>
 	/// <param name="val">The value to assign</param>
 	/// <returns>True if the index was in range, else false.</returns>
-	virtual bool SetParamVal(int index, T val)
-	{
-		bool b = false;
+    // virtual bool SetParamVal(int index, T val)
+    // {
+    // 	bool b = false;
 
-		if (index < m_Params.size())
-		{
-			m_Params[index].Set(val);
-			this->Precalc();
-			b = true;
-		}
+    // 	if (index < m_Params.size())
+    // 	{
+    // 		m_Params[index].Set(val);
+    // 		this->Precalc();
+    // 		b = true;
+    // 	}
 
-		return b;
-	}
+    // 	return b;
+    // }
 
 	/// <summary>
 	/// Severe hack to get g++ to compile this.

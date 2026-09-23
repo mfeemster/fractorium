@@ -57,17 +57,17 @@ public:
 	/// <param name="sourceEmbers">The array of embers to align</param>
 	/// <param name="destEmbers">The array which will contain the aligned embers </param>
 	/// <param name="count">The number of elements in sourceEmbers</param>
-	static void Align(const Ember<T>* sourceEmbers, Ember<T>* destEmbers, size_t count)
+	static void Align(const Ember<T>* sourceEmbers, Ember<T>* destEmbers, intmax_t count)
 	{
 		bool aligned = true;
 		bool currentFinal, hasFinal = sourceEmbers[0].UseFinalXform();
-		size_t xf, currentCount, maxCount = sourceEmbers[0].XformCount();
+		intmax_t xf, currentCount, maxCount = sourceEmbers[0].XformCount();
 		Xform<T>* destOtherXform;
 		auto variationList = VariationList<T>::Instance();
 
 		//Determine the max number of xforms present in sourceEmbers.
 		//Also check if final xforms are used in any of them.
-		for (size_t i = 1; i < count; i++)
+		for (intmax_t i = 1; i < count; i++)
 		{
 			currentCount = sourceEmbers[i].XformCount();
 
@@ -89,7 +89,7 @@ public:
 		}
 
 		//Copy them using the max xform count, and do final if any had final.
-		for (size_t i = 0; i < count; i++)
+		for (intmax_t i = 0; i < count; i++)
 			destEmbers[i] = sourceEmbers[i].Copy(maxCount, hasFinal);
 
 		if (hasFinal)
@@ -98,7 +98,7 @@ public:
 		std::array<size_t, 4> maxCurvePoints = { 0, 0, 0, 0 };
 
 		//Find the maximum number of points for each curve type in all curves.
-		for (size_t e = 0; e < count; e++)
+		for (intmax_t e = 0; e < count; e++)
 			for (size_t j = 0; j < sourceEmbers[0].m_Curves.m_Points.size(); j++)//Should always be 4 for every ember.
 				maxCurvePoints[j] = std::max(maxCurvePoints[j], sourceEmbers[e].m_Curves.m_Points[j].size());
 
@@ -106,7 +106,7 @@ public:
 		//but not in an aligned xform.  If this is the case, use the parameters
 		//from the xform with the variation as the defaults for the blank one.
 		//All embers will have the same number of xforms at this point.
-		for (size_t i = 0; i < count; i++)
+		for (intmax_t i = 0; i < count; i++)
 		{
 			intmax_t ii;
 			destEmbers[i].m_Curves = sourceEmbers[i].m_Curves;
@@ -157,7 +157,7 @@ public:
 							if (IsPadding(sourceEmbers[i + ii], xf, isFinal))
 								continue;
 
-							if (destOtherXform = destEmbers[i + ii].GetTotalXform(xf))
+							if ((destOtherXform = destEmbers[i + ii].GetTotalXform(xf)))
 							{
 								//Spherical / Ngon (trumps all others due to holes)
 								//Interpolate these against a 180 degree rotated identity
@@ -200,7 +200,7 @@ public:
 							if (IsPadding(sourceEmbers[i + ii], xf, isFinal))
 								continue;
 
-							if (destOtherXform = destEmbers[i + ii].GetTotalXform(xf))
+							if ((destOtherXform = destEmbers[i + ii].GetTotalXform(xf)))
 							{
 								if ((dummyvar = destOtherXform->GetVariationById(eVariationId::VAR_RECTANGLES)) && dummyvar->m_Weight > 0)
 								{
@@ -318,7 +318,7 @@ public:
 							if (IsPadding(sourceEmbers[i + ii], xf, isFinal))
 								continue;
 
-							if (destOtherXform = destEmbers[i + ii].GetTotalXform(xf))
+							if ((destOtherXform = destEmbers[i + ii].GetTotalXform(xf)))
 							{
 								if ((dummyvar = destOtherXform->GetVariationById(eVariationId::VAR_FAN)) && dummyvar->m_Weight > 0)
 								{
@@ -696,7 +696,8 @@ public:
 				size == cxTrn.size())
 		{
 			T c1[2], d, t, refang;
-			glm::length_t col, k;
+			size_t k;
+			glm::length_t col;
 			int zlm[2];
 			const char* loc = __FUNCTION__;
 
@@ -856,8 +857,8 @@ public:
 	/// <param name="store">The Affine2D to store the inerpolated values in</param>
 	static void InterpAndConvertBack(const vector<T>& coefs, const vector<v2T>& cxAng, const vector<v2T>& cxMag, const vector<v2T>& cxTrn, Affine2D<T>& store)
 	{
-		size_t size = coefs.size();
-		glm::length_t i, col, accmode[2] = { 0, 0 };
+		size_t i, size = coefs.size();
+		glm::length_t col, accmode[2] = { 0, 0 };
 		T expmag, accang[2] = { 0, 0 }, accmag[2] = { 0, 0 };
 
 		//Accumulation mode defaults to logarithmic, but in special

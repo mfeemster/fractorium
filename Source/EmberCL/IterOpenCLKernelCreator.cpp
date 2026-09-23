@@ -922,7 +922,7 @@ void IterOpenCLKernelCreator<T>::ParVarIndexDefines(const Ember<T>& ember, pair<
 
 						if (doVals)
 						{
-							for (auto l = 0; l < elements; l++)
+                            for (size_t l = 0; l < elements; l++)
 								params.second.push_back(*(parVar->Params()[k].Param() + l));
 						}
 

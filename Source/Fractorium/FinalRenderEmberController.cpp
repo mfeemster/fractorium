@@ -129,7 +129,7 @@ bool FinalRenderEmberController<T>::RenderSingleEmber(Ember<T>& ember, bool full
 		auto transparency = m_FinalRenderDialog->Transparency();
 		RenderComplete(finalEmber);
 		HandleFinishedProgress();
-		auto writeThread = std::thread([ = ](Ember<T> threadEmber)//Pass ember by value.
+        auto writeThread = std::thread([=, this](Ember<T> threadEmber)//Pass ember by value.
 		{
 			if (SaveCurrentRender(threadEmber, comments, *threadImage, rasw, rash, png16, transparency) == "")
 				m_Run = false;
@@ -201,7 +201,7 @@ bool FinalRenderEmberController<T>::RenderSingleEmberFromSeries(std::atomic<size
 			if (!index)//Only first device has a progress callback, so it also makes sense to only manually set the progress on the first device as well.
 				HandleFinishedProgress();
 
-			auto writeThread = std::thread([ = ]()
+            auto writeThread = std::thread([=,this]()
 			{
 				if (SaveCurrentRender(*ember,
 									  comments,//These all don't change during the renders, so it's ok to access them in the thread.
@@ -309,11 +309,11 @@ FinalRenderEmberController<T>::FinalRenderEmberController(FractoriumFinalRenderD
 
 				if (m_GuiState.m_UseNumbers)
 				{
-					auto i = 0;
+                    auto ct = 0;
 
 					for (auto& it : embers)
 					{
-						it.m_Time = i++;
+                        it.m_Time = ct++;
 						FormatName(it, os, padding);
 					}
 				}
@@ -591,7 +591,6 @@ bool FinalRenderEmberController<T>::CreateRenderer(eRendererType renderType, con
 template <typename T>
 int FinalRenderEmberController<T>::ProgressFunc(Ember<T>& ember, void* foo, double fraction, int stage, double etaMs)
 {
-	static int count = 0;
 	const size_t strip = *(reinterpret_cast<size_t*>(FirstOrDefaultRenderer()->m_ProgressParameter));
 	const double fracPerStrip = std::ceil(100.0 / m_GuiState.m_Strips);
 	const double stripsfrac = std::ceil(fracPerStrip * strip) + std::ceil(fraction / m_GuiState.m_Strips);
@@ -1103,8 +1102,7 @@ void FinalRenderEmberController<T>::SetProgressComplete(int val)
 template <typename T>
 QString FinalRenderEmberController<T>::CheckMemory(const tuple<size_t, size_t, size_t>& p)
 {
-	bool error = false;
-	QString s;
+    QString s;
 	const auto histSize = get<0>(p);
 	const auto totalSize = get<1>(p);
 	auto selectedDevices = m_FinalRenderDialog->Devices();
@@ -1158,10 +1156,7 @@ QString FinalRenderEmberController<T>::CheckMemory(const tuple<size_t, size_t, s
 				}
 
 				if (!temp.isEmpty())
-				{
-					error = true;
 					s += QString::fromStdString(wrapper.DeviceName()) + ":\n" + temp + "\n\n";
-				}
 			}
 		}
 	}

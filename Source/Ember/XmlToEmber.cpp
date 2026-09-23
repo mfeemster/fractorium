@@ -738,8 +738,8 @@ static xmlNode* GetChildNodeByNodeName(xmlNode* node, const char* name)
 {
 	for (auto childNode = node->children; childNode; childNode = childNode->next)
 		if (childNode->type == XML_ELEMENT_NODE)
-			if (const auto node = CheckNodeName(childNode, name))
-				return node;
+            if (const auto foundNode = CheckNodeName(childNode, name))
+                return foundNode;
 
 	return nullptr;
 }
@@ -1028,6 +1028,7 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 				double xangle = 0, xlength = 1, yangle = 90, ylength = 1, xoffset = 0, yoffset = 0;
 
 				if (const auto xangleChildNode = GetChildNode(affineChildNode, "x_axis_angle"))
+                {
 					if (const auto paramCurveChildNode = GetChildNodeByNodeName(xangleChildNode, "curve"))
 					{
 						if (const auto paramCurveValuesChildNode = GetChildNode(paramCurveChildNode, "values"))
@@ -1045,11 +1046,13 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 					}
 					else
 						ParseAndAssignContent(xangleChildNode, "name", "x_axis_angle", xangle);
+                }
 
 				if (const auto xlengthChildNode = GetChildNode(affineChildNode, "x_axis_length"))
 					if (ParseAndAssignContent(xlengthChildNode, "name", "x_axis_length", xlength)) {}
 
 				if (const auto yangleChildNode = GetChildNode(affineChildNode, "y_axis_angle"))
+                {
 					if (const auto paramCurveChildNode = GetChildNodeByNodeName(yangleChildNode, "curve"))
 					{
 						if (const auto paramCurveValuesChildNode = GetChildNode(paramCurveChildNode, "values"))
@@ -1067,16 +1070,19 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 					}
 					else
 						ParseAndAssignContent(yangleChildNode, "name", "y_axis_angle", yangle);
+                }
 
 				if (const auto ylengthChildNode = GetChildNode(affineChildNode, "y_axis_length"))
 					if (ParseAndAssignContent(ylengthChildNode, "name", "y_axis_length", ylength)) {}
 
 				if (const auto offsetChildNode = GetChildNode(affineChildNode, "offset"))
+                {
 					if (ParseAndAssignContent(offsetChildNode, "name", "offset", offsetstr))
 					{
 						istringstream istr(offsetstr);
 						istr >> xoffset >> yoffset;
 					}
+                }
 
 				T x1 = T(xlength * std::cos(xangle * DEG_2_RAD));
 				T y1 = T(xlength * std::sin(xangle * DEG_2_RAD));
@@ -1098,7 +1104,9 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 				double xangle = 0, xlength = 1, yangle = 90, ylength = 1, xoffset = 0, yoffset = 0;
 
 				if (const auto xangleChildNode = GetChildNode(affineChildNode, "x_axis_angle"))
+                {
 					if (!ParseAndAssignContent(xangleChildNode, "name", "x_axis_angle", xangle))
+                    {
 						if (const auto paramCurveChildNode = GetChildNodeByNodeName(affineChildNode, "curve"))
 						{
 							if (const auto paramCurveValuesChildNode = GetChildNode(paramCurveChildNode, "values"))
@@ -1114,11 +1122,14 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 								}
 							}
 						}
+                    }
+                }
 
 				if (const auto xlengthChildNode = GetChildNode(affineChildNode, "x_axis_length"))
 					if (ParseAndAssignContent(xlengthChildNode, "name", "x_axis_length", xlength)) {}
 
 				if (const auto yangleChildNode = GetChildNode(affineChildNode, "y_axis_angle"))
+                {
 					if (const auto paramCurveChildNode = GetChildNodeByNodeName(yangleChildNode, "curve"))
 					{
 						if (const auto paramCurveValuesChildNode = GetChildNode(paramCurveChildNode, "values"))
@@ -1136,16 +1147,19 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 					}
 					else
 						ParseAndAssignContent(yangleChildNode, "name", "y_axis_angle", yangle);
+                }
 
 				if (const auto ylengthChildNode = GetChildNode(affineChildNode, "y_axis_length"))
 					if (ParseAndAssignContent(ylengthChildNode, "name", "y_axis_length", ylength)) {}
 
 				if (const auto offsetChildNode = GetChildNode(affineChildNode, "offset"))
+                {
 					if (ParseAndAssignContent(offsetChildNode, "name", "offset", offsetstr))
 					{
 						istringstream istr(offsetstr);
 						istr >> xoffset >> yoffset;
 					}
+                }
 
 				T x1 = static_cast<T>(xlength * std::cos(xangle * DEG_2_RAD));
 				T y1 = static_cast<T>(xlength * std::sin(xangle * DEG_2_RAD));
@@ -1189,14 +1203,14 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 			T weight = 0;
 			std::string periterweights;
 
-			if (const auto baseWeightChildNode = GetChildNode(weightsChildNode, "base_weight"))
+            if (const auto baseWeightChildNode1 = GetChildNode(weightsChildNode, "base_weight"))
 			{
-				if (ParseAndAssignContent(baseWeightChildNode, "name", "base_weight", weight))
+                if (ParseAndAssignContent(baseWeightChildNode1, "name", "base_weight", weight))
 					xf.m_Weight = weight;
 			}
-			else if (const auto baseWeightChildNode = GetChildNode(weightsChildNode, "Base weight"))
+            else if (const auto baseWeightChildNode2 = GetChildNode(weightsChildNode, "Base weight"))
 			{
-				if (ParseAndAssignContent(baseWeightChildNode, "name", "Base weight", weight))
+                if (ParseAndAssignContent(baseWeightChildNode2, "name", "Base weight", weight))
 					xf.m_Weight = weight;
 			}
 
@@ -1270,7 +1284,7 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 
 				if (const auto curvesnode = GetChildNodeByNodeName(childNode, "curves"))
 				{
-					auto curvenodesfunc = [&](xmlNode * node, int index)
+                    auto curvenodesfunc = [&](xmlNode * node, size_t index)
 					{
 						float x, y;
 						string knots, values;
@@ -1489,7 +1503,7 @@ bool XmlToEmber<T>::ParseEmberElementFromChaos(xmlNode* emberNode, Ember<T>& cur
 						currentEmber.m_Palette.m_Entries.resize(COLORMAP_LENGTH);
 						const auto stepsize = (1.0f / (currentEmber.m_Palette.Size() - 1));
 
-						for (auto palindex = 0; palindex < currentEmber.m_Palette.Size(); palindex++)
+                        for (size_t palindex = 0; palindex < currentEmber.m_Palette.Size(); palindex++)
 						{
 							const float t = palindex * stepsize;
 							const auto h = hspline.Interpolate(t);
@@ -2208,7 +2222,7 @@ bool XmlToEmber<T>::ParseEmberElement(xmlNode* emberNode, Ember<T>& currentEmber
 
 	if (soloXform >= 0)
 		for (i = 0; i < currentEmber.XformCount(); i++)
-			currentEmber.GetXform(i)->m_Opacity = T(i == soloXform);//Will calc the cached adjusted viz value later.
+            currentEmber.GetXform(i)->m_Opacity = T(i == (size_t)soloXform);//Will calc the cached adjusted viz value later.
 
 	return true;
 }
@@ -2249,7 +2263,6 @@ bool XmlToEmber<T>::AttToEmberMotionFloat(xmlAttrPtr att, const char* attStr, eE
 template <typename T>
 bool XmlToEmber<T>::ParseXform(xmlNode* childNode, Xform<T>& xform, bool motion, bool fromEmber)
 {
-	bool success = true;
 	char* attStr;
 	const char* loc = __FUNCTION__;
 	size_t j;

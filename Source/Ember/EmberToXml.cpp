@@ -215,7 +215,7 @@ string EmberToXml<T>::ToString(Ember<T>& ember, const string& extraAttributes, s
 
 	os << "\" overall_curve=\"";
 
-	for (glm::length_t cj = 0; cj < ember.m_Curves.m_Points[0].size(); cj++)
+    for (size_t cj = 0; cj < ember.m_Curves.m_Points[0].size(); cj++)
 	{
 		os << ember.m_Curves.m_Points[0][cj].x << " ";
 		os << ember.m_Curves.m_Points[0][cj].y << " ";
@@ -223,7 +223,7 @@ string EmberToXml<T>::ToString(Ember<T>& ember, const string& extraAttributes, s
 
 	os << "\" red_curve=\"";
 
-	for (glm::length_t cj = 0; cj < ember.m_Curves.m_Points[1].size(); cj++)
+    for (size_t cj = 0; cj < ember.m_Curves.m_Points[1].size(); cj++)
 	{
 		os << ember.m_Curves.m_Points[1][cj].x << " ";
 		os << ember.m_Curves.m_Points[1][cj].y << " ";
@@ -231,7 +231,7 @@ string EmberToXml<T>::ToString(Ember<T>& ember, const string& extraAttributes, s
 
 	os << "\" green_curve=\"";
 
-	for (glm::length_t cj = 0; cj < ember.m_Curves.m_Points[2].size(); cj++)
+    for (size_t cj = 0; cj < ember.m_Curves.m_Points[2].size(); cj++)
 	{
 		os << ember.m_Curves.m_Points[2][cj].x << " ";
 		os << ember.m_Curves.m_Points[2][cj].y << " ";
@@ -239,7 +239,7 @@ string EmberToXml<T>::ToString(Ember<T>& ember, const string& extraAttributes, s
 
 	os << "\" blue_curve=\"";
 
-	for (glm::length_t cj = 0; cj < ember.m_Curves.m_Points[3].size(); cj++)
+    for (size_t cj = 0; cj < ember.m_Curves.m_Points[3].size(); cj++)
 	{
 		os << ember.m_Curves.m_Points[3][cj].x << " ";
 		os << ember.m_Curves.m_Points[3][cj].y << " ";
@@ -880,6 +880,10 @@ string EmberToXml<T>::ToString(const EmberMotion<T>& motion)
 			case eEmberMotionParam::FLAME_MOTION_VIBRANCY:
 				os << " vibrancy=\"" << motion.m_MotionParams[i].second << "\"";
 				break;
+
+            case eEmberMotionParam::FLAME_MOTION_BLUR_CURVE:
+                os << " motion_blur_curve=\"" << motion.m_MotionParams[i].second << "\"";
+                break;
 
 			case eEmberMotionParam::FLAME_MOTION_SCALE:
 				os << " scale=\"" << motion.m_MotionParams[i].second << "\"";

@@ -490,7 +490,7 @@ bool EmberAnimate(int argc, _TCHAR* argv[], EmberOptions& opt)
 	atomfTime.store(opt.FirstFrame());
 	std::function<void(size_t)> iterFunc = [&](size_t index)
 	{
-		size_t ftime, finalImageIndex = 0;
+        size_t ftime;
 		RendererBase* renderer = renderers[index].get();
 		ostringstream os;
 		EmberStats stats;
@@ -646,7 +646,6 @@ bool EmberAnimate(int argc, _TCHAR* argv[], EmberOptions& opt)
 			//Run image writing in a thread. Although doing it this way duplicates the final output memory, it saves a lot of time
 			//when running with OpenCL. Call join() to ensure the previous thread call has completed.
 			//Join(writeThread);
-			const auto threadVecIndex = finalImageIndex;//Cache before launching thread.
 
 			if (opt.ThreadedWrite())//Copies of all but the first parameter are passed to saveFunc(), to avoid conflicting with those values changing when starting the render for the next image.
 			{

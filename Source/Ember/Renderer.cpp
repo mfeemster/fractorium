@@ -5,23 +5,23 @@ namespace EmberNs
 {
 static void parallel_for(size_t start, size_t end, size_t parlevel, std::function<void(size_t)> func)
 {
-    const auto ct = parlevel == 0 ? EmberNs::Timing::ProcessorCount() : parlevel;
-    std::vector<std::thread> threads(ct);
-    const auto chunkSize = (end - start) / ct;
+	const auto ct = parlevel == 0 ? EmberNs::Timing::ProcessorCount() : parlevel;
+	std::vector<std::thread> threads(ct);
+	const auto chunkSize = (end - start) / ct;
 
-    for (size_t i = 0; i < ct; i++)
-    {
-        threads.push_back(std::thread([&](size_t _i, size_t _ct)
-                                      {
-                                          const auto chunkStart = chunkSize * _i;
-                                          const auto chunkEnd = _i == _ct - 1 ? end : std::min(chunkStart + chunkSize, end);
+	for (size_t i = 0; i < ct; i++)
+	{
+		threads.push_back(std::thread([&](size_t _i, size_t _ct)
+									  {
+										  const auto chunkStart = chunkSize * _i;
+										  const auto chunkEnd = _i == _ct - 1 ? end : std::min(chunkStart + chunkSize, end);
 
-                                          for (size_t j = chunkStart; j < chunkEnd; j++)
-                                              func(j);
-                                      }, i, ct));
-    }
+										  for (size_t j = chunkStart; j < chunkEnd; j++)
+											  func(j);
+									  }, i, ct));
+	}
 
-    EmberNs::Join(threads);
+	EmberNs::Join(threads);
 }
 
 /// <summary>
@@ -1517,9 +1517,10 @@ void Renderer<T, bucketT>::PrepFinalAccumVals(Color<bucketT>& background, bucket
 template <typename T, typename bucketT>
 void Renderer<T, bucketT>::Accumulate(QTIsaac<ISAAC_SIZE, ISAAC_INT>& rand, Point<T>* samples, size_t sampleCount, const Palette<bucketT>* palette)
 {
-	size_t histIndex, intColorIndex, histSize = m_HistBuckets.size();
+	intmax_t intColorIndex;
+	size_t histIndex, histSize = m_HistBuckets.size();
 	bucketT colorIndex, colorIndexFrac;
-	const auto psm1 = m_Ember.m_Palette.Size() - 1;
+	const intmax_t psm1 = m_Ember.m_Palette.Size() - 1;
 
 	//Linear is a linear scale for when the color index is not a whole number, which is most of the time.
 	//It uses a portion of the value of the index, and the remainder of the next index.
@@ -1529,7 +1530,7 @@ void Renderer<T, bucketT>::Accumulate(QTIsaac<ISAAC_SIZE, ISAAC_INT>& rand, Poin
 	//Use overloaded addition and multiplication operators in vec4 to perform the accumulation.
 	if (PaletteMode() == ePaletteMode::PALETTE_LINEAR)
 	{
-		const auto psm2 = psm1 - 1;
+		const intmax_t psm2 = psm1 - 1;
 
 		//It's critical to understand what's going on here as it's one of the most important parts of the algorithm.
 		//A color value gets retrieved from the palette and
@@ -1568,7 +1569,7 @@ void Renderer<T, bucketT>::Accumulate(QTIsaac<ISAAC_SIZE, ISAAC_INT>& rand, Poin
 					if (histIndex < histSize)
 					{
 						colorIndex = static_cast<bucketT>(p.m_ColorX) * psm1;
-						intColorIndex = static_cast<size_t>(colorIndex);
+						intColorIndex = static_cast<intmax_t>(colorIndex);
 
 						if (intColorIndex < 0)
 						{
@@ -1763,7 +1764,7 @@ void Renderer<T, bucketT>::ComputeCurves()
 			{
 				Spline<float> spline(m_Ember.m_Curves.m_Points[i]);//Will internally sort.
 
-				for (glm::length_t j = 0; j < st; j++)
+				for (size_t j = 0; j < st; j++)
 					m_Csa[j][i] = spline.Interpolate(j * ONE_OVER_CURVES_LENGTH_M1);
 			}
 		}
@@ -1791,7 +1792,7 @@ template EMBER_API void Renderer<float, float>::SetEmber(const vector<Ember<floa
 template EMBER_API void Renderer<float, float>::SetEmber(const list<Ember<float>>& embers);
 
 #ifdef DO_DOUBLE
-    template class EMBER_API Renderer<double, float>;
+	template class EMBER_API Renderer<double, float>;
 	template EMBER_API void  Renderer<double, float>::SetEmber(const vector<Ember<double>>& embers);
 	template EMBER_API void  Renderer<double, float>::SetEmber(const list<Ember<double>>& embers);
 #endif

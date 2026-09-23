@@ -90,7 +90,7 @@ void FractoriumEmberController<T>::FilteredVariations()
 	m_FilteredVariations.clear();
 	m_FilteredVariations.reserve(map.size());
 
-	for (auto i = 0; i < m_VariationList->Size(); i++)
+    for (size_t i = 0; i < m_VariationList->Size(); i++)
 		if (const auto var = m_VariationList->GetVariation(i))
 			if (map.contains(var->Name().c_str()) && map[var->Name().c_str()].toBool())
 				m_FilteredVariations.push_back(var->VariationId());

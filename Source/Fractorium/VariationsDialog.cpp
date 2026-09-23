@@ -48,18 +48,18 @@ FractoriumVariationsDialog::FractoriumVariationsDialog(QWidget* p, Qt::WindowFla
 	table->verticalHeader()->setSectionsClickable(true);
 	table->horizontalHeader()->setSectionsClickable(true);
 	table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-	connect(table,					  SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(OnVariationsTableItemChanged(QTableWidgetItem*)), Qt::QueuedConnection);
-	connect(ui.SelectAllButton,		  SIGNAL(clicked(bool)),				  this, SLOT(OnSelectAllButtonClicked(bool)),				   Qt::QueuedConnection);
-	connect(ui.InvertSelectionButton, SIGNAL(clicked(bool)),				  this, SLOT(OnInvertSelectionButtonClicked(bool)),			   Qt::QueuedConnection);
-	connect(ui.SelectNoneButton,	  SIGNAL(clicked(bool)),				  this, SLOT(OnSelectNoneButtonClicked(bool)),				   Qt::QueuedConnection);
-	connect(ui.SumCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.AssignCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.PpSumCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.PpAssignCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.DcCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.StateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.ParamCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.NonParamCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSelectionCheckBoxStateChanged(int)), Qt::QueuedConnection);
+	connect(table,                    SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(OnVariationsTableItemChanged(QTableWidgetItem*)), Qt::QueuedConnection);
+	connect(ui.SelectAllButton,       SIGNAL(clicked(bool)),                  this, SLOT(OnSelectAllButtonClicked(bool)),                  Qt::QueuedConnection);
+	connect(ui.InvertSelectionButton, SIGNAL(clicked(bool)),                  this, SLOT(OnInvertSelectionButtonClicked(bool)),            Qt::QueuedConnection);
+	connect(ui.SelectNoneButton,      SIGNAL(clicked(bool)),                  this, SLOT(OnSelectNoneButtonClicked(bool)),                 Qt::QueuedConnection);
+	connect(ui.SumCheckBox,           SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.AssignCheckBox,        SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.PpSumCheckBox,         SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.PpAssignCheckBox,      SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.DcCheckBox,            SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.StateCheckBox,         SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.ParamCheckBox,         SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
+	connect(ui.NonParamCheckBox,      SIGNAL(stateChanged(int)),              this, SLOT(OnSelectionCheckBoxStateChanged(int)),            Qt::QueuedConnection);
 }
 
 /// <summary>

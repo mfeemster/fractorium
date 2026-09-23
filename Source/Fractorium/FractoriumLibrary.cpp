@@ -41,7 +41,7 @@ void Fractorium::SelectLibraryItem(size_t index)
 		{
 			if (auto emberItem = dynamic_cast<EmberTreeWidgetItemBase*>(top->child(i)))
 			{
-				auto b = i == index;
+                auto b = i == (int)index;
 
 				if (b)
 					item = emberItem;
@@ -112,7 +112,7 @@ void Fractorium::SetTreeItemData(EmberTreeWidgetItemBase* item, vv4F& v, uint w,
 /// </summary>
 /// <param name="update">A bitfield representing the type of synchronizing to do. Update one or more of index, name or pointer.</param>
 template <typename T>
-void FractoriumEmberController<T>::SyncLibrary(eLibraryUpdate update)
+void FractoriumEmberController<T>::SyncLibrary(uint update)
 {
 	auto it = m_EmberFile.m_Embers.begin();
 	const auto tree = m_Fractorium->ui.LibraryTree;
@@ -123,13 +123,13 @@ void FractoriumEmberController<T>::SyncLibrary(eLibraryUpdate update)
 		{
 			if (auto emberItem = dynamic_cast<EmberTreeWidgetItem<T>*>(top->child(i)))//Cast the child widget to the EmberTreeWidgetItem type.
 			{
-				if (static_cast<uint>(update) & static_cast<uint>(eLibraryUpdate::INDEX))
+                if (update & static_cast<uint>(eLibraryUpdate::INDEX))
 					it->m_Index = i;
 
-				if (static_cast<uint>(update) & static_cast<uint>(eLibraryUpdate::NAME))
+                if (update & static_cast<uint>(eLibraryUpdate::NAME))
 					emberItem->setText(NAME_COL, QString::fromStdString(it->m_Name));
 
-				if (static_cast<uint>(update) & static_cast<uint>(eLibraryUpdate::POINTER))
+                if (update & static_cast<uint>(eLibraryUpdate::POINTER))
 					emberItem->SetEmberPointer(&(*it));
 
 				if (emberItem->checkState(NAME_COL) == Qt::Checked)
@@ -221,7 +221,7 @@ void FractoriumEmberController<T>::UpdateLibraryTree()
 		}
 
 		//When adding elements, ensure all indices are sequential.
-		SyncLibrary(eLibraryUpdate::INDEX);
+        SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX));
 		m_Fractorium->SyncFileCountToSequenceCount();
 		RenderLibraryPreviews(origChildCount, static_cast<uint>(m_EmberFile.Size()));
 	}
@@ -260,7 +260,7 @@ void FractoriumEmberController<T>::EmberTreeItemChanged(QTreeWidgetItem* item, i
 
 			emberItem->UpdateEmberName();//Copy edit text to the ember's name variable.
 			m_EmberFile.MakeNamesUnique();//Ensure all names remain unique.
-			SyncLibrary(eLibraryUpdate::NAME);//Copy all ember names to the tree items since some might have changed to be made unique.
+            SyncLibrary(static_cast<uint>(eLibraryUpdate::NAME));//Copy all ember names to the tree items since some might have changed to be made unique.
 			newName = emberItem->GetEmber()->m_Name;//Get the new, final, unique name.
 
 			if (m_EmberFilePointer && m_EmberFilePointer == emberItem->GetEmber() && oldName != newName)//If the ember edited was the current one, and the name was indeed changed, update the name of the current one.
@@ -331,7 +331,7 @@ void FractoriumEmberController<T>::MoveLibraryItems(const QModelIndexList& items
 			names.push_back(temp->m_Name);
 
 	auto b = m_EmberFile.m_Embers.begin();
-	const auto result = Gather(b, m_EmberFile.m_Embers.end(), Advance(b, destRow), [&](const Ember<T>& ember)
+    /*const auto result = */Gather(b, m_EmberFile.m_Embers.end(), Advance(b, destRow), [&](const Ember<T>& ember)
 	{
 		auto position = std::find(names.begin(), names.end(), ember.m_Name);
 
@@ -344,7 +344,7 @@ void FractoriumEmberController<T>::MoveLibraryItems(const QModelIndexList& items
 		return false;
 	});
 	tree->update();
-	SyncLibrary(eLibraryUpdate(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER)));
+    SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
 }
 
 /// <summary>
@@ -365,7 +365,7 @@ void FractoriumEmberController<T>::Delete(const vector<pair<size_t, QTreeWidgetI
 		{
 			last = uint(p.first - offset);
 			delete p.second;
-			SyncLibrary(eLibraryUpdate(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER)));
+            SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
 			m_Fractorium->SyncFileCountToSequenceCount();
 		}
 

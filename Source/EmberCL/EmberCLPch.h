@@ -21,11 +21,7 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN//Exclude rarely-used stuff from Windows headers.
 #define _USE_MATH_DEFINES
-//#define CL_USE_DEPRECATED_OPENCL_1_2_APIS 1
-//#define CL_USE_DEPRECATED_OPENCL_2_0_APIS 1
-//For reasons unknown, QtCreator cannot use any value higher than 120 with these, because
-//it causes errors when compiling opencl.hpp. This happens even though it's using MSVC under the hood
-//and it compiles in MSVC when using Visual Studio.
+
 #ifndef OCL_USE_1_2_V
 	#define CL_TARGET_OPENCL_VERSION 300
 	#define CL_HPP_TARGET_OPENCL_VERSION 300

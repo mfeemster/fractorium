@@ -61,6 +61,8 @@ public:
 	{
 	}
 
+    GradientArrow& operator = (const GradientArrow& carToRas) = default;
+
 	/// <summary>
 	/// Getters and setters.
 	/// </summary>

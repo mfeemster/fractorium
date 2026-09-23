@@ -53,7 +53,7 @@ void Fractorium::InitParamsUI()
 	//Geometry.
 	row = 0;
 	table = ui.GeometryTable;
-	SetupSpinner<SpinBox, int>		   (table, this, row, 1, m_WidthSpin,		spinHeight,	   10,	  2048,    50, SIGNAL(valueChanged(int)),	 SLOT(OnWidthChanged(int)),		     true,  width(),  width(),  width());
+    SetupSpinner<SpinBox, int>		   (table, this, row, 1, m_WidthSpin,		spinHeight,	   10,	  2048,    50, SIGNAL(valueChanged(int)),	 SLOT(OnWidthChanged(int)),		     true,  width(),  width(),  width());
 	SetupSpinner<SpinBox, int>		   (table, this, row, 1, m_HeightSpin,		spinHeight,	   10,	  2048,	   50, SIGNAL(valueChanged(int)),	 SLOT(OnHeightChanged(int)),		 true, height(), height(), height());
 	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterXSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterXChanged(double)),     true,	  0,   0,	0);
 	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterYSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterYChanged(double)),     true,	  0,   0,	0);
