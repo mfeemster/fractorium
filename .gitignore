@@ -1,4 +1,8 @@
 .DS_Store
+Makefile
+*.gch
+*.o
+*.stash
 .qtcreator/
 .vs/
 Bin/
@@ -9,6 +13,8 @@ Builds/MSVC/Solution/GeneratedFiles/
 Builds/MSVC/Solution/Obj/
 Builds/MSVC/Solution/*.aps
 Builds/MSVC/Solution/*.user
+Builds/QtCreator/Fractorium/*.cpp
+Builds/QtCreator/Fractorium/*.h
 Deps/
 fractorium.com/
 Site/
