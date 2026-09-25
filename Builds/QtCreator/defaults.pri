@@ -194,13 +194,7 @@ win32 {
 }
 
 !win32 {
-	native {
-		QMAKE_CXXFLAGS += -march=native
-	} else {
-		QMAKE_CXXFLAGS += -march=k8
-	}
-
-	QMAKE_CXXFLAGS_RELEASE += -fomit-frame-pointer
+    QMAKE_CXXFLAGS += -march=x86-64
 	QMAKE_CXXFLAGS += -fPIC
 	QMAKE_CXXFLAGS += -fpermissive
 	QMAKE_CXXFLAGS += -pedantic
@@ -217,16 +211,15 @@ win32 {
 	QMAKE_CXXFLAGS += -Wmain
 	QMAKE_CXXFLAGS += -Wfatal-errors
 	QMAKE_CXXFLAGS += -Wall -fpermissive
-
-        # CL has lots of old-style-cast which clogs up warning logs
-	#QMAKE_CXXFLAGS += -Wold-style-cast
-
 	QMAKE_CXXFLAGS += -Wno-unused-parameter
 	QMAKE_CXXFLAGS += -Wno-unused-function
-	QMAKE_CXXFLAGS += -Wold-style-cast
 
+    # CL has lots of old-style-cast which clogs up warning logs
+	QMAKE_CXXFLAGS_DEBUG += -Wold-style-cast
 	QMAKE_CXXFLAGS_DEBUG += -Wmissing-include-dirs
 	QMAKE_CXXFLAGS_DEBUG += -Wzero-as-null-pointer-constant
+
+    QMAKE_CXXFLAGS_RELEASE += -fomit-frame-pointer
 # NOTE: last path will be the first to search. gcc -I and -L appends to the
 # beginning of the path list.
 
