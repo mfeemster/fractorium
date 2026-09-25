@@ -241,7 +241,7 @@ void CurvesGraphicsView::mousePressEvent(QMouseEvent* e)
 		return -1;
 	};
 
-	if (e->button() == Qt::RightButton)
+	if (e->button() == Qt::MouseButton::RightButton)
 	{
 		const auto i = findpoint(e->pos().x(), e->pos().y(), thresh);
 

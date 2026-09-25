@@ -16,21 +16,21 @@ void Fractorium::InitXformsColorUI()
 	m_PaletteRefItem = new QTableWidgetItem();
 	ui.XformPaletteRefTable->setItem(0, 0, m_PaletteRefItem);
 	ui.XformPaletteRefTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	connect(ui.XformPaletteRefTable->horizontalHeader(), SIGNAL(sectionResized(int, int, int)), this, SLOT(OnXformRefPaletteResized(int, int, int)), Qt::QueuedConnection);
-	connect(ui.RandomColorIndicesButton, SIGNAL(clicked(bool)),  this, SLOT(OnRandomColorIndicesButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.ToggleColorIndicesButton, SIGNAL(clicked(bool)),  this, SLOT(OnToggleColorIndicesButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.RandomColorSpeedButton,   SIGNAL(clicked(bool)),  this, SLOT(OnRandomColorSpeedButtonClicked(bool)),   Qt::QueuedConnection);
-	connect(ui.ToggleColorSpeedsButton,   SIGNAL(clicked(bool)), this, SLOT(OnToggleColorSpeedsButtonClicked(bool)),  Qt::QueuedConnection);
-    SetupSpinner<DoubleSpinBox, double>(ui.XformColorIndexTable,  this, row, 1, m_XformColorIndexSpin,  spinHeight,  0, 1,   0.01, SIGNAL(valueChanged(double)), SLOT(OnXformColorIndexChanged(double)),  false, 0,   1,   0);
-    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformColorSpeedSpin,  spinHeight, -1, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformColorSpeedChanged(double)),  true,  0.5, 0.5, 0);
-    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformOpacitySpin,	    spinHeight,  0, 100, 0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformOpacityChanged(double)),	  true,  1,   1,   0);
-    SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformDirectColorSpin, spinHeight,  0, 1,   0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformDirectColorChanged(double)), true,	 1,   1,   0);
+	connect(ui.XformPaletteRefTable->horizontalHeader(), SIGNAL(sectionResized(int, int, int)), this, SLOT(OnXformRefPaletteResized(int, int, int)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.RandomColorIndicesButton,                 SIGNAL(clicked(bool)),                 this, SLOT(OnRandomColorIndicesButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.ToggleColorIndicesButton,                 SIGNAL(clicked(bool)),                 this, SLOT(OnToggleColorIndicesButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.RandomColorSpeedButton,                   SIGNAL(clicked(bool)),                 this, SLOT(OnRandomColorSpeedButtonClicked(bool)),   Qt::ConnectionType::QueuedConnection);
+	connect(ui.ToggleColorSpeedsButton,                  SIGNAL(clicked(bool)),                 this, SLOT(OnToggleColorSpeedsButtonClicked(bool)),  Qt::ConnectionType::QueuedConnection);
+	SetupSpinner<DoubleSpinBox, double>(ui.XformColorIndexTable,  this, row, 1, m_XformColorIndexSpin,  spinHeight,  0,   1, 0.01, SIGNAL(valueChanged(double)),  SLOT(OnXformColorIndexChanged(double)),  false,   0,   1, 0);
+	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformColorSpeedSpin,  spinHeight, -1,   1,  0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformColorSpeedChanged(double)),  true,  0.5, 0.5, 0);
+	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformOpacitySpin,	    spinHeight,  0, 100,  0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformOpacityChanged(double)),	   true,    1,   1, 0);
+	SetupSpinner<DoubleSpinBox, double>(ui.XformColorValuesTable, this, row, 1, m_XformDirectColorSpin, spinHeight,  0,   1,  0.1,  SIGNAL(valueChanged(double)), SLOT(OnXformDirectColorChanged(double)), true,    1,   1, 0);
 	m_XformColorIndexSpin->setDecimals(3);
 	m_XformColorSpeedSpin->setDecimals(3);
 	m_XformOpacitySpin->setDecimals(3);
 	m_XformDirectColorSpin->setDecimals(3);
-	connect(ui.XformColorScroll,  SIGNAL(valueChanged(int)), this, SLOT(OnXformScrollColorIndexChanged(int)),  Qt::QueuedConnection);
-	connect(ui.SoloXformCheckBox, SIGNAL(stateChanged(int)), this, SLOT(OnSoloXformCheckBoxStateChanged(int)), Qt::QueuedConnection);
+	connect(ui.XformColorScroll,  SIGNAL(valueChanged(int)),                 this, SLOT(OnXformScrollColorIndexChanged(int)),             Qt::ConnectionType::QueuedConnection);
+	connect(ui.SoloXformCheckBox, SIGNAL(checkStateChanged(Qt::CheckState)), this, SLOT(OnSoloXformCheckBoxStateChanged(Qt::CheckState)), Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -48,7 +48,7 @@ void Fractorium::InitXformsColorUI()
 template <typename T>
 void FractoriumEmberController<T>::XformColorIndexChanged(double d, bool updateRender, bool updateSpinner, bool updateScroll, eXformUpdate update, size_t index)
 {
-    const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == (size_t)m_Fractorium->ui.CurrentXformCombo->currentIndex();
+	const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == (size_t)m_Fractorium->ui.CurrentXformCombo->currentIndex();
 
 	if (updateRender)//False when just updating GUI in response to a change elsewhere, true when in response to a GUI change so update values and reset renderer.
 	{
@@ -190,14 +190,14 @@ void Fractorium::OnXformDirectColorChanged(double d) { m_Controller->XformDirect
 /// <param name="state">The state of the checkbox</param>
 /// <param name="index">The index which has been specified as the solo xform, -1 to specify none.</param>
 template <typename T>
-void FractoriumEmberController<T>::SoloXformCheckBoxStateChanged(int state, int index)
+void FractoriumEmberController<T>::SoloXformCheckBoxStateChanged(Qt::CheckState state, int index)
 {
-	if (state == Qt::Checked)
+	if (state == Qt::CheckState::Checked)
 	{
 		m_Ember.m_Solo = index;
 		m_Fractorium->ui.SoloXformCheckBox->setText("Solo (" + ToString(index + 1) + ")");
 	}
-	else if (state == Qt::Unchecked)
+	else if (state == Qt::CheckState::Unchecked)
 	{
 		m_Ember.m_Solo = -1;
 		m_Fractorium->ui.SoloXformCheckBox->setText("Solo");
@@ -206,7 +206,7 @@ void FractoriumEmberController<T>::SoloXformCheckBoxStateChanged(int state, int 
 	UpdateRender();
 }
 
-void Fractorium::OnSoloXformCheckBoxStateChanged(int state) { m_Controller->SoloXformCheckBoxStateChanged(state, ui.CurrentXformCombo->currentIndex()); }
+void Fractorium::OnSoloXformCheckBoxStateChanged(Qt::CheckState state) { m_Controller->SoloXformCheckBoxStateChanged(state, ui.CurrentXformCombo->currentIndex()); }
 
 /// <summary>
 /// Redraw the palette ref table.
@@ -266,7 +266,7 @@ void Fractorium::SetPaletteTableItem(QPixmap* pixmap, QTableWidget* table, QTabl
 	if (pixmap && !pixmap->isNull())
 	{
 		const QSize size(table->columnWidth(col), table->rowHeight(row) + 1);
-		item->setData(Qt::DecorationRole, pixmap->scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+		item->setData(Qt::ItemDataRole::DecorationRole, pixmap->scaled(size, Qt::AspectRatioMode::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
 	}
 }
 

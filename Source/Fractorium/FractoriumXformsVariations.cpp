@@ -9,19 +9,19 @@ void Fractorium::InitXformsVariationsUI()
 	const auto tree = ui.VariationsTree;
 	tree->clear();
 	tree->header()->setSectionsClickable(true);
-	connect(tree->header(),					SIGNAL(sectionClicked(int)),		 this, SLOT(OnTreeHeaderSectionClicked(int)));
-	connect(ui.VariationsFilterLineEdit,	SIGNAL(textChanged(const QString&)), this, SLOT(OnVariationsFilterLineEditTextChanged(const QString&)));
-	connect(ui.VariationsFilterClearButton, SIGNAL(clicked(bool)),				 this, SLOT(OnVariationsFilterClearButtonClicked(bool)));
-	connect(ui.ActionVariationsDialog,		SIGNAL(triggered(bool)),			 this, SLOT(OnActionVariationsDialog(bool)), Qt::QueuedConnection);
+	connect(tree->header(),                 SIGNAL(sectionClicked(int)),         this, SLOT(OnTreeHeaderSectionClicked(int)));
+	connect(ui.VariationsFilterLineEdit,    SIGNAL(textChanged(const QString&)), this, SLOT(OnVariationsFilterLineEditTextChanged(const QString&)));
+	connect(ui.VariationsFilterClearButton, SIGNAL(clicked(bool)),               this, SLOT(OnVariationsFilterClearButtonClicked(bool)));
+	connect(ui.ActionVariationsDialog,      SIGNAL(triggered(bool)),             this, SLOT(OnActionVariationsDialog(bool)), Qt::ConnectionType::QueuedConnection);
 	//Setting dimensions in the designer with a layout is futile, so must hard code here.
 	tree->setColumnWidth(0, 170);
 	tree->setColumnWidth(1, 80);
 	//tree->setColumnWidth(2, 20);
 	//Set Default variation tree text and background colors for zero and non zero cases.
-	m_VariationTreeColorNonZero = Qt::black;
-	m_VariationTreeColorZero = Qt::black;
-	m_VariationTreeBgColorNonZero = Qt::lightGray;
-	m_VariationTreeBgColorZero = Qt::white;
+	m_VariationTreeColorNonZero = Qt::GlobalColor::black;
+	m_VariationTreeColorZero = Qt::GlobalColor::black;
+	m_VariationTreeBgColorNonZero = Qt::GlobalColor::lightGray;
+	m_VariationTreeBgColorZero = Qt::GlobalColor::white;
 }
 
 /// <summary>
@@ -65,11 +65,11 @@ void FractoriumEmberController<T>::Filter(const QString& text)
 			}
 			else if (ids.contains(varName))//If the varation is the map of all variations, which is should always be, consider it as well as the filter text.
 			{
-				item->setHidden(!varName.contains(text, Qt::CaseInsensitive) || !ids[varName].toBool());
+				item->setHidden(!varName.contains(text, Qt::CaseSensitivity::CaseInsensitive) || !ids[varName].toBool());
 			}
 			else//Wasn't present, which should never happen, so just consider filter text.
 			{
-				item->setHidden(!varName.contains(text, Qt::CaseInsensitive));
+				item->setHidden(!varName.contains(text, Qt::CaseSensitivity::CaseInsensitive));
 			}
 		}
 	}
@@ -90,7 +90,7 @@ void FractoriumEmberController<T>::FilteredVariations()
 	m_FilteredVariations.clear();
 	m_FilteredVariations.reserve(map.size());
 
-    for (size_t i = 0; i < m_VariationList->Size(); i++)
+	for (size_t i = 0; i < m_VariationList->Size(); i++)
 		if (const auto var = m_VariationList->GetVariation(i))
 			if (map.contains(var->Name().c_str()) && map[var->Name().c_str()].toBool())
 				m_FilteredVariations.push_back(var->VariationId());
@@ -112,7 +112,7 @@ void FractoriumEmberController<T>::SetupVariationsTree()
 	const QSize hint1(80, 16);
 	//const QSize hint2(20, 16);
 	QPixmap pixmap(iconSize * 3, iconSize);
-	auto mask = pixmap.createMaskFromColor(QColor("transparent"), Qt::MaskOutColor);
+	auto mask = pixmap.createMaskFromColor(QColor("transparent"), Qt::MaskMode::MaskOutColor);
 	auto tree = m_Fractorium->ui.VariationsTree;
 	tree->clear();
 	tree->blockSignals(true);
@@ -140,7 +140,7 @@ void FractoriumEmberController<T>::SetupVariationsTree()
 		spinBox->DoubleClickNonZero(0);
 		spinBox->SmallStep(0.001);
 		tree->setItemWidget(item, 1, spinBox);
-		m_Fractorium->connect(spinBox, SIGNAL(valueChanged(double)), SLOT(OnVariationSpinBoxValueChanged(double)), Qt::QueuedConnection);
+		m_Fractorium->connect(spinBox, SIGNAL(valueChanged(double)), SLOT(OnVariationSpinBoxValueChanged(double)), Qt::ConnectionType::QueuedConnection);
 
 		//Check to see if the variation was parametric, and add a tree entry with a spinner for each parameter.
 		if (parVar)
@@ -173,7 +173,7 @@ void FractoriumEmberController<T>::SetupVariationsTree()
 					}
 
 					tree->setItemWidget(paramWidget, 1, varSpinBox);
-					m_Fractorium->connect(varSpinBox, SIGNAL(valueChanged(double)), SLOT(OnVariationSpinBoxValueChanged(double)), Qt::QueuedConnection);
+					m_Fractorium->connect(varSpinBox, SIGNAL(valueChanged(double)), SLOT(OnVariationSpinBoxValueChanged(double)), Qt::ConnectionType::QueuedConnection);
 				}
 			}
 		}
@@ -384,7 +384,7 @@ QIcon FractoriumEmberController<T>::MakeVariationIcon(const Variation<T>* var, i
 	static vector<string> assign{ "outPoint->m_X =", "outPoint->m_Y =", "outPoint->m_Z =",
 								  "outPoint->m_X=", "outPoint->m_Y=", "outPoint->m_Z=" };
 	QPixmap pixmap(iconSize * 3, iconSize);
-	auto mask = pixmap.createMaskFromColor(QColor("transparent"), Qt::MaskOutColor);
+	auto mask = pixmap.createMaskFromColor(QColor("transparent"), Qt::MaskMode::MaskOutColor);
 	pixmap.setMask(mask);
 	QPainter paint(&pixmap);
 	paint.fillRect(QRect(0, 0, iconSize * 3, iconSize), QColor(0, 0, 0, 0));
@@ -423,7 +423,7 @@ void Fractorium::OnTreeHeaderSectionClicked(int logicalIndex)
 	if (logicalIndex <= 1)
 	{
 		m_VarSortMode = logicalIndex;
-		ui.VariationsTree->sortItems(m_VarSortMode, m_VarSortMode == 0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+		ui.VariationsTree->sortItems(m_VarSortMode, m_VarSortMode == 0 ? Qt::SortOrder::AscendingOrder : Qt::SortOrder::DescendingOrder);
 
 		if (m_VarSortMode == 1)
 			ui.VariationsTree->scrollToTop();

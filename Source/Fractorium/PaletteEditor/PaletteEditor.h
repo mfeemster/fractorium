@@ -56,8 +56,8 @@ private Q_SLOTS:
 	void OnCreatePaletteAgainFromImageButton();
 	void OnColorPickerColorChanged(const QColor& col);
 	void OnArrowDoubleClicked(const GradientArrow& arrow);
-	void OnSyncCheckBoxStateChanged(int state);
-	void OnBlendCheckBoxStateChanged(int state);
+	void OnSyncCheckBoxStateChanged(Qt::CheckState state);
+	void OnBlendCheckBoxStateChanged(Qt::CheckState state);
 	void OnArrowMoved(qreal lastPos, const GradientArrow& arrow);
 	void OnColorIndexMove(size_t index, float value);
 	void OnPaletteFilenameComboChanged(const QString& text);

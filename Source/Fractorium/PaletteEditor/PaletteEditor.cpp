@@ -14,8 +14,8 @@ PaletteEditor::PaletteEditor(QWidget* p) :
 {
 	ui->setupUi(this);
 	m_ColorPicker = new ColorPickerWidget(this);
-	m_ColorPicker->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	m_ColorPicker->SetColorPanelColor(Qt::black);
+	m_ColorPicker->setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Minimum);
+	m_ColorPicker->SetColorPanelColor(Qt::GlobalColor::black);
 	QVBoxLayout* colorLayout = new QVBoxLayout();
 	colorLayout->setContentsMargins(3, 3, 3, 3);
 	colorLayout->addWidget(m_ColorPicker);
@@ -34,11 +34,11 @@ PaletteEditor::PaletteEditor(QWidget* p) :
 	connect(ui->ResetColorsButton,                 SIGNAL(clicked()),                                this, SLOT(OnResetToDefaultButtonClicked()));
 	connect(ui->RandomColorsButton,                SIGNAL(clicked()),                                this, SLOT(OnRandomColorsButtonClicked()));
 	connect(ui->DistributeColorsButton,            SIGNAL(clicked()),                                this, SLOT(OnDistributeColorsButtonClicked()));
-	connect(ui->SyncCheckBox,                      SIGNAL(stateChanged(int)),                        this, SLOT(OnSyncCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui->BlendCheckBox,                     SIGNAL(stateChanged(int)),                        this, SLOT(OnBlendCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui->PaletteFilenameCombo,              SIGNAL(currentTextChanged(const QString&)),       this, SLOT(OnPaletteFilenameComboChanged(const QString&)), Qt::QueuedConnection);
-	connect(ui->PaletteListTable,                  SIGNAL(cellClicked(int, int)),                    this, SLOT(OnPaletteCellClicked(int, int)), Qt::QueuedConnection);
-	connect(ui->PaletteListTable,                  SIGNAL(cellChanged(int, int)),                    this, SLOT(OnPaletteCellChanged(int, int)), Qt::QueuedConnection);
+	connect(ui->SyncCheckBox,                      SIGNAL(checkStateChanged(Qt::CheckState)),        this, SLOT(OnSyncCheckBoxStateChanged(Qt::CheckState)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui->BlendCheckBox,                     SIGNAL(checkStateChanged(Qt::CheckState)),        this, SLOT(OnBlendCheckBoxStateChanged(Qt::CheckState)),   Qt::ConnectionType::QueuedConnection);
+	connect(ui->PaletteFilenameCombo,              SIGNAL(currentTextChanged(const QString&)),       this, SLOT(OnPaletteFilenameComboChanged(const QString&)), Qt::ConnectionType::QueuedConnection);
+	connect(ui->PaletteListTable,                  SIGNAL(cellClicked(int, int)),                    this, SLOT(OnPaletteCellClicked(int, int)),                Qt::ConnectionType::QueuedConnection);
+	connect(ui->PaletteListTable,                  SIGNAL(cellChanged(int, int)),                    this, SLOT(OnPaletteCellChanged(int, int)),                Qt::ConnectionType::QueuedConnection);
 	connect(ui->NewPaletteFileButton,              SIGNAL(clicked()),                                this, SLOT(OnNewPaletteFileButtonClicked()));
 	connect(ui->CopyPaletteFileButton,             SIGNAL(clicked()),                                this, SLOT(OnCopyPaletteFileButtonClicked()));
 	connect(ui->AppendPaletteButton,               SIGNAL(clicked()),                                this, SLOT(OnAppendPaletteButtonClicked()));
@@ -102,7 +102,7 @@ void PaletteEditor::SetPalette(const Palette<float>& palette)
 	if (palette.m_Filename.get())
 	{
 		QFileInfo info(QString::fromStdString(*palette.m_Filename.get()));
-		combo->setCurrentIndex(combo->findData(info.fileName(), Qt::DisplayRole));
+		combo->setCurrentIndex(combo->findData(info.fileName(), Qt::ItemDataRole::DisplayRole));
 	}
 
 	EnablePaletteControls();
@@ -304,7 +304,7 @@ void PaletteEditor::OnArrowDoubleClicked(const GradientArrow& arrow)
 /// Called when the Sync checkbox is checked/unchecked.
 /// </summary>
 /// <param name="state">Ignored</param>
-void PaletteEditor::OnSyncCheckBoxStateChanged(int state)
+void PaletteEditor::OnSyncCheckBoxStateChanged(Qt::CheckState state)
 {
 	EmitPaletteChanged();
 	EmitColorIndexChanged(std::numeric_limits<size_t>::max(), 0);//Pass special value to update all.
@@ -315,9 +315,9 @@ void PaletteEditor::OnSyncCheckBoxStateChanged(int state)
 /// Called when the Blend checkbox is checked/unchecked.
 /// </summary>
 /// <param name="state">Ignored</param>
-void PaletteEditor::OnBlendCheckBoxStateChanged(int state)
+void PaletteEditor::OnBlendCheckBoxStateChanged(Qt::CheckState state)
 {
-	m_GradientColorView->Blend(static_cast<bool>(state));
+	m_GradientColorView->Blend(state == Qt::CheckState::Checked);
 	m_GradientColorView->update();
 	EmitPaletteChanged();
 }

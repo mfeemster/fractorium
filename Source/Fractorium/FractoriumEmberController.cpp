@@ -401,7 +401,7 @@ void TreePreviewRenderer<T>::PreviewRenderFunc(uint start, uint end)
 		double total = end - start;
 
 		if (m_Pb)
-			QMetaObject::invokeMethod(m_Pb, "setValue", Qt::QueuedConnection, Q_ARG(const int, 0));
+			QMetaObject::invokeMethod(m_Pb, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(const int, 0));
 
 		for (auto b = Advance(m_EmberFile.m_Embers.begin(), start); m_PreviewRun && i < end && b != m_EmberFile.m_Embers.end(); ++b, ++i)
 		{
@@ -422,7 +422,7 @@ void TreePreviewRenderer<T>::PreviewRenderFunc(uint start, uint end)
 					//until the update is complete.
 					if (m_PreviewRun)
 					{
-						QMetaObject::invokeMethod(f, "SetTreeItemData", Qt::DirectConnection,
+						QMetaObject::invokeMethod(f, "SetTreeItemData", Qt::ConnectionType::DirectConnection,
 												  Q_ARG(EmberTreeWidgetItemBase*, treeItem),
 												  Q_ARG(vv4F&, m_PreviewFinalImage),
 												  Q_ARG(uint, PREVIEW_SIZE),
@@ -430,7 +430,7 @@ void TreePreviewRenderer<T>::PreviewRenderFunc(uint start, uint end)
 						prc = 100.0 * (++ct / total);
 
 						if (m_Pb)
-							QMetaObject::invokeMethod(m_Pb, "setValue", Qt::QueuedConnection, Q_ARG(const int, int(prc)));
+							QMetaObject::invokeMethod(m_Pb, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(const int, int(prc)));
 
 						treeItem->SetRendered();
 					}
@@ -439,7 +439,7 @@ void TreePreviewRenderer<T>::PreviewRenderFunc(uint start, uint end)
 		}
 
 		if (m_Pb)
-			QMetaObject::invokeMethod(m_Pb, "setValue", Qt::QueuedConnection, Q_ARG(const int, 100));
+			QMetaObject::invokeMethod(m_Pb, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(const int, 100));
 	}
 }
 

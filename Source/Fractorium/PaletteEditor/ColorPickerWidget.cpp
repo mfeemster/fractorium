@@ -33,7 +33,7 @@ ColorPickerWidget::ColorPickerWidget(QWidget* p)
 	m_ColorDialog = new QColorDialog(this);
 	m_ColorPanel->Color(m_ColorTriangle->Color());
 	connect(m_ColorTriangle, SIGNAL(ColorChanged(const QColor&)), this, SLOT(OnTriangleColorChanged(const QColor&)));
-	connect(m_ColorPanel, SIGNAL(clicked()), this, SLOT(OnColorViewerClicked()));
+	connect(m_ColorPanel,    SIGNAL(clicked()),                   this, SLOT(OnColorViewerClicked()));
 	auto layout = new QGridLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
 	layout->addWidget(m_ColorTriangle, 0, 0, 3, 1);

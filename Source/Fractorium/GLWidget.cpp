@@ -628,7 +628,7 @@ void GLEmberController<T>::DrawAffines(bool pre, bool post)
 /// <param name="e">The event</param>
 bool GLEmberControllerBase::KeyPress_(QKeyEvent* e)
 {
-	if (e->key() == Qt::Key_Control)
+	if (e->key() == Qt::Key::Key_Control)
 	{
 		SetControl();
 		return true;
@@ -655,7 +655,7 @@ void GLWidget::keyPressEvent(QKeyEvent* e)
 /// <param name="e">The event</param>
 bool GLEmberControllerBase::KeyRelease_(QKeyEvent* e)
 {
-	if (e != nullptr && e->key() == Qt::Key_Control)
+	if (e != nullptr && e->key() == Qt::Key::Key_Control)
 	{
 		ClearControl();
 		return true;
@@ -710,17 +710,17 @@ void GLEmberController<T>::MousePress(QMouseEvent* e)
 	m_BoundsDown.z = renderer->UpperRightY(false);
 	const auto mod = e->modifiers();
 
-	if (mod.testFlag(Qt::ShiftModifier))
+	if (mod.testFlag(Qt::KeyboardModifier::ShiftModifier))
 		SetShift();
 
-	if (mod.testFlag(Qt::AltModifier))
+	if (mod.testFlag(Qt::KeyboardModifier::AltModifier))
 		SetAlt();
 
 	if (m_DragState == eDragState::DragNone)//Only take action if the user wasn't already dragging.
 	{
 		m_MouseDownWorldPos = m_MouseWorldPos;//Set the mouse down position to the current position.
 
-		if (e->button() & Qt::LeftButton)
+		if (e->button() & Qt::MouseButton::LeftButton)
 		{
 			const auto xformIndex = UpdateHover(mouseFlipped);//Determine if an affine circle was clicked.
 
@@ -757,7 +757,7 @@ void GLEmberController<T>::MousePress(QMouseEvent* e)
 			m_CenterDownY = ember->m_CenterY;
 			m_DragState = eDragState::DragPanning;
 		}
-		else if (e->button() == Qt::RightButton)//Right button does whole image rotation and scaling.
+		else if (e->button() == Qt::MouseButton::RightButton)//Right button does whole image rotation and scaling.
 		{
 			if (m_Fractorium->DrawImage())
 			{
@@ -813,7 +813,7 @@ void GLEmberController<T>::MouseRelease(QMouseEvent* e)
 		v3T const mouseFlipped(x * m_GL->devicePixelRatioF(), m_Viewport[3] - y * m_GL->devicePixelRatioF(), 0);//Must flip y because in OpenGL, 0,0 is bottom left, but in windows, it's top left.
 		m_MouseWorldPos = WindowToWorld(mouseFlipped, false);
 
-		if (m_DragState == eDragState::DragDragging && (e->button() & Qt::LeftButton))
+		if (m_DragState == eDragState::DragDragging && (e->button() & Qt::MouseButton::LeftButton))
 			UpdateHover(mouseFlipped);
 
 		if (m_DragState == eDragState::DragNone)
@@ -879,7 +879,7 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 		m_FractoriumEmberController->FillAffineWithXform(m_SelectedXform, pre);//Update the spinners in the affine tab of the main window.
 		m_FractoriumEmberController->UpdateRender();//Restart the rendering process.
 	}
-	else if ((m_DragState == eDragState::DragNone || m_DragState == eDragState::DragSelect) && (e->buttons() & Qt::LeftButton))
+	else if ((m_DragState == eDragState::DragNone || m_DragState == eDragState::DragSelect) && (e->buttons() & Qt::MouseButton::LeftButton))
 	{
 		m_DragState = eDragState::DragSelect;//Only set drag state once the user starts moving the mouse with the left button down.
 		//Iterate over each xform, seeing if it's in the bounding box.
@@ -958,7 +958,7 @@ void GLEmberController<T>::MouseMove(QMouseEvent* e)
 	{
 		//If the user doesn't already have a key down, and they aren't dragging, clear the keys to be safe.
 		//This is done because if they do an alt+tab between windows, it thinks the alt key is down.
-		if (e->modifiers() == Qt::NoModifier)
+		if (e->modifiers() == Qt::KeyboardModifier::NoModifier)
 			ClearDrag();
 
 		//Check if they weren't dragging and weren't hovering over any affine.
@@ -1000,7 +1000,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent* e)
 template <typename T>
 void GLEmberController<T>::Wheel(QWheelEvent* e)
 {
-	if ((e->modifiers() & Qt::AltModifier) && m_Fractorium->DrawXforms())
+	if ((e->modifiers() & Qt::KeyboardModifier::AltModifier) && m_Fractorium->DrawXforms())
 	{
 #ifdef __APPLE__
 		m_FractoriumEmberController->ChangeLockedScale(e->angleDelta().y() >= 0 ? 1.0981 : 0.9);
@@ -1011,7 +1011,7 @@ void GLEmberController<T>::Wheel(QWheelEvent* e)
 	}
 	else
 	{
-		if (m_Fractorium->DrawImage() && !(e->buttons() & Qt::MiddleButton) && !(e->modifiers() & Qt::ShiftModifier))//Middle button does whole image translation, so ignore the mouse wheel while panning to avoid inadvertent zooming. ShiftModifier for sensitive mouse.
+		if (m_Fractorium->DrawImage() && !(e->buttons() & Qt::MouseButton::MiddleButton) && !(e->modifiers() & Qt::KeyboardModifier::ShiftModifier))//Middle button does whole image translation, so ignore the mouse wheel while panning to avoid inadvertent zooming. ShiftModifier for sensitive mouse.
 		{
 			auto ember = m_FractoriumEmberController->CurrentEmber();
 			m_Fractorium->SetScale(ember->m_PixelsPerUnit + (e->angleDelta().y() >= 0 ? 50 : -50));

@@ -18,11 +18,11 @@ FractoriumOptionsDialog::FractoriumOptionsDialog(QWidget* p, Qt::WindowFlags f)
 	m_Info = OpenCLInfo::Instance();
 	auto table = ui.OptionsXmlSavingTable;
 	ui.ThreadCountSpin->setRange(1, Timing::ProcessorCount());
-	connect(ui.OpenCLCheckBox, SIGNAL(stateChanged(int)),	  this, SLOT(OnOpenCLCheckBoxStateChanged(int)),  Qt::QueuedConnection);
-	connect(ui.DeviceTable,	   SIGNAL(cellChanged(int, int)), this, SLOT(OnDeviceTableCellChanged(int, int)), Qt::QueuedConnection);
+	connect(ui.OpenCLCheckBox, SIGNAL(stateChanged(int)),     this, SLOT(OnOpenCLCheckBoxStateChanged(int)),  Qt::ConnectionType::QueuedConnection);
+	connect(ui.DeviceTable,    SIGNAL(cellChanged(int, int)), this, SLOT(OnDeviceTableCellChanged(int, int)), Qt::ConnectionType::QueuedConnection);
 	SetupSpinner<SpinBox, int>(table, this, row, 1, m_XmlTemporalSamplesSpin, spinHeight,  1, 100000, 100, "", "", true,  300,  100,  100);
-	SetupSpinner<SpinBox, int>(table, this, row, 1, m_XmlQualitySpin,		  spinHeight,  1, 200000,  50, "", "", true, 1000, 1000, 1000);
-	SetupSpinner<SpinBox, int>(table, this, row, 1, m_XmlSupersampleSpin,	  spinHeight,  1,	   4,   1, "", "", true,    2,    2,    2);
+	SetupSpinner<SpinBox, int>(table, this, row, 1, m_XmlQualitySpin,         spinHeight,  1, 200000,  50, "", "", true, 1000, 1000, 1000);
+	SetupSpinner<SpinBox, int>(table, this, row, 1, m_XmlSupersampleSpin,     spinHeight,  1,      4,   1, "", "", true,    2,    2,    2);
 	m_IdEdit = new QLineEdit(ui.OptionsIdentityTable);
 	ui.OptionsIdentityTable->setCellWidget(0, 1, m_IdEdit);
 	m_UrlEdit = new QLineEdit(ui.OptionsIdentityTable);
@@ -65,7 +65,7 @@ FractoriumOptionsDialog::FractoriumOptionsDialog(QWidget* p, Qt::WindowFlags f)
 
 		for (auto i = 0; i < table->rowCount(); i++)
 			if (auto radio = qobject_cast<QRadioButton*>(table->cellWidget(i, 1)))
-				connect(radio, SIGNAL(toggled(bool)), this, SLOT(OnDeviceTableRadioToggled(bool)), Qt::QueuedConnection);
+				connect(radio, SIGNAL(toggled(bool)), this, SLOT(OnDeviceTableRadioToggled(bool)), Qt::ConnectionType::QueuedConnection);
 	}
 	else
 	{
@@ -118,7 +118,7 @@ uint FractoriumOptionsDialog::OpenClQuality() { return ui.OpenCLQualitySpin->val
 /// <param name="col">The column of the cell</param>
 void FractoriumOptionsDialog::OnDeviceTableCellChanged(int row, int col)
 {
-    if (ui.DeviceTable->item(row, col) != nullptr)
+	if (ui.DeviceTable->item(row, col) != nullptr)
 		HandleDeviceTableCheckChanged(ui.DeviceTable, row, col);
 }
 
@@ -138,7 +138,7 @@ void FractoriumOptionsDialog::OnDeviceTableRadioToggled(bool checked)
 	if (s)
 	{
 		for (row = 0; row < table->rowCount(); row++)
-            if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
+			if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
 				if (s == radio)
 				{
 					HandleDeviceTableCheckChanged(ui.DeviceTable, row, 1);
@@ -154,7 +154,7 @@ void FractoriumOptionsDialog::OnDeviceTableRadioToggled(bool checked)
 /// <param name="state">The state of the checkbox</param>
 void FractoriumOptionsDialog::OnOpenCLCheckBoxStateChanged(int state)
 {
-	const auto checked = state == Qt::Checked;
+	const auto checked = state == Qt::CheckState::Checked;
 	ui.DeviceTable->setEnabled(checked);
 	ui.ThreadCountSpin->setEnabled(!checked);
 	ui.CpuSubBatchSpin->setEnabled(!checked);

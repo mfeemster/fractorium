@@ -29,8 +29,8 @@ GradientColorsView::GradientColorsView(QWidget* p)
 {
 	m_ViewRect = QRect(QPoint(0, 0), QPoint(0, 0));
 	qRegisterMetaType<GradientArrow>("GradientArrow");
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	setFocusPolicy(Qt::StrongFocus);
+	setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+	setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 	setMinimumSize(p->width() - 10, p->height() - 10);
 	setMouseTracking(true);
 	ResetToDefault();
@@ -293,8 +293,8 @@ void GradientColorsView::DistributeColors()
 void GradientColorsView::ResetToDefault()
 {
 	ClearArrows();
-	AddArrow(0.0, Qt::white);
-	AddArrow(1.0, Qt::black);
+	AddArrow(0.0, Qt::GlobalColor::white);
+	AddArrow(1.0, Qt::GlobalColor::black);
 }
 
 /// <summary>
@@ -555,7 +555,7 @@ void GradientColorsView::paintEvent(QPaintEvent*)
 				paintPath.addRect(iPosX + 5, iPosY + 20, 10, 5);
 
 			painter.drawPath(paintPath);
-			painter.setBrush(QBrush(Qt::NoBrush));
+			painter.setBrush(QBrush(Qt::BrushStyle::NoBrush));
 		}
 
 		if (Blend())
@@ -598,7 +598,7 @@ void GradientColorsView::mousePressEvent(QMouseEvent* e)
 		QPolygon poly = arrow.Area();
 		poly.translate(it.first * m_ViewRectSize.x(), m_ViewRectSize.y());
 
-		if (poly.containsPoint(m_DragStart, Qt::OddEvenFill))
+		if (poly.containsPoint(m_DragStart, Qt::FillRule::OddEvenFill))
 		{
 			m_ArrowMoving = true;
 			arrow.Focus(true);
@@ -613,7 +613,7 @@ void GradientColorsView::mousePressEvent(QMouseEvent* e)
 		QPolygon poly = arrow.Area();
 		poly.translate(it.second.first * m_ViewRectSize.x(), 0);
 
-		if (poly.containsPoint(m_DragStart, Qt::OddEvenFill))
+		if (poly.containsPoint(m_DragStart, Qt::FillRule::OddEvenFill))
 		{
 			m_ColorIndexArrowMoving = true;
 			arrow.Focus(true);
@@ -637,7 +637,7 @@ void GradientColorsView::mouseDoubleClickEvent(QMouseEvent* e)
 		QPolygon poly = arrow.Area();
 		poly.translate(it.first * m_ViewRectSize.x(), m_ViewRectSize.y());
 
-		if (poly.containsPoint(e->pos(), Qt::OddEvenFill))
+		if (poly.containsPoint(e->pos(), Qt::FillRule::OddEvenFill))
 		{
 			arrow.Focus(true);
 			emit ArrowDoubleClicked(arrow);

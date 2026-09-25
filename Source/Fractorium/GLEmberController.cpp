@@ -58,7 +58,7 @@ GLEmberController<T>::~GLEmberController() { }
 template <typename T>
 bool GLEmberController<T>::CheckForSizeMismatch(int w, int h)
 {
-    return m_FractoriumEmberController->FinalRasW() != (size_t)w || m_FractoriumEmberController->FinalRasH() != (size_t)h;
+	return m_FractoriumEmberController->FinalRasW() != (size_t)w || m_FractoriumEmberController->FinalRasH() != (size_t)h;
 }
 
 /// <summary>

@@ -364,6 +364,9 @@
     <ClInclude Include="GeneratedFiles\ui_QssDialog.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+	<ClInclude Include="..\..\..\Source\Fractorium\qcssscanner.h">
+		<Filter>Dialogs\Qss</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\Fractorium\qcssparser.h">
       <Filter>Dialogs\Qss</Filter>
     </ClInclude>

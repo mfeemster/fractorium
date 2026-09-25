@@ -7,8 +7,8 @@
 void Fractorium::InitXformsSelectUI()
 {
 	m_XformsSelectionLayout = dynamic_cast<QFormLayout*>(ui.XformsSelectGroupBoxScrollAreaWidget->layout());
-	connect(ui.XformsSelectAllButton,  SIGNAL(clicked(bool)), this, SLOT(OnXformsSelectAllButtonClicked(bool)),  Qt::QueuedConnection);
-	connect(ui.XformsSelectNoneButton, SIGNAL(clicked(bool)), this, SLOT(OnXformsSelectNoneButtonClicked(bool)), Qt::QueuedConnection);
+	connect(ui.XformsSelectAllButton,  SIGNAL(clicked(bool)), this, SLOT(OnXformsSelectAllButtonClicked(bool)),  Qt::ConnectionType::QueuedConnection);
+	connect(ui.XformsSelectNoneButton, SIGNAL(clicked(bool)), this, SLOT(OnXformsSelectNoneButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	ClearXformsSelections();
 }
 

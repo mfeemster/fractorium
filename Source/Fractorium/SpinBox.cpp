@@ -26,13 +26,13 @@ SpinBox::SpinBox(QWidget* p, int h, int step)
 	setSingleStep(step);
 	setFrame(false);
 	setButtonSymbols(QAbstractSpinBox::NoButtons);
-	setFocusPolicy(Qt::StrongFocus);
+	setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 	setMinimumHeight(h);//setGeometry() has no effect, so set both of these instead.
 	setMaximumHeight(h);
-	setContextMenuPolicy(Qt::PreventContextMenu);
+	setContextMenuPolicy(Qt::ContextMenuPolicy::PreventContextMenu);
 	lineEdit()->installEventFilter(this);
-	lineEdit()->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)), Qt::QueuedConnection);
+	lineEdit()->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
+	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)), Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -140,8 +140,8 @@ void SpinBox::OnTimeout()
 	distance = Sqr(distance) * (distance < 0 ? -1 : 1);
 	double scale, val;
 	int d = value();
-	bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 	double amount = (m_SmallStep + m_Step) * 0.5;
 
 	if (shift)
@@ -172,7 +172,7 @@ bool SpinBox::eventFilter(QObject* o, QEvent* e)
 	{
 		if (!m_Settings->ToggleType() &&//Ensure double click toggles, not right click.
 				me->type() == QMouseEvent::MouseButtonPress &&
-				me->button() == Qt::RightButton)
+				me->button() == Qt::MouseButton::RightButton)
 		{
 			m_MouseDownPoint = m_MouseMovePoint = me->pos();
 			StartTimer();
@@ -181,7 +181,7 @@ bool SpinBox::eventFilter(QObject* o, QEvent* e)
 		}
 		else if (!m_Settings->ToggleType() &&
 				 me->type() == QMouseEvent::MouseButtonRelease &&
-				 me->button() == Qt::RightButton)
+				 me->button() == Qt::MouseButton::RightButton)
 		{
 			StopTimer();
 			m_MouseDownPoint = m_MouseMovePoint = me->pos();
@@ -190,15 +190,15 @@ bool SpinBox::eventFilter(QObject* o, QEvent* e)
 		}
 		else if (!m_Settings->ToggleType() &&
 				 me->type() == QMouseEvent::MouseMove &&
-				 QGuiApplication::mouseButtons() & Qt::RightButton)
+				 QGuiApplication::mouseButtons() & Qt::MouseButton::RightButton)
 		{
 			m_MouseMovePoint = me->pos();
 			e->accept();
 			return true;
 		}
 		else if (m_DoubleClick &&
-				 ((!m_Settings->ToggleType() && e->type() == QMouseEvent::MouseButtonDblClick && me->button() == Qt::LeftButton) ||
-				  (m_Settings->ToggleType() && me->type() == QMouseEvent::MouseButtonRelease && me->button() == Qt::RightButton)))
+				 ((!m_Settings->ToggleType() && e->type() == QMouseEvent::MouseButtonDblClick && me->button() == Qt::MouseButton::LeftButton) ||
+				  (m_Settings->ToggleType() && me->type() == QMouseEvent::MouseButtonRelease && me->button() == Qt::MouseButton::RightButton)))
 		{
 			if (m_DoubleClickLowVal == value())
 			{
@@ -221,8 +221,8 @@ bool SpinBox::eventFilter(QObject* o, QEvent* e)
 		{
 			if (QWheelEvent* we = dynamic_cast<QWheelEvent*>(e))
 			{
-				const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-				const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+				const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+				const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 
 				if (we->angleDelta().ry() > 0)
 				{
@@ -273,10 +273,10 @@ bool SpinBox::eventFilter(QObject* o, QEvent* e)
 /// <param name="ke">The key event</param>
 void SpinBox::keyPressEvent(QKeyEvent* ke)
 {
-	bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 
-	if (ke->key() == Qt::Key_Up)
+	if (ke->key() == Qt::Key::Key_Up)
 	{
 		if (shift)
 		{
@@ -291,7 +291,7 @@ void SpinBox::keyPressEvent(QKeyEvent* ke)
 
 		ke->accept();
 	}
-	else if (ke->key() == Qt::Key_Down)
+	else if (ke->key() == Qt::Key::Key_Down)
 	{
 		if (shift)
 		{
@@ -306,7 +306,7 @@ void SpinBox::keyPressEvent(QKeyEvent* ke)
 
 		ke->accept();
 	}
-	else if (ke->key() == Qt::Key_Space)
+	else if (ke->key() == Qt::Key::Key_Space)
 	{
 		if (m_DoubleClickLowVal == value())
 		{

@@ -241,7 +241,7 @@ public:
 	virtual void XformColorSpeedChanged(double d) { }
 	virtual void XformOpacityChanged(double d) { }
 	virtual void XformDirectColorChanged(double d) { }
-	virtual void SoloXformCheckBoxStateChanged(int state, int index) { }
+	virtual void SoloXformCheckBoxStateChanged(Qt::CheckState state, int index) { }
 	virtual QColor ColorIndexToQColor(double d) { return QColor(); }
 
 	//Xforms Variations.
@@ -554,7 +554,7 @@ public:
 	void XformColorSpeedChanged(double d) override;
 	void XformOpacityChanged(double d) override;
 	void XformDirectColorChanged(double d) override;
-	void SoloXformCheckBoxStateChanged(int state, int index) override;
+	void SoloXformCheckBoxStateChanged(Qt::CheckState state, int index) override;
 	QColor ColorIndexToQColor(double d) override;
 	void FillColorWithXform(Xform<T>* xform);
 

@@ -191,28 +191,28 @@ void CssHighlighter::highlight(const QString& text, int start, int length, int s
 			break;
 
 		case Property:
-			setFormat(start, length, Qt::darkBlue);
+			setFormat(start, length, Qt::GlobalColor::darkBlue);
 			break;
 
 		case Value:
-			setFormat(start, length, Qt::black);
+			setFormat(start, length, Qt::GlobalColor::black);
 			break;
 
 		case Pseudo1:
-			setFormat(start, length, Qt::darkRed);
+			setFormat(start, length, Qt::GlobalColor::darkRed);
 			break;
 
 		case Pseudo2:
-			setFormat(start, length, Qt::black);
+			setFormat(start, length, Qt::GlobalColor::black);
 			break;
 
 		case Quote:
-			setFormat(start, length, Qt::darkMagenta);
+			setFormat(start, length, Qt::GlobalColor::darkMagenta);
 			break;
 
 		case Comment:
 		case MaybeCommentEnd:
-			format.setForeground(Qt::darkGreen);
+			format.setForeground(Qt::GlobalColor::darkGreen);
 			setFormat(start, length, format);
 			break;
 

@@ -25,29 +25,29 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	m_Info = OpenCLInfo::Instance();
 	m_Fractorium = qobject_cast<Fractorium*>(p);
 	m_Settings = FractoriumSettings::DefInstance();
-	ui.FinalRenderIterationProgress->setAlignment(Qt::AlignCenter);
-	ui.FinalRenderFilteringProgress->setAlignment(Qt::AlignCenter);
-	ui.FinalRenderAccumProgress->setAlignment(Qt::AlignCenter);
-	ui.FinalRenderTotalProgress->setAlignment(Qt::AlignCenter);
+	ui.FinalRenderIterationProgress->setAlignment(Qt::AlignmentFlag::AlignCenter);
+	ui.FinalRenderFilteringProgress->setAlignment(Qt::AlignmentFlag::AlignCenter);
+	ui.FinalRenderAccumProgress->setAlignment(Qt::AlignmentFlag::AlignCenter);
+	ui.FinalRenderTotalProgress->setAlignment(Qt::AlignmentFlag::AlignCenter);
 	ui.FinalRenderThreadCountSpin->setRange(1, Timing::ProcessorCount());
-	connect(ui.FinalRenderEarlyClipCheckBox,	   SIGNAL(stateChanged(int)),		 this, SLOT(OnEarlyClipCheckBoxStateChanged(int)),		 Qt::QueuedConnection);
-	connect(ui.FinalRenderYAxisUpCheckBox,	       SIGNAL(stateChanged(int)),		 this, SLOT(OnYAxisUpCheckBoxStateChanged(int)),		 Qt::QueuedConnection);
-	connect(ui.FinalRenderTransparencyCheckBox,	   SIGNAL(stateChanged(int)),		 this, SLOT(OnTransparencyCheckBoxStateChanged(int)),	 Qt::QueuedConnection);
-	connect(ui.FinalRenderOpenCLCheckBox,		   SIGNAL(stateChanged(int)),		 this, SLOT(OnOpenCLCheckBoxStateChanged(int)),		     Qt::QueuedConnection);
-	connect(ui.FinalRenderDoublePrecisionCheckBox, SIGNAL(stateChanged(int)),		 this, SLOT(OnDoublePrecisionCheckBoxStateChanged(int)), Qt::QueuedConnection);
-	connect(ui.FinalRenderDoAllCheckBox,		   SIGNAL(stateChanged(int)),		 this, SLOT(OnDoAllCheckBoxStateChanged(int)),			 Qt::QueuedConnection);
-	connect(ui.FinalRenderDoSequenceCheckBox,	   SIGNAL(stateChanged(int)),		 this, SLOT(OnDoSequenceCheckBoxStateChanged(int)),		 Qt::QueuedConnection);
-	connect(ui.FinalRenderCurrentSpin,			   SIGNAL(valueChanged(int)),		 this, SLOT(OnCurrentSpinChanged(int)),		             Qt::QueuedConnection);
-	connect(ui.FinalRenderApplyToAllCheckBox,	   SIGNAL(stateChanged(int)),		 this, SLOT(OnApplyAllCheckBoxStateChanged(int)),		 Qt::QueuedConnection);
-	connect(ui.FinalRenderKeepAspectCheckBox,	   SIGNAL(stateChanged(int)),		 this, SLOT(OnKeepAspectCheckBoxStateChanged(int)),		 Qt::QueuedConnection);
-	connect(ui.FinalRenderScaleNoneRadioButton,	   SIGNAL(toggled(bool)),			 this, SLOT(OnScaleRadioButtonChanged(bool)),			 Qt::QueuedConnection);
-	connect(ui.FinalRenderScaleWidthRadioButton,   SIGNAL(toggled(bool)),			 this, SLOT(OnScaleRadioButtonChanged(bool)),			 Qt::QueuedConnection);
-	connect(ui.FinalRenderScaleHeightRadioButton,  SIGNAL(toggled(bool)),			 this, SLOT(OnScaleRadioButtonChanged(bool)),			 Qt::QueuedConnection);
-	connect(ui.FinalRenderDeviceTable,			   SIGNAL(cellChanged(int, int)),	 this, SLOT(OnDeviceTableCellChanged(int, int)),		 Qt::QueuedConnection);
-	SetupSpinner<DoubleSpinBox, double>(ui.FinalRenderSizeTable, this, row, -1, m_WidthScaleSpin,  spinHeight, 0.001, 99.99, 0.1, SIGNAL(valueChanged(double)), SLOT(OnWidthScaleChanged(double)), true, 1.0, 1.0, 1.0);
-	SetupSpinner<SpinBox, int>(ui.FinalRenderSizeTable, this, row, -1, m_WidthSpin,  spinHeight, 10, std::numeric_limits<int>::max(), 10, SIGNAL(valueChanged(int)), SLOT(OnWidthChanged(int)), true, 1920, 1920, 1920);
-	SetupSpinner<DoubleSpinBox, double>(ui.FinalRenderSizeTable, this, row, -1, m_HeightScaleSpin, spinHeight, 0.001, 99.99, 0.1, SIGNAL(valueChanged(double)), SLOT(OnHeightScaleChanged(double)), true, 1.0, 1.0, 1.0);
-	SetupSpinner<SpinBox, int>(ui.FinalRenderSizeTable, this, row, -1, m_HeightSpin, spinHeight, 10, std::numeric_limits<int>::max(), 10, SIGNAL(valueChanged(int)), SLOT(OnHeightChanged(int)), true, 1080, 1080, 1080);
+	connect(ui.FinalRenderEarlyClipCheckBox,       SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnEarlyClipCheckBoxStateChanged(Qt::CheckState)),       Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderYAxisUpCheckBox,         SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnYAxisUpCheckBoxStateChanged(Qt::CheckState)),         Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderTransparencyCheckBox,    SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnTransparencyCheckBoxStateChanged(Qt::CheckState)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderOpenCLCheckBox,          SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnOpenCLCheckBoxStateChanged(Qt::CheckState)),          Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderDoublePrecisionCheckBox, SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnDoublePrecisionCheckBoxStateChanged(Qt::CheckState)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderDoAllCheckBox,           SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnDoAllCheckBoxStateChanged(Qt::CheckState)),           Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderDoSequenceCheckBox,      SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnDoSequenceCheckBoxStateChanged(Qt::CheckState)),      Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderCurrentSpin,             SIGNAL(valueChanged(int)),                   this, SLOT(OnCurrentSpinChanged(int)),                             Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderApplyToAllCheckBox,      SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnApplyAllCheckBoxStateChanged(Qt::CheckState)),        Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderKeepAspectCheckBox,      SIGNAL(checkStateChanged(Qt::CheckState)),   this, SLOT(OnKeepAspectCheckBoxStateChanged(Qt::CheckState)),      Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderScaleNoneRadioButton,    SIGNAL(toggled(bool)),                       this, SLOT(OnScaleRadioButtonChanged(bool)),                       Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderScaleWidthRadioButton,   SIGNAL(toggled(bool)),                       this, SLOT(OnScaleRadioButtonChanged(bool)),                       Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderScaleHeightRadioButton,  SIGNAL(toggled(bool)),                       this, SLOT(OnScaleRadioButtonChanged(bool)),                       Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderDeviceTable,             SIGNAL(cellChanged(int, int)),               this, SLOT(OnDeviceTableCellChanged(int, int)),                    Qt::ConnectionType::QueuedConnection);
+	SetupSpinner<DoubleSpinBox, double>(ui.FinalRenderSizeTable, this, row, -1, m_WidthScaleSpin,  spinHeight, 0.001,                           99.99, 0.1, SIGNAL(valueChanged(double)), SLOT(OnWidthScaleChanged(double)),  true,  1.0,  1.0,  1.0);
+	SetupSpinner<SpinBox, int>         (ui.FinalRenderSizeTable, this, row, -1, m_WidthSpin,       spinHeight,    10, std::numeric_limits<int>::max(),  10, SIGNAL(valueChanged(int)),    SLOT(OnWidthChanged(int)),          true, 1920, 1920, 1920);
+	SetupSpinner<DoubleSpinBox, double>(ui.FinalRenderSizeTable, this, row, -1, m_HeightScaleSpin, spinHeight, 0.001,                           99.99, 0.1, SIGNAL(valueChanged(double)), SLOT(OnHeightScaleChanged(double)), true,  1.0,  1.0,  1.0);
+	SetupSpinner<SpinBox, int>         (ui.FinalRenderSizeTable, this, row, -1, m_HeightSpin,      spinHeight,    10, std::numeric_limits<int>::max(),  10, SIGNAL(valueChanged(int)),    SLOT(OnHeightChanged(int)),         true, 1080, 1080, 1080);
 	m_SubBatchPctSpin = ui.FinalRenderOpenCLSubBatchPctSpin;
 	m_SubBatchPctSpin->DoubleClick(true);
 	m_SubBatchPctSpin->DoubleClickZero(0.025);
@@ -75,10 +75,10 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	m_HeightSpinnerWidget->setMaximumWidth(spinsize);
 	ui.FinalRenderSizeTable->setCellWidget(1, 1, m_HeightSpinnerWidget);
 	row = 0;
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_QualitySpin,		    spinHeight,  1, dmax, 50, SIGNAL(valueChanged(double)), SLOT(OnQualityChanged(double)),	     true, 1000, 1000, 1000);
-	SetupSpinner<SpinBox, int>         (table, this, row, 1, m_TemporalSamplesSpin, spinHeight,  1, 5000, 50, SIGNAL(valueChanged(int)),    SLOT(OnTemporalSamplesChanged(int)), true, 1000, 1000, 1000);
-	SetupSpinner<SpinBox, int>         (table, this, row, 1, m_SupersampleSpin,	    spinHeight,	 1,	   4,  1, SIGNAL(valueChanged(int)),    SLOT(OnSupersampleChanged(int)),	 true,    2,	1,	  1);
-	SetupSpinner<SpinBox, int>         (table, this, row, 1, m_StripsSpin,			spinHeight,	 1,	  64,  1, SIGNAL(valueChanged(int)),    SLOT(OnStripsChanged(int)),		     true,    1,	1,	  1);
+ SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_QualitySpin,         spinHeight,  1, dmax, 50, SIGNAL(valueChanged(double)), SLOT(OnQualityChanged(double)),      true, 1000, 1000, 1000);
+ SetupSpinner<SpinBox, int>         (table, this, row, 1, m_TemporalSamplesSpin, spinHeight,  1, 5000, 50, SIGNAL(valueChanged(int)),    SLOT(OnTemporalSamplesChanged(int)), true, 1000, 1000, 1000);
+ SetupSpinner<SpinBox, int>         (table, this, row, 1, m_SupersampleSpin,     spinHeight,  1,    4,  1, SIGNAL(valueChanged(int)),    SLOT(OnSupersampleChanged(int)),     true,    2,    1,    1);
+ SetupSpinner<SpinBox, int>         (table, this, row, 1, m_StripsSpin,          spinHeight,  1,   64,  1, SIGNAL(valueChanged(int)),    SLOT(OnStripsChanged(int)),          true,    1,    1,    1);
 	m_MemoryCellIndex = row++;//Memory usage.
 	m_ItersCellIndex = row++;//Iters.
 	m_PathCellIndex = row;
@@ -91,22 +91,22 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	comboList.append("exr");
 	m_Tbcw = new TwoButtonComboWidget("...", "Open", comboList, 22, 40, 22, table);
 	table->setCellWidget(row, 1, m_Tbcw);
-	table->item(row++, 1)->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	connect(m_Tbcw->m_Button1, SIGNAL(clicked(bool)),			 this, SLOT(OnFileButtonClicked(bool)),			Qt::QueuedConnection);
-	connect(m_Tbcw->m_Button2, SIGNAL(clicked(bool)),			 this, SLOT(OnShowFolderButtonClicked(bool)),   Qt::QueuedConnection);
-	connect(m_Tbcw->m_Combo,   SIGNAL(currentIndexChanged(int)), this, SLOT(OnExtIndexChanged(int)), Qt::QueuedConnection);
+	table->item(row++, 1)->setTextAlignment(Qt::AlignmentFlag::AlignRight | Qt::AlignmentFlag::AlignVCenter);
+	connect(m_Tbcw->m_Button1, SIGNAL(clicked(bool)),            this, SLOT(OnFileButtonClicked(bool)),       Qt::ConnectionType::QueuedConnection);
+	connect(m_Tbcw->m_Button2, SIGNAL(clicked(bool)),            this, SLOT(OnShowFolderButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(m_Tbcw->m_Combo,   SIGNAL(currentIndexChanged(int)), this, SLOT(OnExtIndexChanged(int)),          Qt::ConnectionType::QueuedConnection);
 	m_PrefixEdit = new QLineEdit(table);
 	m_PrefixEdit->setText(m_Prefix);
 	table->setCellWidget(row++, 1, m_PrefixEdit);
 	m_SuffixEdit = new QLineEdit(table);
 	m_SuffixEdit->setText(m_Suffix);
 	table->setCellWidget(row++, 1, m_SuffixEdit);
-	connect(m_PrefixEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnPrefixChanged(const QString&)), Qt::QueuedConnection);
-	connect(m_SuffixEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnSuffixChanged(const QString&)), Qt::QueuedConnection);
+	connect(m_PrefixEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnPrefixChanged(const QString&)), Qt::ConnectionType::QueuedConnection);
+	connect(m_SuffixEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnSuffixChanged(const QString&)), Qt::ConnectionType::QueuedConnection);
 	ui.FinalRenderStartButton->disconnect(SIGNAL(clicked(bool)));
-	connect(ui.FinalRenderStartButton, SIGNAL(clicked(bool)), this, SLOT(OnRenderClicked(bool)),	   Qt::QueuedConnection);
-	connect(ui.FinalRenderPauseButton, SIGNAL(clicked(bool)), this, SLOT(OnPauseClicked(bool)),		   Qt::QueuedConnection);
-	connect(ui.FinalRenderStopButton,  SIGNAL(clicked(bool)), this, SLOT(OnCancelRenderClicked(bool)), Qt::QueuedConnection);
+	connect(ui.FinalRenderStartButton, SIGNAL(clicked(bool)), this, SLOT(OnRenderClicked(bool)),       Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderPauseButton, SIGNAL(clicked(bool)), this, SLOT(OnPauseClicked(bool)),        Qt::ConnectionType::QueuedConnection);
+	connect(ui.FinalRenderStopButton,  SIGNAL(clicked(bool)), this, SLOT(OnCancelRenderClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 	ui.FinalRenderSizeTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 	table = ui.FinalRenderDeviceTable;
@@ -138,7 +138,7 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 
 		for (int i = 0; i < table->rowCount(); i++)
 			if (auto radio = qobject_cast<QRadioButton*>(table->cellWidget(i, 1)))
-				connect(radio, SIGNAL(toggled(bool)), this, SLOT(OnDeviceTableRadioToggled(bool)), Qt::QueuedConnection);
+				connect(radio, SIGNAL(toggled(bool)), this, SLOT(OnDeviceTableRadioToggled(bool)), Qt::ConnectionType::QueuedConnection);
 
 		ui.FinalRenderOpenCLCheckBox->setChecked(m_Settings->FinalOpenCL());
 	}
@@ -149,16 +149,16 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 		ui.FinalRenderOpenCLCheckBox->setEnabled(false);
 	}
 
-	ui.FinalRenderEarlyClipCheckBox->setChecked(		  m_Settings->FinalEarlyClip());
-	ui.FinalRenderYAxisUpCheckBox->setChecked(			  m_Settings->FinalYAxisUp());
-	ui.FinalRenderTransparencyCheckBox->setChecked(		  m_Settings->FinalTransparency());
-	ui.FinalRenderDoublePrecisionCheckBox->setChecked(	  m_Settings->FinalDouble());
-	ui.FinalRenderSaveXmlCheckBox->setChecked(			  m_Settings->FinalSaveXml());
-	ui.FinalRenderDoAllCheckBox->setChecked(			  m_Settings->FinalDoAll());
-	ui.FinalRenderDoSequenceCheckBox->setChecked(		  m_Settings->FinalDoSequence());
-	ui.FinalRenderPng16BitCheckBox->setChecked(		      m_Settings->FinalPng16Bit());
-	ui.FinalRenderKeepAspectCheckBox->setChecked(		  m_Settings->FinalKeepAspect());
-	ui.FinalRenderThreadCountSpin->setValue(			  m_Settings->FinalThreadCount());
+	 ui.FinalRenderEarlyClipCheckBox->setChecked(         m_Settings->FinalEarlyClip());
+	 ui.FinalRenderYAxisUpCheckBox->setChecked(           m_Settings->FinalYAxisUp());
+	 ui.FinalRenderTransparencyCheckBox->setChecked(      m_Settings->FinalTransparency());
+	 ui.FinalRenderDoublePrecisionCheckBox->setChecked(   m_Settings->FinalDouble());
+	 ui.FinalRenderSaveXmlCheckBox->setChecked(           m_Settings->FinalSaveXml());
+	 ui.FinalRenderDoAllCheckBox->setChecked(             m_Settings->FinalDoAll());
+	 ui.FinalRenderDoSequenceCheckBox->setChecked(        m_Settings->FinalDoSequence());
+	 ui.FinalRenderPng16BitCheckBox->setChecked(          m_Settings->FinalPng16Bit());
+	 ui.FinalRenderKeepAspectCheckBox->setChecked(        m_Settings->FinalKeepAspect());
+	 ui.FinalRenderThreadCountSpin->setValue(             m_Settings->FinalThreadCount());
 #ifdef _WIN32
 	ui.FinalRenderThreadPriorityComboBox->setCurrentIndex(m_Settings->FinalThreadPriority() + 2);
 #else
@@ -214,43 +214,43 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	connect(saajpg, SIGNAL(triggered()), this, SLOT(OnSaveAgainAsClicked()));
 	connect(saapng, SIGNAL(triggered()), this, SLOT(OnSaveAgainAsClicked()));
 	connect(saaexr, SIGNAL(triggered()), this, SLOT(OnSaveAgainAsClicked()));
-	connect(add10, SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
-	connect(add25, SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
-	connect(add50, SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
+	connect(add10,  SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
+	connect(add25,  SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
+	connect(add50,  SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
 	connect(add100, SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
 	connect(add200, SIGNAL(triggered()), this, SLOT(OnQualityBumpClicked()));
 	int index = 0;
 #ifdef _WIN32
 
-	if (m_Settings->FinalExt().endsWith("bmp", Qt::CaseInsensitive))
+	if (m_Settings->FinalExt().endsWith("bmp", Qt::CaseSensitivity::CaseInsensitive))
 		m_Tbcw->m_Combo->setCurrentIndex(index);
 
 	index++;
 #endif
 
-	if (m_Settings->FinalExt().endsWith("jpg", Qt::CaseInsensitive))
+	if (m_Settings->FinalExt().endsWith("jpg", Qt::CaseSensitivity::CaseInsensitive))
 		m_Tbcw->m_Combo->setCurrentIndex(index);
 
 	index++;
 
-	if (m_Settings->FinalExt().endsWith("png", Qt::CaseInsensitive))
+	if (m_Settings->FinalExt().endsWith("png", Qt::CaseSensitivity::CaseInsensitive))
 		m_Tbcw->m_Combo->setCurrentIndex(index);
 
 	index++;
 
-	if (m_Settings->FinalExt().endsWith("exr", Qt::CaseInsensitive))
+	if (m_Settings->FinalExt().endsWith("exr", Qt::CaseSensitivity::CaseInsensitive))
 		m_Tbcw->m_Combo->setCurrentIndex(index);
 
 	//Explicitly call these to enable/disable the appropriate controls.
-	OnOpenCLCheckBoxStateChanged(ui.FinalRenderOpenCLCheckBox->isChecked());
-	OnDoAllCheckBoxStateChanged(ui.FinalRenderDoAllCheckBox->isChecked());
-	OnDoSequenceCheckBoxStateChanged(ui.FinalRenderDoSequenceCheckBox->isChecked());
+	OnOpenCLCheckBoxStateChanged(ui.FinalRenderOpenCLCheckBox->isChecked() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+	OnDoAllCheckBoxStateChanged(ui.FinalRenderDoAllCheckBox->isChecked() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+	OnDoSequenceCheckBoxStateChanged(ui.FinalRenderDoSequenceCheckBox->isChecked() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 	auto s = size();
 	auto screen = QGuiApplication::screenAt(pos());
 	auto geom = screen->availableGeometry();
 	const auto desktopHeight = geom.height();
 	s.setHeight(std::min(s.height(), int(double(desktopHeight * 0.90))));
-	setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, s, geom));
+	setGeometry(QStyle::alignedRect(Qt::LayoutDirection::LeftToRight, Qt::AlignmentFlag::AlignCenter, s, geom));
 	//Update these with new controls.
 	auto w = SetTabOrder(this, ui.FinalRenderEarlyClipCheckBox, ui.FinalRenderYAxisUpCheckBox);
 	w = SetTabOrder(this, w, ui.FinalRenderTransparencyCheckBox);
@@ -292,7 +292,7 @@ FractoriumFinalRenderDialog::FractoriumFinalRenderDialog(QWidget* p, Qt::WindowF
 	w = SetTabOrder(this, w, ui.FinalRenderStartButton);
 	w = SetTabOrder(this, w, ui.FinalRenderPauseButton);
 	w = SetTabOrder(this, w, ui.FinalRenderStopButton);
-    w = SetTabOrder(this, w, ui.FinalRenderCloseButton);
+	w = SetTabOrder(this, w, ui.FinalRenderCloseButton);
 }
 
 FractoriumFinalRenderDialog::~FractoriumFinalRenderDialog()
@@ -446,8 +446,8 @@ void FractoriumFinalRenderDialog::MoveCursorToEnd()
 /// <summary>
 /// Whether to use early clipping before spatial filtering.
 /// </summary>
-/// <param name="index">True to early clip, else don't.</param>
-void FractoriumFinalRenderDialog::OnEarlyClipCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnEarlyClipCheckBoxStateChanged(Qt::CheckState state)
 {
 	SetMemory();
 }
@@ -455,8 +455,8 @@ void FractoriumFinalRenderDialog::OnEarlyClipCheckBoxStateChanged(int state)
 /// <summary>
 /// Whether the positive Y axis of the final output image is up.
 /// </summary>
-/// <param name="yup">True if the positive y axis is up, else false.</param>
-void FractoriumFinalRenderDialog::OnYAxisUpCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnYAxisUpCheckBoxStateChanged(Qt::CheckState state)
 {
 	SetMemory();
 }
@@ -464,8 +464,8 @@ void FractoriumFinalRenderDialog::OnYAxisUpCheckBoxStateChanged(int state)
 /// <summary>
 /// Whether to use transparency in png images.
 /// </summary>
-/// <param name="index">True to use transparency, else don't.</param>
-void FractoriumFinalRenderDialog::OnTransparencyCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnTransparencyCheckBoxStateChanged(Qt::CheckState state)
 {
 	SetMemory();
 }
@@ -474,10 +474,10 @@ void FractoriumFinalRenderDialog::OnTransparencyCheckBoxStateChanged(int state)
 /// Set whether to use OpenCL in the rendering process or not.
 /// Also disable or enable the CPU and OpenCL related controls based on the state passed in.
 /// </summary>
-/// <param name="state">Use OpenCL if state == Qt::Checked, else don't.</param>
-void FractoriumFinalRenderDialog::OnOpenCLCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnOpenCLCheckBoxStateChanged(Qt::CheckState state)
 {
-	const auto checked = state == Qt::Checked;
+	const auto checked = state == Qt::CheckState::Checked;
 	ui.FinalRenderDeviceTable->setEnabled(checked);
 	ui.FinalRenderOpenCLSubBatchPctSpin->setEnabled(checked);
 	ui.FinalRenderThreadCountSpin->setEnabled(!checked);
@@ -490,8 +490,8 @@ void FractoriumFinalRenderDialog::OnOpenCLCheckBoxStateChanged(int state)
 /// Set whether to use double or single precision in the rendering process or not.
 /// This will recreate the entire controller.
 /// </summary>
-/// <param name="state">Use double if state == Qt::Checked, else float.</param>
-void FractoriumFinalRenderDialog::OnDoublePrecisionCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnDoublePrecisionCheckBoxStateChanged(Qt::CheckState state)
 {
 	SetMemory();
 }
@@ -502,9 +502,9 @@ void FractoriumFinalRenderDialog::OnDoublePrecisionCheckBoxStateChanged(int stat
 /// only render the current ember.
 /// </summary>
 /// <param name="state">The state of the checkbox</param>
-void FractoriumFinalRenderDialog::OnDoAllCheckBoxStateChanged(int state)
+void FractoriumFinalRenderDialog::OnDoAllCheckBoxStateChanged(Qt::CheckState state)
 {
-	if (!state)
+	if (state != Qt::CheckState::Checked)
 		ui.FinalRenderDoSequenceCheckBox->setChecked(false);
 
 	ui.FinalRenderDoSequenceCheckBox->setEnabled(ui.FinalRenderDoAllCheckBox->isChecked());
@@ -519,9 +519,9 @@ void FractoriumFinalRenderDialog::OnDoAllCheckBoxStateChanged(int state)
 /// render them individually.
 /// </summary>
 /// <param name="state">The state of the checkbox</param>
-void FractoriumFinalRenderDialog::OnDoSequenceCheckBoxStateChanged(int state)
+void FractoriumFinalRenderDialog::OnDoSequenceCheckBoxStateChanged(Qt::CheckState state)
 {
-	const auto checked = ui.FinalRenderDoSequenceCheckBox->isChecked();
+	const auto checked = state == Qt::CheckState::Checked;
 	m_TemporalSamplesSpin->setEnabled(checked);
 
 	if (checked)
@@ -534,7 +534,7 @@ void FractoriumFinalRenderDialog::OnDoSequenceCheckBoxStateChanged(int state)
 /// <summary>
 /// The current ember spinner was changed, update fields.
 /// </summary>
-/// <param name="d">Ignored</param>
+/// <param name="d">The 1-based index of the current ember</param>
 void FractoriumFinalRenderDialog::OnCurrentSpinChanged(int d)
 {
 	m_Controller->SetEmber(d - 1, false);
@@ -547,9 +547,9 @@ void FractoriumFinalRenderDialog::OnCurrentSpinChanged(int d)
 /// If checked, set values for all embers in the file to the values specified in the GUI.
 /// </summary>
 /// <param name="state">The state of the checkbox</param>
-void FractoriumFinalRenderDialog::OnApplyAllCheckBoxStateChanged(int state)
+void FractoriumFinalRenderDialog::OnApplyAllCheckBoxStateChanged(Qt::CheckState state)
 {
-	if (state && m_Controller.get())
+	if (state == Qt::CheckState::Checked && m_Controller.get())
 		m_Controller->SyncGuiToEmbers();
 
 	ui.FinalRenderSaveAgainAsButton->setEnabled(false);
@@ -644,10 +644,10 @@ void FractoriumFinalRenderDialog::OnHeightChanged(int d)
 /// Whether to keep the aspect ratio of the desired width and height the same
 /// as that of the original width and height.
 /// </summary>
-/// <param name="checked">The state of the checkbox</param>
-void FractoriumFinalRenderDialog::OnKeepAspectCheckBoxStateChanged(int state)
+/// <param name="state">The state of the checkbox</param>
+void FractoriumFinalRenderDialog::OnKeepAspectCheckBoxStateChanged(Qt::CheckState state)
 {
-	if (state && m_Controller.get())
+	if (state == Qt::CheckState::Checked && m_Controller.get())
 		m_HeightScaleSpin->setValue(m_WidthScaleSpin->value());
 
 	//m_HeightScaleSpin->SetValueStealth(m_WidthScaleSpin->value());
@@ -696,7 +696,7 @@ void FractoriumFinalRenderDialog::OnDeviceTableRadioToggled(bool checked)
 	if (s)
 	{
 		for (row = 0; row < table->rowCount(); row++)
-            if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
+			if ((radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1))))
 				if (s == radio)
 				{
 					HandleDeviceTableCheckChanged(ui.FinalRenderDeviceTable, row, 1);

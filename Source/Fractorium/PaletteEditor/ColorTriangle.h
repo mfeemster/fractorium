@@ -61,7 +61,7 @@ struct DoubleColor
 	DoubleColor() : r(0.0), g(0.0), b(0.0) {}
 	DoubleColor(double red, double green, double blue) : r(red), g(green), b(blue) {}
 	DoubleColor(const DoubleColor& c) : r(c.r), g(c.g), b(c.b) {}
-    DoubleColor& operator = (const DoubleColor& carToRas) = default;
+	DoubleColor& operator = (const DoubleColor& carToRas) = default;
 };
 
 /// <summary>
@@ -125,10 +125,10 @@ private:
 	int penWidth;
 	int ellipseSize;
 	int outerRadius;
-    double _a, _b, _c;
+	double _a, _b, _c;
 	QImage bg;
 	QColor curColor;
-    QPointF _pa, _pb, _pc, _pd;
+	QPointF _pa, _pb, _pc, _pd;
 	QPointF selectorPos;
 
 	enum SelectionMode

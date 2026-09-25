@@ -10,13 +10,13 @@ void Fractorium::InitPaletteUI()
 	int spinHeight = 20, row = 0;
 	auto paletteTable = ui.PaletteListTable;
 	auto palettePreviewTable = ui.PalettePreviewTable;
-	connect(ui.PaletteFilenameCombo, SIGNAL(currentTextChanged(const QString&)), this, SLOT(OnPaletteFilenameComboChanged(const QString&)), Qt::QueuedConnection);
-	connect(paletteTable, SIGNAL(cellClicked(int, int)),	   this, SLOT(OnPaletteCellClicked(int, int)),		 Qt::QueuedConnection);
-	connect(paletteTable, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(OnPaletteCellDoubleClicked(int, int)), Qt::QueuedConnection);
-	connect(palettePreviewTable, SIGNAL(MouseDragged(const QPointF&, const QPointF&)), this, SLOT(OnPreviewPaletteMouseDragged(const QPointF&, const QPointF&)), Qt::QueuedConnection);
-	connect(palettePreviewTable, SIGNAL(MouseReleased()), this, SLOT(OnPreviewPaletteMouseReleased()), Qt::QueuedConnection);
-	connect(palettePreviewTable, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(OnPreviewPaletteCellDoubleClicked(int, int)), Qt::QueuedConnection);
-	connect(palettePreviewTable, SIGNAL(cellPressed(int, int)), this, SLOT(OnPreviewPaletteCellPressed(int, int)), Qt::QueuedConnection);
+	connect(ui.PaletteFilenameCombo, SIGNAL(currentTextChanged(const QString&)),           this, SLOT(OnPaletteFilenameComboChanged(const QString&)),                Qt::ConnectionType::QueuedConnection);
+	connect(paletteTable,            SIGNAL(cellClicked(int, int)),                        this, SLOT(OnPaletteCellClicked(int, int)),                               Qt::ConnectionType::QueuedConnection);
+	connect(paletteTable,            SIGNAL(cellDoubleClicked(int, int)),                  this, SLOT(OnPaletteCellDoubleClicked(int, int)),                         Qt::ConnectionType::QueuedConnection);
+	connect(palettePreviewTable,     SIGNAL(MouseDragged(const QPointF&, const QPointF&)), this, SLOT(OnPreviewPaletteMouseDragged(const QPointF&, const QPointF&)), Qt::ConnectionType::QueuedConnection);
+	connect(palettePreviewTable,     SIGNAL(MouseReleased()),                              this, SLOT(OnPreviewPaletteMouseReleased()),                              Qt::ConnectionType::QueuedConnection);
+	connect(palettePreviewTable,     SIGNAL(cellDoubleClicked(int, int)),                  this, SLOT(OnPreviewPaletteCellDoubleClicked(int, int)),                  Qt::ConnectionType::QueuedConnection);
+	connect(palettePreviewTable,     SIGNAL(cellPressed(int, int)),                        this, SLOT(OnPreviewPaletteCellPressed(int, int)),                        Qt::ConnectionType::QueuedConnection);
 	//Palette adjustment table.
 	auto table = ui.PaletteAdjustTable;
 	table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//Split width over all columns evenly.
@@ -27,10 +27,10 @@ void Fractorium::InitPaletteUI()
 	SetupSpinner<SpinBox, int>(table, this, row, 3, m_PaletteContrastSpin,  spinHeight, -100, 100, 1, SIGNAL(valueChanged(int)), SLOT(OnPaletteAdjust(int)), true, 0, 0, 0);
 	SetupSpinner<SpinBox, int>(table, this, row, 3, m_PaletteBlurSpin,	    spinHeight,	   0, 127, 1, SIGNAL(valueChanged(int)), SLOT(OnPaletteAdjust(int)), true, 0, 0, 0);
 	SetupSpinner<SpinBox, int>(table, this, row, 3, m_PaletteFrequencySpin, spinHeight,	   1,  10, 1, SIGNAL(valueChanged(int)), SLOT(OnPaletteAdjust(int)), true, 1, 1, 1);
-	connect(ui.PaletteRandomSelectButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteRandomSelectButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.PaletteRandomAdjustButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteRandomAdjustButtonClicked(bool)), Qt::QueuedConnection);
+	connect(ui.PaletteRandomSelectButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteRandomSelectButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.PaletteRandomAdjustButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteRandomAdjustButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	//Palette editor.
-	connect(ui.PaletteEditorButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteEditorButtonClicked(bool)), Qt::QueuedConnection);
+	connect(ui.PaletteEditorButton, SIGNAL(clicked(bool)), this, SLOT(OnPaletteEditorButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	//Preview table.
 	palettePreviewTable->setRowCount(1);
 	palettePreviewTable->setColumnWidth(1, 260);//256 plus small margin on each side.
@@ -42,15 +42,15 @@ void Fractorium::InitPaletteUI()
 	connect(ui.PaletteFilterClearButton, SIGNAL(clicked(bool)),				  this, SLOT(OnPaletteFilterClearButtonClicked(bool)));
 	paletteTable->setColumnWidth(1, 260);//256 plus small margin on each side.
 	paletteTable->horizontalHeader()->setSectionsClickable(true);
-	connect(paletteTable->horizontalHeader(), SIGNAL(sectionClicked(int)),                          this, SLOT(OnPaletteHeaderSectionClicked(int)),             Qt::QueuedConnection);
-	connect(ui.ResetCurvesButton,             SIGNAL(clicked(bool)),                                this, SLOT(OnResetCurvesButtonClicked(bool)),               Qt::QueuedConnection);
-	connect(ui.CurvesView,                    SIGNAL(PointChangedSignal(int, int, const QPointF&)), this, SLOT(OnCurvesPointChanged(int, int, const QPointF&)), Qt::QueuedConnection);
-	connect(ui.CurvesView,                    SIGNAL(PointAddedSignal(size_t, const QPointF&)),     this, SLOT(OnCurvesPointAdded(size_t, const QPointF&)),     Qt::QueuedConnection);
-	connect(ui.CurvesView,                    SIGNAL(PointRemovedSignal(size_t, int)),              this, SLOT(OnCurvesPointRemoved(size_t, int)),              Qt::QueuedConnection);
-	connect(ui.CurvesAllRadio,                SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesAllRadioButtonToggled(bool)),            Qt::QueuedConnection);
-	connect(ui.CurvesRedRadio,                SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesRedRadioButtonToggled(bool)),            Qt::QueuedConnection);
-	connect(ui.CurvesGreenRadio,              SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesGreenRadioButtonToggled(bool)),          Qt::QueuedConnection);
-	connect(ui.CurvesBlueRadio,               SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesBlueRadioButtonToggled(bool)),           Qt::QueuedConnection);
+	connect(paletteTable->horizontalHeader(), SIGNAL(sectionClicked(int)),                          this, SLOT(OnPaletteHeaderSectionClicked(int)),             Qt::ConnectionType::QueuedConnection);
+	connect(ui.ResetCurvesButton,             SIGNAL(clicked(bool)),                                this, SLOT(OnResetCurvesButtonClicked(bool)),               Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesView,                    SIGNAL(PointChangedSignal(int, int, const QPointF&)), this, SLOT(OnCurvesPointChanged(int, int, const QPointF&)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesView,                    SIGNAL(PointAddedSignal(size_t, const QPointF&)),     this, SLOT(OnCurvesPointAdded(size_t, const QPointF&)),     Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesView,                    SIGNAL(PointRemovedSignal(size_t, int)),              this, SLOT(OnCurvesPointRemoved(size_t, int)),              Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesAllRadio,                SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesAllRadioButtonToggled(bool)),            Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesRedRadio,                SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesRedRadioButtonToggled(bool)),            Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesGreenRadio,              SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesGreenRadioButtonToggled(bool)),          Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurvesBlueRadio,               SIGNAL(toggled(bool)),                                this, SLOT(OnCurvesBlueRadioButtonToggled(bool)),           Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -131,7 +131,7 @@ void Fractorium::OnPaletteFilenameComboChanged(const QString& text)
 	m_Controller->FillPaletteTable(s);
 	auto fullname = m_Controller->m_PaletteList->GetFullPathFromFilename(s);
 	ui.PaletteFilenameCombo->setToolTip(QString::fromStdString(fullname));
-	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::SortOrder::AscendingOrder : Qt::SortOrder::DescendingOrder);
 }
 
 /// <summary>
@@ -171,7 +171,7 @@ void FractoriumEmberController<T>::UpdateAdjustedPaletteGUI(Palette<float>& pale
 		m_FinalPaletteImage = QImage(int(palette.Size()), PALETTE_CELL_HEIGHT, QImage::Format_RGB888);//Create a QImage out of it.
 		memcpy(m_FinalPaletteImage.scanLine(0), v.data(), v.size() * sizeof(v[0]));//Memcpy the data in.
 		QPixmap pixmap(QPixmap::fromImage(m_FinalPaletteImage));//Create a QPixmap out of the QImage.
-		previewPaletteItem->setData(Qt::DecorationRole, pixmap.scaled(QSize(pixmap.width(), palettePreviewTable->rowHeight(0) + 2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));//Set the pixmap on the palette tab.
+		previewPaletteItem->setData(Qt::ItemDataRole::DecorationRole, pixmap.scaled(QSize(pixmap.width(), palettePreviewTable->rowHeight(0) + 2), Qt::AspectRatioMode::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));//Set the pixmap on the palette tab.
 		m_Fractorium->SetPaletteTableItem(&pixmap, m_Fractorium->ui.XformPaletteRefTable, m_Fractorium->m_PaletteRefItem, 0, 0);//Set the palette ref table on the xforms | color tab.
 
 		if (auto previewNameItem = palettePreviewTable->item(0, 0))
@@ -425,11 +425,11 @@ void Fractorium::OnPaletteEditorButtonClicked(bool checked)
 	if (!m_PaletteEditor.get())
 	{
 		m_PaletteEditor = std::make_unique<PaletteEditor>(this);
-		connect(m_PaletteEditor.get(), SIGNAL(PaletteChanged()),                 this, SLOT(OnPaletteEditorColorChanged()), Qt::QueuedConnection);
-		connect(m_PaletteEditor.get(), SIGNAL(PaletteFileChanged()),             this, SLOT(OnPaletteEditorFileChanged()), Qt::QueuedConnection);
-		connect(m_PaletteEditor.get(), SIGNAL(ColorIndexChanged(size_t, float)), this, SLOT(OnPaletteEditorColorIndexChanged(size_t, float)), Qt::QueuedConnection);
+		connect(m_PaletteEditor.get(), SIGNAL(PaletteChanged()),                 this, SLOT(OnPaletteEditorColorChanged()), Qt::ConnectionType::QueuedConnection);
+		connect(m_PaletteEditor.get(), SIGNAL(PaletteFileChanged()),             this, SLOT(OnPaletteEditorFileChanged()), Qt::ConnectionType::QueuedConnection);
+		connect(m_PaletteEditor.get(), SIGNAL(ColorIndexChanged(size_t, float)), this, SLOT(OnPaletteEditorColorIndexChanged(size_t, float)), Qt::ConnectionType::QueuedConnection);
 #ifdef __linux__
-		connect(m_PaletteEditor.get(), SIGNAL(finished(int)),                    this, SLOT(OnPaletteEditorFinished(int)), Qt::QueuedConnection);
+		connect(m_PaletteEditor.get(), SIGNAL(finished(int)),                    this, SLOT(OnPaletteEditorFinished(int)), Qt::ConnectionType::QueuedConnection);
 #endif
 	}
 
@@ -546,14 +546,14 @@ void Fractorium::OnPaletteFilterLineEditTextChanged(const QString& text)
 	{
 		if (auto item = table->item(i, 0))
 		{
-			if (!item->text().contains(text, Qt::CaseInsensitive))
+			if (!item->text().contains(text, Qt::CaseSensitivity::CaseInsensitive))
 				table->hideRow(i);
 			else
 				table->showRow(i);
 		}
 	}
 
-	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::AscendingOrder : Qt::DescendingOrder);//Must re-sort every time the filter changes.
+	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::SortOrder::AscendingOrder : Qt::SortOrder::DescendingOrder);//Must re-sort every time the filter changes.
 	table->setUpdatesEnabled(true);
 }
 
@@ -574,8 +574,8 @@ void Fractorium::OnPaletteFilterClearButtonClicked(bool checked)
 /// <param name="col">Column index of the header clicked, ignored.</param>
 void Fractorium::OnPaletteHeaderSectionClicked(int col)
 {
-	m_PaletteSortMode = !m_PaletteSortMode;
-	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+	m_PaletteSortMode = (m_PaletteSortMode + 1) & 1;
+	ui.PaletteListTable->sortItems(0, m_PaletteSortMode == 0 ? Qt::SortOrder::AscendingOrder : Qt::SortOrder::DescendingOrder);
 }
 
 /// <summary>
@@ -628,7 +628,7 @@ void FractoriumEmberController<T>::ClearColorCurves(int i)
 
 void Fractorium::OnResetCurvesButtonClicked(bool checked)
 {
-	if (!QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+	if (!QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier))
 	{
 		if (ui.CurvesAllRadio->isChecked())
 			m_Controller->ClearColorCurves(0);

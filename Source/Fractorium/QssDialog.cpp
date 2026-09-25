@@ -64,11 +64,11 @@ QssDialog::QssDialog(Fractorium* parent) :
 	(m_GeomActionMapper = new QSignalMapper(this))->setMapping(m_AddGeomAction, QString());
 	(m_BorderActionMapper = new QSignalMapper(this))->setMapping(m_AddBorderAction, QString());
 	(m_StyleActionMapper = new QSignalMapper(this))->setMapping(m_AddStyleAction, QString());
-	connect(ui->QssLoadButton, SIGNAL(clicked()), this, SLOT(LoadButton_clicked()), Qt::QueuedConnection);
-	connect(ui->QssSaveButton, SIGNAL(clicked()), this, SLOT(SaveButton_clicked()), Qt::QueuedConnection);
-	connect(ui->QssBasicButton, SIGNAL(clicked()), this, SLOT(BasicButton_clicked()), Qt::QueuedConnection);
-	connect(ui->QssMediumButton, SIGNAL(clicked()), this, SLOT(MediumButton_clicked()), Qt::QueuedConnection);
-	connect(ui->QssAdvancedButton, SIGNAL(clicked()), this, SLOT(AdvancedButton_clicked()), Qt::QueuedConnection);
+	connect(ui->QssLoadButton, SIGNAL(clicked()), this, SLOT(LoadButton_clicked()), Qt::ConnectionType::QueuedConnection);
+	connect(ui->QssSaveButton, SIGNAL(clicked()), this, SLOT(SaveButton_clicked()), Qt::ConnectionType::QueuedConnection);
+	connect(ui->QssBasicButton, SIGNAL(clicked()), this, SLOT(BasicButton_clicked()), Qt::ConnectionType::QueuedConnection);
+	connect(ui->QssMediumButton, SIGNAL(clicked()), this, SLOT(MediumButton_clicked()), Qt::ConnectionType::QueuedConnection);
+	connect(ui->QssAdvancedButton, SIGNAL(clicked()), this, SLOT(AdvancedButton_clicked()), Qt::ConnectionType::QueuedConnection);
 	connect(m_AddFontAction, SIGNAL(triggered()), this, SLOT(SlotAddFont()));
 	QVector<QPair<QString, QString>> colorVec;
 	colorVec.reserve(12);
@@ -272,8 +272,8 @@ QList<QString> QssDialog::GetClassNames(bool includeObjectNames)
 /// <returns>True if valid, else false.</returns>
 bool QssDialog::IsStyleSheetValid(const QString& styleSheet)
 {
-	QCss::Parser parser(styleSheet);
-	QCss::StyleSheet sheet;
+	QCss2::Parser2 parser(styleSheet);
+	QCss2::StyleSheet2 sheet;
 
 	if (parser.parse(&sheet))
 		return true;
@@ -281,7 +281,7 @@ bool QssDialog::IsStyleSheetValid(const QString& styleSheet)
 	QString fullSheet = QStringLiteral("* { ");
 	fullSheet += styleSheet;
 	fullSheet += QLatin1Char('}');
-	QCss::Parser parser2(fullSheet);
+	QCss2::Parser2 parser2(fullSheet);
 	return parser2.parse(&sheet);
 }
 

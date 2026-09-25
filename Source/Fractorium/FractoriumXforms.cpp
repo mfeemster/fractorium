@@ -8,15 +8,15 @@ void Fractorium::InitXformsUI()
 {
 	const int spinHeight = 20;
 	auto row = 0;
-	connect(ui.AddXformButton,		               SIGNAL(clicked(bool)),			 this, SLOT(OnAddXformButtonClicked(bool)),	                        Qt::QueuedConnection);
-	connect(ui.AddLinkedXformButton,               SIGNAL(clicked(bool)),			 this, SLOT(OnAddLinkedXformButtonClicked(bool)),	                Qt::QueuedConnection);
-	connect(ui.DuplicateXformButton,               SIGNAL(clicked(bool)),			 this, SLOT(OnDuplicateXformButtonClicked(bool)),	                Qt::QueuedConnection);
-	connect(ui.ClearXformButton,	               SIGNAL(clicked(bool)),			 this, SLOT(OnClearXformButtonClicked(bool)),	                    Qt::QueuedConnection);
-	connect(ui.DeleteXformButton,	               SIGNAL(clicked(bool)),			 this, SLOT(OnDeleteXformButtonClicked(bool)),                      Qt::QueuedConnection);
-	connect(ui.AddFinalXformButton,                SIGNAL(clicked(bool)),			 this, SLOT(OnAddFinalXformButtonClicked(bool)),                    Qt::QueuedConnection);
-	connect(ui.CurrentXformCombo,	               SIGNAL(currentIndexChanged(int)), this, SLOT(OnCurrentXformComboChanged(int)),	                    Qt::QueuedConnection);
-	connect(ui.AnimateXformLocalRotationCheckBox,  SIGNAL(stateChanged(int)),        this, SLOT(OnXformAnimateLocalRotationCheckBoxStateChanged(int)),  Qt::QueuedConnection);
-	connect(ui.AnimateXformOriginRotationCheckBox, SIGNAL(stateChanged(int)),        this, SLOT(OnXformAnimateOriginRotationCheckBoxStateChanged(int)), Qt::QueuedConnection);
+	connect(ui.AddXformButton,                     SIGNAL(clicked(bool)),                     this, SLOT(OnAddXformButtonClicked(bool)),                                    Qt::ConnectionType::QueuedConnection);
+	connect(ui.AddLinkedXformButton,               SIGNAL(clicked(bool)),                     this, SLOT(OnAddLinkedXformButtonClicked(bool)),                              Qt::ConnectionType::QueuedConnection);
+	connect(ui.DuplicateXformButton,               SIGNAL(clicked(bool)),                     this, SLOT(OnDuplicateXformButtonClicked(bool)),                              Qt::ConnectionType::QueuedConnection);
+	connect(ui.ClearXformButton,                   SIGNAL(clicked(bool)),                     this, SLOT(OnClearXformButtonClicked(bool)),                                  Qt::ConnectionType::QueuedConnection);
+	connect(ui.DeleteXformButton,                  SIGNAL(clicked(bool)),                     this, SLOT(OnDeleteXformButtonClicked(bool)),                                 Qt::ConnectionType::QueuedConnection);
+	connect(ui.AddFinalXformButton,                SIGNAL(clicked(bool)),                     this, SLOT(OnAddFinalXformButtonClicked(bool)),                               Qt::ConnectionType::QueuedConnection);
+	connect(ui.CurrentXformCombo,                  SIGNAL(currentIndexChanged(int)),          this, SLOT(OnCurrentXformComboChanged(int)),                                  Qt::ConnectionType::QueuedConnection);
+	connect(ui.AnimateXformLocalRotationCheckBox,  SIGNAL(checkStateChanged(Qt::CheckState)), this, SLOT(OnXformAnimateLocalRotationCheckBoxStateChanged(Qt::CheckState)),  Qt::ConnectionType::QueuedConnection);
+	connect(ui.AnimateXformOriginRotationCheckBox, SIGNAL(checkStateChanged(Qt::CheckState)), this, SLOT(OnXformAnimateOriginRotationCheckBoxStateChanged(Qt::CheckState)), Qt::ConnectionType::QueuedConnection);
 	SetFixedTableHeader(ui.XformWeightNameTable->horizontalHeader(), QHeaderView::ResizeToContents);
 	//Use SetupSpinner() just to create the spinner, but use col of -1 to prevent it from being added to the table.
 	SetupSpinner<DoubleSpinBox, double>(ui.XformWeightNameTable, this, row, -1, m_XformWeightSpin, spinHeight, 0, 1000, 0.05, SIGNAL(valueChanged(double)), SLOT(OnXformWeightChanged(double)), false, 0, 1, 0);
@@ -30,11 +30,11 @@ void Fractorium::InitXformsUI()
 	m_XformWeightSpinnerButtonWidget->m_Button->setToolTip("Equalize weights");
 	m_XformWeightSpinnerButtonWidget->m_Button->setStyleSheet("text-align: center center");
 	m_XformWeightSpinnerButtonWidget->setMaximumWidth(130);
-	connect(m_XformWeightSpinnerButtonWidget->m_Button, SIGNAL(clicked(bool)), this, SLOT(OnEqualWeightButtonClicked(bool)), Qt::QueuedConnection);
+	connect(m_XformWeightSpinnerButtonWidget->m_Button, SIGNAL(clicked(bool)), this, SLOT(OnEqualWeightButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	ui.XformWeightNameTable->setCellWidget(0, 0, m_XformWeightSpinnerButtonWidget);
 	m_XformNameEdit = new QLineEdit(ui.XformWeightNameTable);
 	ui.XformWeightNameTable->setCellWidget(0, 1, m_XformNameEdit);
-	connect(m_XformNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnXformNameChanged(const QString&)), Qt::QueuedConnection);
+	connect(m_XformNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(OnXformNameChanged(const QString&)), Qt::ConnectionType::QueuedConnection);
 	ui.CurrentXformCombo->view()->setMinimumWidth(100);
 	ui.CurrentXformCombo->view()->setMaximumWidth(500);
 	//ui.CurrentXformCombo->view()->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -494,11 +494,11 @@ void Fractorium::OnEqualWeightButtonClicked(bool checked) { m_Controller->Equali
 template <typename T>
 void FractoriumEmberController<T>::XformNameChanged(const QString& s)
 {
-    //const auto forceFinal = m_Fractorium->HaveFinal();
+	//const auto forceFinal = m_Fractorium->HaveFinal();
 	UpdateXform([&] (Xform<T>* xform, size_t xfindex, size_t selIndex)
 	{
 		xform->m_Name = s.toStdString();
-        XformCheckboxAt(xfindex, [&](QCheckBox * checkbox) { checkbox->setText(MakeXformCaption(xfindex)); });
+		XformCheckboxAt(xfindex, [&](QCheckBox * checkbox) { checkbox->setText(MakeXformCaption(xfindex)); });
 	}, eXformUpdate::UPDATE_CURRENT, false);
 	FillSummary();//Manually update because this does not trigger a render, which is where this would normally be called.
 	m_Fractorium->FillXaosTable();
@@ -533,51 +533,51 @@ void FractoriumEmberController<T>::XformAnimateChangedHelper(int state, bool loc
 			{
 				if (ember.UseFinalXform())
 				{
-                    auto finalxf = ember.NonConstFinalXform();
+					auto xf = ember.NonConstFinalXform();
 
 					if (local)
-                        finalxf->m_Animate = animate;
+						xf->m_Animate = animate;
 					else
-                        finalxf->m_AnimateOrigin = animate;
+						xf->m_AnimateOrigin = animate;
 				}
 
 				if (!m_Fractorium->ApplyAll())
-                {
+				{
 					if (m_EmberFilePointer && m_EmberFilePointer->UseFinalXform())
-                    {
+					{
 						if (local)
 							m_EmberFilePointer->NonConstFinalXform()->m_Animate = animate;
 						else
 							m_EmberFilePointer->NonConstFinalXform()->m_AnimateOrigin = animate;
-                    }
-                }
+					}
+				}
 			}
 			else//Current was not final, so apply to other embers which have a non-final xform at this index.
 			{
-                if (auto xf = ember.GetXform(xfindex))
-                {
+				if (auto xf = ember.GetXform(xfindex))
+				{
 					if (local)
-                        xf->m_Animate = animate;
+						xf->m_Animate = animate;
 					else
-                        xf->m_AnimateOrigin = animate;
-                }
+						xf->m_AnimateOrigin = animate;
+				}
 
 				if (!m_Fractorium->ApplyAll() && m_EmberFilePointer)
-                {
-                    if (auto xf = m_EmberFilePointer->GetXform(xfindex))
-                    {
+				{
+					if (auto xf = m_EmberFilePointer->GetXform(xfindex))
+					{
 						if (local)
-                            xf->m_Animate = animate;
+							xf->m_Animate = animate;
 						else
-                            xf->m_AnimateOrigin = animate;
-                    }
-                }
+							xf->m_AnimateOrigin = animate;
+					}
+				}
 			}
 		}, false, eProcessAction::NOTHING, m_Fractorium->ApplyAll());
 	}, eXformUpdate::UPDATE_SELECTED, false);
 }
-void Fractorium::OnXformAnimateLocalRotationCheckBoxStateChanged(int state) { m_Controller->XformAnimateChangedHelper(state, true); }
-void Fractorium::OnXformAnimateOriginRotationCheckBoxStateChanged(int state) { m_Controller->XformAnimateChangedHelper(state, false); }
+void Fractorium::OnXformAnimateLocalRotationCheckBoxStateChanged(Qt::CheckState state) { m_Controller->XformAnimateChangedHelper(state, true); }
+void Fractorium::OnXformAnimateOriginRotationCheckBoxStateChanged(Qt::CheckState state) { m_Controller->XformAnimateChangedHelper(state, false); }
 
 /// <summary>
 /// Fill all GUI widgets with values from the passed in xform.
@@ -708,7 +708,7 @@ void FractoriumEmberController<T>::FillXforms(int index)
 	else
 		m_Fractorium->ui.SoloXformCheckBox->setChecked(false);
 
-	SoloXformCheckBoxStateChanged(m_Ember.m_Solo > -1 ? Qt::Checked : Qt::Unchecked, m_Ember.m_Solo);
+	SoloXformCheckBoxStateChanged(m_Ember.m_Solo > -1 ? Qt::CheckState::Checked : Qt::CheckState::Unchecked, m_Ember.m_Solo);
 	m_Fractorium->ui.SoloXformCheckBox->blockSignals(false);
 	m_Fractorium->FillXaosTable();
 	m_Fractorium->OnCurrentXformComboChanged(index);//Make sure the event gets called, because it won't if the zero index is already selected.

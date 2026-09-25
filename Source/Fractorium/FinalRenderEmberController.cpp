@@ -86,7 +86,7 @@ bool FinalRenderEmberControllerBase::CreateRendererFromGUI()
 /// <param name="s">The string to append</param>
 void FinalRenderEmberControllerBase::Output(const QString& s)
 {
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "append", Qt::QueuedConnection, Q_ARG(const QString&, s));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "append", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, s));
 }
 
 /// <summary>
@@ -380,9 +380,9 @@ FinalRenderEmberController<T>::FinalRenderEmberController(FractoriumFinalRenderD
 										: "Render aborted.";
 		Output(totalTimeString);
 		QFile::remove(backup);
-		QMetaObject::invokeMethod(m_FinalRenderDialog, "Pause", Qt::QueuedConnection, Q_ARG(bool, false));
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderSaveAgainAsButton, "setEnabled", Qt::QueuedConnection, Q_ARG(bool, !doAll && m_Renderer.get()));//Can do save again with variable number of strips.
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderBumpQualityStartButton, "setEnabled", Qt::QueuedConnection, Q_ARG(bool, !doAll && m_Renderer.get() && m_GuiState.m_Strips == 1));
+		QMetaObject::invokeMethod(m_FinalRenderDialog, "Pause", Qt::ConnectionType::QueuedConnection, Q_ARG(bool, false));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderSaveAgainAsButton, "setEnabled", Qt::ConnectionType::QueuedConnection, Q_ARG(bool, !doAll && m_Renderer.get()));//Can do save again with variable number of strips.
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderBumpQualityStartButton, "setEnabled", Qt::ConnectionType::QueuedConnection, Q_ARG(bool, !doAll && m_Renderer.get() && m_GuiState.m_Strips == 1));
 		m_Run = false;
 	};
 }
@@ -597,14 +597,14 @@ int FinalRenderEmberController<T>::ProgressFunc(Ember<T>& ember, void* foo, doub
 	const int intFract = static_cast<int>(stripsfrac);
 
 	if (stage == 0)
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, intFract));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, intFract));
 	else if (stage == 1)
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, intFract));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, intFract));
 	else if (stage == 2)
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, intFract));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, intFract));
 
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, ToString<qulonglong>(m_FinishedImageCount.load() + 1) + " / " + ToString<qulonglong>(m_ImageCount) + " Eta: " + QString::fromStdString(m_RenderTimer.Format(etaMs))));
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "update", Qt::QueuedConnection);
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, ToString<qulonglong>(m_FinishedImageCount.load() + 1) + " / " + ToString<qulonglong>(m_ImageCount) + " Eta: " + QString::fromStdString(m_RenderTimer.Format(etaMs))));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "update", Qt::ConnectionType::QueuedConnection);
 	return m_Run ? 1 : 0;
 }
 
@@ -729,13 +729,13 @@ void FinalRenderEmberController<T>::ResetProgress(bool total)
 {
 	if (total)
 	{
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText",  Qt::QueuedConnection, Q_ARG(const QString&, "0 / " + ToString<qulonglong>(m_ImageCount)));
-		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTotalProgress,   "setValue", Qt::QueuedConnection, Q_ARG(int, 0));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText",  Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, "0 / " + ToString<qulonglong>(m_ImageCount)));
+		QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTotalProgress,   "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, 0));
 	}
 
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, 0));
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, 0));
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress,     "setValue", Qt::QueuedConnection, Q_ARG(int, 0));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, 0));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, 0));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress,     "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, 0));
 }
 
 /// <summary>
@@ -978,8 +978,8 @@ void FinalRenderEmberController<T>::HandleFinishedProgress()
 	else
 		SetProgressComplete(100);//Just to be safe.
 
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTotalProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, static_cast<int>((float(finishedCountCached) / static_cast<float>(m_ImageCount)) * 100)));
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, ToString<qulonglong>(finishedCountCached) + " / " + ToString<qulonglong>(m_ImageCount)));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTotalProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, static_cast<int>((float(finishedCountCached) / static_cast<float>(m_ImageCount)) * 100)));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderImageCountLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, ToString<qulonglong>(finishedCountCached) + " / " + ToString<qulonglong>(m_ImageCount)));
 }
 
 /// <summary>
@@ -1015,7 +1015,7 @@ void FinalRenderEmberController<T>::RenderComplete(Ember<T>& ember, const EmberS
 	Output(status);
 	status = "Total iters: " + itersString + "\nIters/second: " + itersPerSecString + "\n";
 	Output(status);
-	QMetaObject::invokeMethod(m_FinalRenderDialog, "MoveCursorToEnd", Qt::QueuedConnection);
+	QMetaObject::invokeMethod(m_FinalRenderDialog, "MoveCursorToEnd", Qt::ConnectionType::QueuedConnection);
 
 	if (m_FinishedImageCount.load() == m_ImageCount)//Finished, save whatever options were specified on the GUI to the settings.
 	{
@@ -1042,7 +1042,7 @@ void FinalRenderEmberController<T>::RenderComplete(Ember<T>& ember, const EmberS
 		m_Settings->FinalStrips(m_GuiState.m_Strips);
 	}
 
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "update", Qt::QueuedConnection);
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderTextOutput, "update", Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -1087,9 +1087,9 @@ void FinalRenderEmberController<T>::SyncGuiToEmber(Ember<T>& ember, size_t width
 template <typename T>
 void FinalRenderEmberController<T>::SetProgressComplete(int val)
 {
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, val));//Just to be safe.
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::QueuedConnection, Q_ARG(int, val));
-	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress,		"setValue", Qt::QueuedConnection, Q_ARG(int, val));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderIterationProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, val));//Just to be safe.
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderFilteringProgress, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, val));
+	QMetaObject::invokeMethod(m_FinalRenderDialog->ui.FinalRenderAccumProgress,		"setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(int, val));
 }
 
 /// <summary>
@@ -1214,7 +1214,7 @@ void FinalRenderPreviewRenderer<T>::PreviewRenderFunc(uint start, uint end)
 		QImage image(static_cast<int>(finalEmber.m_FinalRasW), static_cast<int>(finalEmber.m_FinalRasH), QImage::Format_RGBA8888);//The label wants RGBA.
 		memcpy(image.scanLine(0), m_PreviewVec.data(), SizeOf(m_PreviewVec));//Memcpy the data in.
 		QPixmap pixmap(QPixmap::fromImage(image));
-		QMetaObject::invokeMethod(widget, "setPixmap", Qt::QueuedConnection, Q_ARG(QPixmap, pixmap));
+		QMetaObject::invokeMethod(widget, "setPixmap", Qt::ConnectionType::QueuedConnection, Q_ARG(QPixmap, pixmap));
 	});
 }
 

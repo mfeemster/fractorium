@@ -29,7 +29,7 @@ public slots:
 	void OnSelectAllButtonClicked(bool checked);
 	void OnInvertSelectionButtonClicked(bool checked);
 	void OnSelectNoneButtonClicked(bool checked);
-	void OnSelectionCheckBoxStateChanged(int i);
+	void OnSelectionCheckBoxStateChanged(Qt::CheckState state);
 	void OnVariationsTableItemChanged(QTableWidgetItem* item);
 	void accept() override;
 	void reject() override;

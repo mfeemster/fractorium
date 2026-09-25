@@ -19,19 +19,19 @@ void Fractorium::InitToolbarUI()
 	m_PreviousAffineState[int(eAffineState::ALL_PRE) ] = true;
 	m_PreviousAffineState[int(eAffineState::POST)    ] = false;
 	m_PreviousAffineState[int(eAffineState::ALL_POST)] = false;
-	connect(ui.ActionCpu,	              SIGNAL(triggered(bool)), this, SLOT(OnActionCpu(bool)),	            Qt::QueuedConnection);
-	connect(ui.ActionCL,	              SIGNAL(triggered(bool)), this, SLOT(OnActionCL(bool)),	            Qt::QueuedConnection);
-	connect(ui.ActionSP,	              SIGNAL(triggered(bool)), this, SLOT(OnActionSP(bool)),	            Qt::QueuedConnection);
-	connect(ui.ActionDP,	              SIGNAL(triggered(bool)), this, SLOT(OnActionDP(bool)),	            Qt::QueuedConnection);
-	connect(ui.ActionCompat,	          SIGNAL(triggered(bool)), this, SLOT(OnActionCompat(bool)),            Qt::QueuedConnection);
-	connect(ui.ActionStyle,               SIGNAL(triggered(bool)), this, SLOT(OnActionStyle(bool)),             Qt::QueuedConnection);
-	connect(ui.ActionStartStopRenderer,   SIGNAL(triggered(bool)), this, SLOT(OnActionStartStopRenderer(bool)), Qt::QueuedConnection);
-	connect(ui.ActionDrawImage,           SIGNAL(triggered(bool)), this, SLOT(OnActionDrawImage(bool)),	        Qt::QueuedConnection);
-	connect(ui.ActionDrawPreAffines,      SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAffines(bool)),       Qt::QueuedConnection);
-	connect(ui.ActionDrawPostAffines,     SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAffines(bool)),       Qt::QueuedConnection);
-	connect(ui.ActionDrawAllPreAffines,   SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAllAffines(bool)),    Qt::QueuedConnection);
-	connect(ui.ActionDrawAllPostAffines,  SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAllAffines(bool)),    Qt::QueuedConnection);
-	connect(ui.ActionDrawGrid,            SIGNAL(triggered(bool)), this, SLOT(OnActionDrawGrid(bool)),          Qt::QueuedConnection);
+	connect(ui.ActionCpu,                SIGNAL(triggered(bool)), this, SLOT(OnActionCpu(bool)),               Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionCL,                 SIGNAL(triggered(bool)), this, SLOT(OnActionCL(bool)),                Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionSP,                 SIGNAL(triggered(bool)), this, SLOT(OnActionSP(bool)),                Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDP,                 SIGNAL(triggered(bool)), this, SLOT(OnActionDP(bool)),                Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionCompat,             SIGNAL(triggered(bool)), this, SLOT(OnActionCompat(bool)),            Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionStyle,              SIGNAL(triggered(bool)), this, SLOT(OnActionStyle(bool)),             Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionStartStopRenderer,  SIGNAL(triggered(bool)), this, SLOT(OnActionStartStopRenderer(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawImage,          SIGNAL(triggered(bool)), this, SLOT(OnActionDrawImage(bool)),         Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawPreAffines,     SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAffines(bool)),       Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawPostAffines,    SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAffines(bool)),       Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawAllPreAffines,  SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAllAffines(bool)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawAllPostAffines, SIGNAL(triggered(bool)), this, SLOT(OnActionDrawAllAffines(bool)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui.ActionDrawGrid,           SIGNAL(triggered(bool)), this, SLOT(OnActionDrawGrid(bool)),          Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -257,7 +257,7 @@ void Fractorium::SyncOptionsToToolbar()
 		ui.ActionDP->setChecked(false);
 	}
 
-    ui.ActionCompat->setChecked(m_Settings->Flam3Compat());
+	ui.ActionCompat->setChecked(m_Settings->Flam3Compat());
 	ui.ActionDrawGrid->setChecked(m_Settings->ShowGrid());
 	ui.ActionDrawPreAffines->setChecked(m_Settings->ShowXforms());
 	ui.ActionDrawAllPreAffines->setChecked(m_Settings->ShowXforms());

@@ -208,7 +208,7 @@ public:
 		a = a ^ (a >> 4);
 		a = a * 0x27d4eb2d;
 		a = a ^ (a >> 15);
-		return (T)a / std::numeric_limits<int>::max();
+		return T(a) / std::numeric_limits<int>::max();
 	}
 
 	/// <summary>

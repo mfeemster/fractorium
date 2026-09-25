@@ -40,7 +40,7 @@
 /// of Qt Creator. Their license applies.
 /// </summary>
 
-namespace QCss
+namespace QCss2
 {
 // auto generated. DO NOT EDIT.
 class QCssScanner

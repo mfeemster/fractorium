@@ -27,13 +27,14 @@ Fractorium::Fractorium(QWidget* p)
 	qRegisterMetaType<QVector<int>>("QVector<int>");//For previews.
 	qRegisterMetaType<vector<byte>>("vector<byte>");
 	qRegisterMetaType<vv4F>("vv4F");
+	qRegisterMetaType<Qt::CheckState>("CheckState");
 	qRegisterMetaType<EmberTreeWidgetItemBase*>("EmberTreeWidgetItemBase*");
 	tabifyDockWidget(ui.LibraryDockWidget, ui.FlameDockWidget);
 	tabifyDockWidget(ui.FlameDockWidget, ui.XformsDockWidget);
 	tabifyDockWidget(ui.XformsDockWidget, ui.XaosDockWidget);
 	tabifyDockWidget(ui.XaosDockWidget, ui.PaletteDockWidget);
 	tabifyDockWidget(ui.PaletteDockWidget, ui.InfoDockWidget);
-	setTabPosition(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, QTabWidget::TabPosition::North);
+	setTabPosition(Qt::DockWidgetArea::LeftDockWidgetArea | Qt::DockWidgetArea::RightDockWidgetArea, QTabWidget::TabPosition::North);
 	//setTabShape(QTabWidget::TabShape::Rounded);
 	m_Docks.reserve(8);
 	m_Docks.push_back(ui.LibraryDockWidget);
@@ -45,7 +46,7 @@ Fractorium::Fractorium(QWidget* p)
 
 	for (auto dock : m_Docks)//Prevents a dock from ever getting accidentally hidden.
 	{
-		dock->setWindowFlags(dock->windowFlags() & Qt::WindowStaysOnTopHint);
+		dock->setWindowFlags(dock->windowFlags() & Qt::WindowType::WindowStaysOnTopHint);
 		dock->setAllowedAreas(Qt::DockWidgetArea::LeftDockWidgetArea
 //#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
 							  | Qt::DockWidgetArea::RightDockWidgetArea
@@ -70,7 +71,7 @@ Fractorium::Fractorium(QWidget* p)
 	m_AboutDialog = new FractoriumAboutDialog(this);
 	//Put the about dialog in the screen center.
 	m_AboutDialogCentered = false;
-	connect(m_ColorDialog, SIGNAL(colorSelected(const QColor&)), this, SLOT(OnColorSelected(const QColor&)), Qt::QueuedConnection);
+	connect(m_ColorDialog, SIGNAL(colorSelected(const QColor&)), this, SLOT(OnColorSelected(const QColor&)), Qt::ConnectionType::QueuedConnection);
 	m_XformComboColors[i++] = QColor(0XFF, 0X00, 0X00);
 	m_XformComboColors[i++] = QColor(0XCC, 0XCC, 0X00);
 	m_XformComboColors[i++] = QColor(0X00, 0XCC, 0X00);
@@ -130,12 +131,12 @@ Fractorium::Fractorium(QWidget* p)
 	ui.StatusBar->setMaximumHeight(statusBarHeight);
 	m_RenderStatusLabel = new QLabel(this);
 	m_RenderStatusLabel->setMinimumWidth(200);
-	m_RenderStatusLabel->setAlignment(Qt::AlignRight);
+	m_RenderStatusLabel->setAlignment(Qt::AlignmentFlag::AlignRight);
 	ui.StatusBar->addPermanentWidget(m_RenderStatusLabel);
 	m_CoordinateStatusLabel = new QLabel(this);
 	m_CoordinateStatusLabel->setMinimumWidth(300);
 	m_CoordinateStatusLabel->setMaximumWidth(300);
-	m_CoordinateStatusLabel->setAlignment(Qt::AlignLeft);
+	m_CoordinateStatusLabel->setAlignment(Qt::AlignmentFlag::AlignLeft);
 	ui.StatusBar->addWidget(m_CoordinateStatusLabel);
 	const auto progressBarHeight = 15;
 	const auto progressBarWidth = 300;
@@ -146,7 +147,7 @@ Fractorium::Fractorium(QWidget* p)
 	m_ProgressBar->setMaximumHeight(progressBarHeight);
 	m_ProgressBar->setMinimumWidth(progressBarWidth);
 	m_ProgressBar->setMaximumWidth(progressBarWidth);
-	m_ProgressBar->setAlignment(Qt::AlignCenter);
+	m_ProgressBar->setAlignment(Qt::AlignmentFlag::AlignCenter);
 	ui.StatusBar->addPermanentWidget(m_ProgressBar);
 	//Setup pointer in the GL window to point back to here.
 	ui.GLDisplay->SetMainWindow(this);
@@ -198,11 +199,11 @@ Fractorium::Fractorium(QWidget* p)
 		{
 			auto foundFusion = false;
 
-            for (auto& key : QStyleFactory::keys())
+			for (auto& key : QStyleFactory::keys())
 			{
-                if (key.compare("fusion", Qt::CaseInsensitive) == 0)//Default to fusion if it exists and the style has not been set yet.
+				if (key.compare("fusion", Qt::CaseSensitivity::CaseInsensitive) == 0)//Default to fusion if it exists and the style has not been set yet.
 				{
-                    m_Theme = QStyleFactory::create(key);
+					m_Theme = QStyleFactory::create(key);
 					setStyle(m_Theme);
 					foundFusion = true;
 					break;
@@ -334,7 +335,7 @@ bool Fractorium::HaveFinal()
 /// <param name="topLevel">True if top level, else false.</param>
 void Fractorium::OnDockTopLevelChanged(bool topLevel)
 {
-	//setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::TabPosition::North);
+	//setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::North);
 	//if (topLevel)
 	//{
 	//	if (ui.DockWidget->y() <= 0)
@@ -355,7 +356,7 @@ void Fractorium::OnDockTopLevelChanged(bool topLevel)
 /// <param name="area">The dock widget area</param>
 void Fractorium::dockLocationChanged(Qt::DockWidgetArea area)
 {
-	//setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::TabPosition::North);
+	//setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::North);
 	//ui.DockWidget->resize(500, ui.DockWidget->height());
 	//ui.DockWidget->update();
 	//ui.dockWidget->setFloating(true);
@@ -393,8 +394,8 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 	static int periodcount = 0;
 	static int lcount = 0;
 	static int ctrlgcount = 0;
-	const bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-	const bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	const bool shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+	const bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 
 	if (o == ui.GLParentScrollArea && e->type() == QEvent::Resize)
 	{
@@ -407,13 +408,13 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 		const auto times = 3;
 		const auto ftimes = 2;
 
-		if (ke->key() >= Qt::Key_F1 && ke->key() <= Qt::Key_F32)
+		if (ke->key() >= Qt::Key::Key_F1 && ke->key() <= Qt::Key::Key_F32)
 		{
 			fcount++;
 
 			if (fcount >= ftimes)
 			{
-				const auto val = ke->key() - (int)Qt::Key_F1;
+				const auto val = ke->key() - (int)Qt::Key::Key_F1;
 
 				if (shift)
 				{
@@ -432,7 +433,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 		else if (o == ui.LibraryTree)
 		{
 			//Require shift for deleting to prevent it from triggering when the user enters delete in the edit box.
-			if (ke->key() == Qt::Key_Delete && e->type() == QEvent::KeyRelease && shift)
+			if (ke->key() == Qt::Key::Key_Delete && e->type() == QEvent::Type::KeyRelease && shift)
 			{
 				auto v = GetCurrentEmberIndex(false);
 
@@ -464,7 +465,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 					 !focusedctrlSpin &&
 					 !focusedctrlDblSpin &&
 					 !focusedctrlCombo &&
-					 !QGuiApplication::keyboardModifiers().testFlag(Qt::AltModifier))//Must exclude these because otherwise, typing a minus key in any of the spinners will switch the xform. Also exclude alt.
+					 !QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::AltModifier))//Must exclude these because otherwise, typing a minus key in any of the spinners will switch the xform. Also exclude alt.
 			{
 				size_t index = 0;
 				double vdist = 0.01;
@@ -512,7 +513,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 				if (m_Controller.get() && m_Controller->GLController())
 					pre = m_Controller->GLController()->AffineType() == eAffineType::AffinePre;
 
-				if (ke->key() == Qt::Key_Plus || ke->key() == Qt::Key_Equal)
+				if (ke->key() == Qt::Key::Key_Plus || ke->key() == Qt::Key::Key_Equal)
 				{
 					xfupcount++;
 
@@ -530,7 +531,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_Minus || ke->key() == Qt::Key_Underscore)
+				else if (ke->key() == Qt::Key::Key_Minus || ke->key() == Qt::Key::Key_Underscore)
 				{
 					xfdncount++;
 
@@ -558,7 +559,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_P)
+				else if (ke->key() == Qt::Key::Key_P)
 				{
 					if (!ctrl)
 					{
@@ -583,7 +584,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 						return true;
 					}
 				}
-				else if (ke->key() == Qt::Key_L)
+				else if (ke->key() == Qt::Key::Key_L)
 				{
 					if (!ctrl)
 					{
@@ -611,7 +612,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 						return true;
 					}
 				}
-				else if (ke->key() == Qt::Key_Comma || ke->key() == Qt::Key_Less)
+				else if (ke->key() == Qt::Key::Key_Comma || ke->key() == Qt::Key::Key_Less)
 				{
 					commacount++;
 
@@ -623,7 +624,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_Period || ke->key() == Qt::Key_Greater)
+				else if (ke->key() == Qt::Key::Key_Period || ke->key() == Qt::Key::Key_Greater)
 				{
 					periodcount++;
 
@@ -639,7 +640,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 				{
 					return true;
 				}
-				else if (ke->key() == Qt::Key_W)
+				else if (ke->key() == Qt::Key::Key_W)
 				{
 					wcount++;
 
@@ -651,7 +652,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_S)
+				else if (ke->key() == Qt::Key::Key_S)
 				{
 					scount++;
 
@@ -663,7 +664,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_A)
+				else if (ke->key() == Qt::Key::Key_A)
 				{
 					acount++;
 
@@ -675,7 +676,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_D)
+				else if (ke->key() == Qt::Key::Key_D)
 				{
 					dcount++;
 
@@ -687,7 +688,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_Q)
+				else if (ke->key() == Qt::Key::Key_Q)
 				{
 					qcount++;
 
@@ -699,7 +700,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_E)
+				else if (ke->key() == Qt::Key::Key_E)
 				{
 					ecount++;
 
@@ -711,7 +712,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_G)
+				else if (ke->key() == Qt::Key::Key_G)
 				{
 					gcount++;
 
@@ -723,7 +724,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 					return true;
 				}
-				else if (ke->key() == Qt::Key_H)
+				else if (ke->key() == Qt::Key::Key_H)
 				{
 					hcount++;
 
@@ -872,7 +873,7 @@ void Fractorium::dropEvent(QDropEvent* e)
 {
 	QStringList filenames;
 	const auto mod = e->modifiers();
-	const auto append = mod.testFlag(Qt::ControlModifier) ? false : true;
+	const auto append = mod.testFlag(Qt::KeyboardModifier::ControlModifier) ? false : true;
 
 	if (e->mimeData()->hasUrls())
 	{
@@ -884,7 +885,7 @@ void Fractorium::dropEvent(QDropEvent* e)
 
 			if (QDir(localFile).exists())
 			{
-				QDirIterator it(localFile, QDirIterator::Subdirectories);
+				QDirIterator it(localFile, QDirIterator::IteratorFlag::Subdirectories);
 
 				while (it.hasNext())
 				{
@@ -927,7 +928,7 @@ void Fractorium::dropEvent(QDropEvent* e)
 /// <param name="vals">The string values to populate the combo box with</param>
 /// <param name="signal">The signal the combo box emits</param>
 /// <param name="slot">The slot to receive the signal</param>
-/// <param name="connectionType">Type of the connection. Default: Qt::QueuedConnection.</param>
+/// <param name="connectionType">Type of the connection. Default: Qt::ConnectionType::QueuedConnection.</param>
 void Fractorium::SetupCombo(QTableWidget* table, const QObject* receiver, int& row, int col, StealthComboBox*& comboBox, const vector<string>& vals, const char* signal, const char* slot, Qt::ConnectionType connectionType)
 {
 	comboBox = new StealthComboBox(table);
@@ -1189,9 +1190,9 @@ QString Fractorium::SetupSaveFolderDialog()
 /// <returns>True if created successfully, else false</returns>
 bool Fractorium::SetupFinalRenderDialog()
 {
-    if ((m_FinalRenderDialog = std::make_unique<FractoriumFinalRenderDialog>(this)))
+	if ((m_FinalRenderDialog = std::make_unique<FractoriumFinalRenderDialog>(this)))
 	{
-		connect(m_FinalRenderDialog.get(), SIGNAL(finished(int)), this, SLOT(OnFinalRenderClose(int)), Qt::QueuedConnection);
+		connect(m_FinalRenderDialog.get(), SIGNAL(finished(int)), this, SLOT(OnFinalRenderClose(int)), Qt::ConnectionType::QueuedConnection);
 		return true;
 	}
 
@@ -1209,7 +1210,7 @@ void Fractorium::ShowCritical(const QString& title, const QString& text, bool in
 	if (!invokeRequired)
 		QMessageBox::critical(this, title, text);
 	else
-		QMetaObject::invokeMethod(this, "ShowCritical", Qt::QueuedConnection, Q_ARG(const QString&, title), Q_ARG(const QString&, text), Q_ARG(bool, false));
+		QMetaObject::invokeMethod(this, "ShowCritical", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, title), Q_ARG(const QString&, text), Q_ARG(bool, false));
 }
 
 /// <summary>
@@ -1262,7 +1263,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, m_StaggerSpin);
 	w = SetTabOrder(this, w, m_TemporalFilterWidthSpin);
 	w = SetTabOrder(this, w, m_TemporalFilterTypeCombo);
-    /*w = */SetTabOrder(this, w, m_TemporalFilterExpSpin);
+	/*w = */SetTabOrder(this, w, m_TemporalFilterExpSpin);
 	w = SetTabOrder(this, ui.LibraryTree, ui.SequenceStartCountSpinBox);//Library.
 	w = SetTabOrder(this, w, ui.SequenceStartPreviewsButton);
 	w = SetTabOrder(this, w, ui.SequenceStopPreviewsButton);
@@ -1276,7 +1277,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.SequenceOpenButton);
 	w = SetTabOrder(this, w, ui.SequenceAnimateButton);
 	w = SetTabOrder(this, w, ui.SequenceClearButton);
-    /*w = */SetTabOrder(this, w, ui.SequenceTree);
+	/*w = */SetTabOrder(this, w, ui.SequenceTree);
 	w = SetTabOrder(this, ui.CurrentXformCombo, ui.AddXformButton);//Xforms.
 	w = SetTabOrder(this, w, ui.AddLinkedXformButton);
 	w = SetTabOrder(this, w, ui.DuplicateXformButton);
@@ -1285,7 +1286,7 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.AddFinalXformButton);
 	w = SetTabOrder(this, w, m_XformWeightSpin);
 	w = SetTabOrder(this, w, m_XformWeightSpinnerButtonWidget->m_Button);
-    /*w = */SetTabOrder(this, w, m_XformNameEdit);
+	/*w = */SetTabOrder(this, w, m_XformNameEdit);
 	w = SetTabOrder(this, m_XformColorIndexSpin, ui.XformColorScroll);//Xforms color.
 	w = SetTabOrder(this, w, ui.RandomColorIndicesButton);
 	w = SetTabOrder(this, w, ui.ToggleColorIndicesButton);
@@ -1347,14 +1348,14 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.PostRandomButton);
 	w = SetTabOrder(this, w, ui.PolarAffineCheckBox);
 	w = SetTabOrder(this, w, ui.LocalPivotRadio);
-    /*w = */SetTabOrder(this, w, ui.WorldPivotRadio);
+	/*w = */SetTabOrder(this, w, ui.WorldPivotRadio);
 	w = SetTabOrder(this, ui.VariationsFilterLineEdit, ui.VariationsFilterClearButton);//Xforms variation.
 	w = SetTabOrder(this, w, ui.VariationsTree);
 	w = SetTabOrder(this, w, ui.ClearXaosButton);
 	w = SetTabOrder(this, w, ui.RandomXaosButton);
 	w = SetTabOrder(this, w, ui.AddLayerButton);
 	w = SetTabOrder(this, w, ui.AddLayerSpinBox);
-    /*w = */SetTabOrder(this, w, ui.TransposeXaosButton);
+	/*w = */SetTabOrder(this, w, ui.TransposeXaosButton);
 	//Xforms xaos is done dynamically every time.
 	w = SetTabOrder(this, ui.PaletteFilenameCombo, m_PaletteHueSpin);//Palette.
 	w = SetTabOrder(this, w, m_PaletteContrastSpin);
@@ -1374,14 +1375,14 @@ void Fractorium::SetTabOrders()
 	w = SetTabOrder(this, w, ui.CurvesAllRadio);
 	w = SetTabOrder(this, w, ui.CurvesRedRadio);
 	w = SetTabOrder(this, w, ui.CurvesGreenRadio);
-    /*w = */SetTabOrder(this, w, ui.CurvesBlueRadio);
-    /*w = */SetTabOrder(this, ui.SummaryTable, ui.SummaryTree);//Info summary.
+	/*w = */SetTabOrder(this, w, ui.CurvesBlueRadio);
+	/*w = */SetTabOrder(this, ui.SummaryTable, ui.SummaryTree);//Info summary.
 	w = SetTabOrder(this, ui.InfoBoundsGroupBox, ui.InfoBoundsFrame);//Info bounds.
 	w = SetTabOrder(this, w, ui.InfoBoundsTable);
 	w = SetTabOrder(this, w, ui.InfoFileOpeningGroupBox);
 	w = SetTabOrder(this, w, ui.InfoFileOpeningTextEdit);
 	w = SetTabOrder(this, w, ui.InfoRenderingGroupBox);
-    /*w = */SetTabOrder(this, w, ui.InfoRenderingTextEdit);
+	/*w = */SetTabOrder(this, w, ui.InfoRenderingTextEdit);
 }
 
 /// <summary>
@@ -1399,8 +1400,8 @@ void Fractorium::ToggleTableRow(QTableView* table, int logicalIndex)
 	auto allZero = true;
 	const auto model = table->model();
 	const auto cols = model->columnCount();
-	const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-	const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+	const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 	const auto tableWidget = qobject_cast<QTableWidget*>(table);
 
 	if (tableWidget)
@@ -1423,15 +1424,15 @@ void Fractorium::ToggleTableRow(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < cols; i++)
-        {
+		{
 			if (auto spinBox = qobject_cast<DoubleSpinBox*>(tableWidget->cellWidget(logicalIndex, i)))
-            {
+			{
 				if (ctrl)
 					spinBox->setValue(static_cast<double>(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()));
 				else
 					spinBox->setValue(val);
-            }
-        }
+			}
+		}
 	}
 	else
 	{
@@ -1450,12 +1451,12 @@ void Fractorium::ToggleTableRow(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < cols; i++)
-        {
+		{
 			if (ctrl)
-				model->setData(model->index(logicalIndex, i), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::EditRole);
+				model->setData(model->index(logicalIndex, i), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::ItemDataRole::EditRole);
 			else
-				model->setData(model->index(logicalIndex, i), val, Qt::EditRole);
-        }
+				model->setData(model->index(logicalIndex, i), val, Qt::ItemDataRole::EditRole);
+		}
 	}
 }
 
@@ -1474,8 +1475,8 @@ void Fractorium::ToggleTableCol(QTableView* table, int logicalIndex)
 	auto allZero = true;
 	const auto model = table->model();
 	const auto rows = model->rowCount();
-	const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
-	const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	const auto shift = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ShiftModifier);
+	const auto ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 	const auto tableWidget = qobject_cast<QTableWidget*>(table);
 
 	if (tableWidget)
@@ -1498,15 +1499,15 @@ void Fractorium::ToggleTableCol(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < rows; i++)
-        {
+		{
 			if (auto spinBox = qobject_cast<DoubleSpinBox*>(tableWidget->cellWidget(i, logicalIndex)))
-            {
+			{
 				if (ctrl)
 					spinBox->setValue(static_cast<double>(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()));
 				else
 					spinBox->setValue(val);
-            }
-        }
+			}
+		}
 	}
 	else
 	{
@@ -1525,12 +1526,12 @@ void Fractorium::ToggleTableCol(QTableView* table, int logicalIndex)
 		const auto val = allZero ? 1.0 : 0.0;
 
 		for (int i = 0; i < rows; i++)
-        {
+		{
 			if (ctrl)
-				model->setData(model->index(i, logicalIndex), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::EditRole);
+				model->setData(model->index(i, logicalIndex), double(QTIsaac<ISAAC_SIZE, ISAAC_INT>::LockedRandBit()), Qt::ItemDataRole::EditRole);
 			else
-				model->setData(model->index(i, logicalIndex), val, Qt::EditRole);
-        }
+				model->setData(model->index(i, logicalIndex), val, Qt::ItemDataRole::EditRole);
+		}
 	}
 }
 

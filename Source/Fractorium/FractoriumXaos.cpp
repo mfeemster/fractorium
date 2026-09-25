@@ -23,16 +23,16 @@ void Fractorium::InitXaosUI()
 	m_XaosTableModel = nullptr;
 	m_AppliedXaosTableModel = nullptr;
 	m_XaosTableItemDelegate = new DoubleSpinBoxTableItemDelegate(m_XaosSpinBox, this);
-	connect(m_XaosSpinBox, SIGNAL(valueChanged(double)), this, SLOT(OnXaosChanged(double)), Qt::QueuedConnection);
-	connect(ui.ClearXaosButton, SIGNAL(clicked(bool)), this, SLOT(OnClearXaosButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.RandomXaosButton, SIGNAL(clicked(bool)), this, SLOT(OnRandomXaosButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.TransposeXaosButton, SIGNAL(clicked(bool)), this, SLOT(OnTransposeXaosButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.ToggleXaosButton, SIGNAL(clicked(bool)), this, SLOT(OnToggleXaosButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.AddLayerButton, SIGNAL(clicked(bool)), this, SLOT(OnAddLayerButtonClicked(bool)), Qt::QueuedConnection);
-	connect(ui.XaosTableView->verticalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(OnXaosRowDoubleClicked(int)), Qt::QueuedConnection);
-	connect(ui.XaosTableView->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(OnXaosColDoubleClicked(int)), Qt::QueuedConnection);
-	connect(ui.XaosTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(OnXaosHScrollValueChanged(int)), Qt::QueuedConnection);
-	connect(ui.XaosTableView->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(OnXaosVScrollValueChanged(int)), Qt::QueuedConnection);
+	connect(m_XaosSpinBox,                           SIGNAL(valueChanged(double)),      this, SLOT(OnXaosChanged(double)),              Qt::ConnectionType::QueuedConnection);
+	connect(ui.ClearXaosButton,                      SIGNAL(clicked(bool)),             this, SLOT(OnClearXaosButtonClicked(bool)),     Qt::ConnectionType::QueuedConnection);
+	connect(ui.RandomXaosButton,                     SIGNAL(clicked(bool)),             this, SLOT(OnRandomXaosButtonClicked(bool)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui.TransposeXaosButton,                  SIGNAL(clicked(bool)),             this, SLOT(OnTransposeXaosButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.ToggleXaosButton,                     SIGNAL(clicked(bool)),             this, SLOT(OnToggleXaosButtonClicked(bool)),    Qt::ConnectionType::QueuedConnection);
+	connect(ui.AddLayerButton,                       SIGNAL(clicked(bool)),             this, SLOT(OnAddLayerButtonClicked(bool)),      Qt::ConnectionType::QueuedConnection);
+	connect(ui.XaosTableView->verticalHeader(),      SIGNAL(sectionDoubleClicked(int)), this, SLOT(OnXaosRowDoubleClicked(int)),        Qt::ConnectionType::QueuedConnection);
+	connect(ui.XaosTableView->horizontalHeader(),    SIGNAL(sectionDoubleClicked(int)), this, SLOT(OnXaosColDoubleClicked(int)),        Qt::ConnectionType::QueuedConnection);
+	connect(ui.XaosTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),         this, SLOT(OnXaosHScrollValueChanged(int)),     Qt::ConnectionType::QueuedConnection);
+	connect(ui.XaosTableView->verticalScrollBar(),   SIGNAL(valueChanged(int)),         this, SLOT(OnXaosVScrollValueChanged(int)),     Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -97,10 +97,10 @@ void FractoriumEmberController<T>::FillAppliedXaos()
 
 			if (norm)
 			{
-                for (size_t wi = 0; wi < tempweights.size() && offset <= pixmap.height(); wi++)
+				for (size_t wi = 0; wi < tempweights.size() && offset <= pixmap.height(); wi++)
 				{
-                    offset = std::min<T>(offset + tempweights[wi] * pixmap.height(), pixmap.height());
-                    painter.fillRect(0, start, pixmap.width(), offset, m_Fractorium->m_XformComboColors[wi % XFORM_COLOR_COUNT]);
+					offset = std::min<T>(offset + tempweights[wi] * pixmap.height(), pixmap.height());
+					painter.fillRect(0, start, pixmap.width(), offset, m_Fractorium->m_XformComboColors[wi % XFORM_COLOR_COUNT]);
 					start = offset;
 				}
 			}
@@ -109,7 +109,7 @@ void FractoriumEmberController<T>::FillAppliedXaos()
 				painter.fillRect(0, 0, pixmap.width(), pixmap.height(), m_Fractorium->m_XformComboColors[0]);
 			}
 
-			twi->setData(Qt::DecorationRole, pixmap);
+			twi->setData(Qt::ItemDataRole::DecorationRole, pixmap);
 			m_Fractorium->ui.XaosDistVizTableWidget->setItem(0, i, twi.release());
 		}
 	}
@@ -236,7 +236,7 @@ void Fractorium::OnClearXaosButtonClicked(bool checked) { m_Controller->ClearXao
 template <typename T>
 void FractoriumEmberController<T>::RandomXaos()
 {
-	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+	bool ctrl = QGuiApplication::keyboardModifiers().testFlag(Qt::KeyboardModifier::ControlModifier);
 	Update([&]
 	{
 		size_t i = 0;
@@ -372,7 +372,7 @@ void Fractorium::OnXaosRowDoubleClicked(int logicalIndex)
 {
 	const auto btn = QApplication::mouseButtons();
 
-	if (!btn.testFlag(Qt::RightButton))
+	if (!btn.testFlag(Qt::MouseButton::RightButton))
 		ToggleTableRow(ui.XaosTableView, logicalIndex);
 
 	ui.XaosTableView->resizeRowsToContents();
@@ -390,7 +390,7 @@ void Fractorium::OnXaosColDoubleClicked(int logicalIndex)
 {
 	const auto btn = QApplication::mouseButtons();
 
-	if (!btn.testFlag(Qt::RightButton))
+	if (!btn.testFlag(Qt::MouseButton::RightButton))
 		ToggleTableCol(ui.XaosTableView, logicalIndex);
 
 	ui.XaosTableView->resizeRowsToContents();

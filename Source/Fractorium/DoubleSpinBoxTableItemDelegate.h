@@ -57,7 +57,7 @@ public:
 	void setEditorData(QWidget* editor, const QModelIndex& index) const override
 	{
 		const QPoint p(index.row(), index.column());
-		const auto value = index.model()->data(index, Qt::EditRole).toDouble();
+		const auto value = index.model()->data(index, Qt::ItemDataRole::EditRole).toDouble();
 		m_SpinBox->setProperty("tableindex", p);
 		m_SpinBox->setValue(value);
 	}
@@ -70,7 +70,7 @@ public:
 	/// <param name="index">The cell index of the model</param>
 	void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override
 	{
-		model->setData(index, m_SpinBox->value(), Qt::EditRole);
+		model->setData(index, m_SpinBox->value(), Qt::ItemDataRole::EditRole);
 	}
 
 	/// <summary>

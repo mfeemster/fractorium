@@ -58,7 +58,7 @@ public:
 		l->addWidget(m_Combo);
 		l->addWidget(m_Button1);
 		l->addWidget(m_Button2);
-		l->setAlignment(Qt::AlignLeft);
+		l->setAlignment(Qt::AlignmentFlag::AlignLeft);
 		l->setContentsMargins(0, 0, 0, 0);
 		l->setSpacing(2);
 		setLayout(l);
@@ -105,7 +105,7 @@ public:
 		m_Button->setMaximumHeight(h);
 		l->addWidget(spinBox);
 		l->addWidget(m_Button);
-		l->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+		l->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
 		l->setContentsMargins(0, 0, 0, 0);
 		l->setSpacing(0);
 		setLayout(l);
@@ -143,7 +143,7 @@ public:
 		m_Label->setMaximumHeight(h);
 		m_L->addWidget(spinBox);
 		m_L->addWidget(m_Label);
-		m_L->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+		m_L->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
 		m_L->setContentsMargins(0, 0, 0, 0);
 		m_L->setSpacing(0);
 		setLayout(m_L);
@@ -217,7 +217,7 @@ public:
 		m_SpinBox = spinBox;
 		m_L->addWidget(doubleSpinBox);
 		m_L->addWidget(spinBox);
-		m_L->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+		m_L->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
 		m_L->setContentsMargins(0, 0, 0, 0);
 		m_L->setSpacing(0);
 		setLayout(m_L);

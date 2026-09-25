@@ -88,20 +88,20 @@ public:
 
 public slots:
 	void MoveCursorToEnd();
-	void OnEarlyClipCheckBoxStateChanged(int state);
-	void OnYAxisUpCheckBoxStateChanged(int state);
-	void OnTransparencyCheckBoxStateChanged(int state);
-	void OnOpenCLCheckBoxStateChanged(int state);
-	void OnDoublePrecisionCheckBoxStateChanged(int state);
-	void OnDoAllCheckBoxStateChanged(int state);
-	void OnDoSequenceCheckBoxStateChanged(int state);
+	void OnEarlyClipCheckBoxStateChanged(Qt::CheckState state);
+	void OnYAxisUpCheckBoxStateChanged(Qt::CheckState state);
+	void OnTransparencyCheckBoxStateChanged(Qt::CheckState state);
+	void OnOpenCLCheckBoxStateChanged(Qt::CheckState state);
+	void OnDoublePrecisionCheckBoxStateChanged(Qt::CheckState state);
+	void OnDoAllCheckBoxStateChanged(Qt::CheckState state);
+	void OnDoSequenceCheckBoxStateChanged(Qt::CheckState state);
 	void OnCurrentSpinChanged(int d);
-	void OnApplyAllCheckBoxStateChanged(int state);
+	void OnApplyAllCheckBoxStateChanged(Qt::CheckState state);
 	void OnWidthScaleChanged(double d);
 	void OnWidthChanged(int d);
 	void OnHeightScaleChanged(double d);
 	void OnHeightChanged(int d);
-	void OnKeepAspectCheckBoxStateChanged(int state);
+	void OnKeepAspectCheckBoxStateChanged(Qt::CheckState state);
 	void OnScaleRadioButtonChanged(bool checked);
 	void OnDeviceTableCellChanged(int row, int col);
 	void OnDeviceTableRadioToggled(bool checked);

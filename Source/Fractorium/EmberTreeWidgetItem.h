@@ -61,7 +61,7 @@ public:
 		constexpr auto size = PREVIEW_SIZE;
 		m_Image = QImage(width, height, QImage::Format_RGBA8888);
 		memcpy(m_Image.scanLine(0), v.data(), SizeOf(v));//Memcpy the data in.
-		m_Pixmap = QPixmap::fromImage(m_Image).scaled(QSize(size, size), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);//Create a QPixmap out of the QImage, scaled to size.
+		m_Pixmap = QPixmap::fromImage(m_Image).scaled(QSize(size, size), Qt::AspectRatioMode::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation);//Create a QPixmap out of the QImage, scaled to size.
 		setData(NAME_COL, Qt::DecorationRole, m_Pixmap);
 	}
 
@@ -94,8 +94,8 @@ public:
 		: EmberTreeWidgetItemBase(p),
 		  m_Ember(ember)
 	{
-		setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-		setCheckState(NAME_COL, Qt::Unchecked);
+		setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsEditable | Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsDragEnabled);
+		setCheckState(NAME_COL, Qt::CheckState::Unchecked);
 	}
 
 	/// <summary>
@@ -108,8 +108,8 @@ public:
 		: EmberTreeWidgetItemBase(p),
 		  m_Ember(ember)
 	{
-		setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-		setCheckState(NAME_COL, Qt::Unchecked);
+		setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsEditable | Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsDragEnabled);
+		setCheckState(NAME_COL, Qt::CheckState::Unchecked);
 	}
 
 	/// <summary>

@@ -23,12 +23,12 @@ void Fractorium::InitParamsUI()
 	SetFixedTableHeader(ui.IterationTableHeader->horizontalHeader());
 	SetFixedTableHeader(ui.AnimationTableHeader->horizontalHeader());
 	//Color.
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_BrightnessSpin,	   spinHeight, 0.01,  dmax,       1, SIGNAL(valueChanged(double)), SLOT(OnBrightnessChanged(double)),	  true,  4.0,    4.0,  4.0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_GammaSpin,		   spinHeight,    1,  dmax,     0.5, SIGNAL(valueChanged(double)), SLOT(OnGammaChanged(double)),          true,  4.0,    4.0,  4.0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_GammaThresholdSpin, spinHeight,    0,  dmax,    0.01, SIGNAL(valueChanged(double)), SLOT(OnGammaThresholdChanged(double)), true,  0.1,    0.1,  0.0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_VibrancySpin,	   spinHeight,    0,  dmax,    0.01, SIGNAL(valueChanged(double)), SLOT(OnVibrancyChanged(double)),       true,  1.0,    1.0,  0.0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_HighlightSpin,	   spinHeight,  -1.0,   10,     0.1, SIGNAL(valueChanged(double)), SLOT(OnHighlightPowerChanged(double)), true,  1.0,    1.0, -1.0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_K2Spin,	           spinHeight,     0, 99.0,  0.0001, SIGNAL(valueChanged(double)), SLOT(OnK2Changed(double)),             true,    0, 0.0001,    0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_BrightnessSpin,     spinHeight, 0.01, dmax,       1, SIGNAL(valueChanged(double)), SLOT(OnBrightnessChanged(double)),     true,  4.0,    4.0,  4.0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_GammaSpin,          spinHeight,    1, dmax,     0.5, SIGNAL(valueChanged(double)), SLOT(OnGammaChanged(double)),          true,  4.0,    4.0,  4.0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_GammaThresholdSpin, spinHeight,    0, dmax,    0.01, SIGNAL(valueChanged(double)), SLOT(OnGammaThresholdChanged(double)), true,  0.1,    0.1,  0.0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_VibrancySpin,       spinHeight,    0, dmax,    0.01, SIGNAL(valueChanged(double)), SLOT(OnVibrancyChanged(double)),       true,  1.0,    1.0,  0.0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_HighlightSpin,      spinHeight, -1.0,   10,     0.1, SIGNAL(valueChanged(double)), SLOT(OnHighlightPowerChanged(double)), true,  1.0,    1.0, -1.0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_K2Spin,             spinHeight,    0, 99.0,  0.0001, SIGNAL(valueChanged(double)), SLOT(OnK2Changed(double)),             true,    0, 0.0001,    0);
 	m_HighlightSpin->DoubleClickLowVal(-1.0);
 	int dec = 6;
 	m_BrightnessSpin->setDecimals(dec);
@@ -42,8 +42,8 @@ void Fractorium::InitParamsUI()
 	m_BackgroundColorButton->setMinimumWidth(21);
 	m_BackgroundColorButton->setMaximumWidth(21);
 	table->setCellWidget(row, 1, m_BackgroundColorButton);
-	table->item(row, 1)->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	connect(m_BackgroundColorButton, SIGNAL(clicked(bool)), this, SLOT(OnBackgroundColorButtonClicked(bool)), Qt::QueuedConnection);
+	table->item(row, 1)->setTextAlignment(Qt::AlignmentFlag::AlignRight | Qt::AlignmentFlag::AlignVCenter);
+	connect(m_BackgroundColorButton, SIGNAL(clicked(bool)), this, SLOT(OnBackgroundColorButtonClicked(bool)), Qt::ConnectionType::QueuedConnection);
 	row++;
 	comboVals.push_back("Step");
 	comboVals.push_back("Linear");
@@ -53,19 +53,19 @@ void Fractorium::InitParamsUI()
 	//Geometry.
 	row = 0;
 	table = ui.GeometryTable;
-    SetupSpinner<SpinBox, int>		   (table, this, row, 1, m_WidthSpin,		spinHeight,	   10,	  2048,    50, SIGNAL(valueChanged(int)),	 SLOT(OnWidthChanged(int)),		     true,  width(),  width(),  width());
-	SetupSpinner<SpinBox, int>		   (table, this, row, 1, m_HeightSpin,		spinHeight,	   10,	  2048,	   50, SIGNAL(valueChanged(int)),	 SLOT(OnHeightChanged(int)),		 true, height(), height(), height());
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterXSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterXChanged(double)),     true,	  0,   0,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterYSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterYChanged(double)),     true,	  0,   0,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ScaleSpin,       spinHeight,    10,    dmax,    20, SIGNAL(valueChanged(double)), SLOT(OnScaleChanged(double)),	     true,  240, 240, 240);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ZoomSpin,        spinHeight,     0,      25,   0.2, SIGNAL(valueChanged(double)), SLOT(OnZoomChanged(double)),	     true,	  0,   0,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_RotateSpin,      spinHeight, -dmax,    dmax,    10, SIGNAL(valueChanged(double)), SLOT(OnRotateChanged(double)),      true,	  0,   0,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ZPosSpin,        spinHeight, -1000,    1000,   0.1, SIGNAL(valueChanged(double)), SLOT(OnZPosChanged(double)),        true,	  0,   1,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_PerspectiveSpin, spinHeight,  -500,     500,  0.01, SIGNAL(valueChanged(double)), SLOT(OnPerspectiveChanged(double)), true,	  0,   1,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_PitchSpin,       spinHeight, -dmax,    dmax,     1, SIGNAL(valueChanged(double)), SLOT(OnPitchChanged(double)),       true,	  0,  45,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_YawSpin,         spinHeight, -dmax,    dmax,     1, SIGNAL(valueChanged(double)), SLOT(OnYawChanged(double)),         true,	  0,  45,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_DepthBlurSpin,   spinHeight, -dmax,    dmax,  0.01, SIGNAL(valueChanged(double)), SLOT(OnDepthBlurChanged(double)),   true,	  0,   1,	0);
-	SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_BlurCurveSpin,   spinHeight,     0,    dmax,   0.1, SIGNAL(valueChanged(double)), SLOT(OnBlurCurveChanged(double)),   true,	  0,   1,	0);
+	 SetupSpinner<SpinBox, int>         (table, this, row, 1, m_WidthSpin,       spinHeight,    10,   2048,     50, SIGNAL(valueChanged(int)),  SLOT(OnWidthChanged(int)),            true,  width(),  width(),  width());
+	 SetupSpinner<SpinBox, int>         (table, this, row, 1, m_HeightSpin,      spinHeight,    10,   2048,     50, SIGNAL(valueChanged(int)),  SLOT(OnHeightChanged(int)),           true, height(), height(), height());
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterXSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterXChanged(double)),     true,        0,        0,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_CenterYSpin,     spinHeight, -dmax,    dmax,  0.05, SIGNAL(valueChanged(double)), SLOT(OnCenterYChanged(double)),     true,        0,        0,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ScaleSpin,       spinHeight,    10,    dmax,    20, SIGNAL(valueChanged(double)), SLOT(OnScaleChanged(double)),       true,      240,      240,      240);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ZoomSpin,        spinHeight,     0,      25,   0.2, SIGNAL(valueChanged(double)), SLOT(OnZoomChanged(double)),        true,        0,        0,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_RotateSpin,      spinHeight, -dmax,    dmax,    10, SIGNAL(valueChanged(double)), SLOT(OnRotateChanged(double)),      true,        0,        0,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_ZPosSpin,        spinHeight, -1000,    1000,   0.1, SIGNAL(valueChanged(double)), SLOT(OnZPosChanged(double)),        true,        0,        1,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_PerspectiveSpin, spinHeight,  -500,     500,  0.01, SIGNAL(valueChanged(double)), SLOT(OnPerspectiveChanged(double)), true,        0,        1,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_PitchSpin,       spinHeight, -dmax,    dmax,     1, SIGNAL(valueChanged(double)), SLOT(OnPitchChanged(double)),       true,        0,       45,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_YawSpin,         spinHeight, -dmax,    dmax,     1, SIGNAL(valueChanged(double)), SLOT(OnYawChanged(double)),         true,        0,       45,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_DepthBlurSpin,   spinHeight, -dmax,    dmax,  0.01, SIGNAL(valueChanged(double)), SLOT(OnDepthBlurChanged(double)),   true,        0,        1,        0);
+	 SetupSpinner<DoubleSpinBox, double>(table, this, row, 1, m_BlurCurveSpin,   spinHeight,     0,    dmax,   0.1, SIGNAL(valueChanged(double)), SLOT(OnBlurCurveChanged(double)),   true,        0,        1,        0);
 	m_WidthSpin->m_DoubleClickNonZeroEvent = [&](SpinBox * sb, int val)
 	{
 		m_Controller->ResizeAndScale(val, m_HeightSpin->DoubleClickNonZero(), eScaleType::SCALE_WIDTH);
@@ -151,8 +151,8 @@ void Fractorium::InitParamsUI()
 	AddSizePreset("8K UHD", 7680, 4320);
 	AddSizePreset("8K", 8192, 4608);
 	AddSizePreset("12K", 12288, 6912);
-	m_WidthSpin->setContextMenuPolicy(Qt::ActionsContextMenu);
-	m_HeightSpin->setContextMenuPolicy(Qt::ActionsContextMenu);
+	m_WidthSpin->setContextMenuPolicy(Qt::ContextMenuPolicy::ActionsContextMenu);
+	m_HeightSpin->setContextMenuPolicy(Qt::ContextMenuPolicy::ActionsContextMenu);
 }
 
 /// <summary>
@@ -166,10 +166,10 @@ void Fractorium::AddSizePreset(QString name, int w, int h)
 	QString caption;
 	QTextStream(&caption) << name << " (" << ToString<int>(w) << " x " << ToString<int>(h) << ")";
 	auto widthAction = new QAction(caption, m_WidthSpin);
-	connect(widthAction, SIGNAL(triggered(bool)), this, SLOT(PresetWidthActionTriggered(bool)), Qt::QueuedConnection);
+	connect(widthAction, SIGNAL(triggered(bool)), this, SLOT(PresetWidthActionTriggered(bool)), Qt::ConnectionType::QueuedConnection);
 	m_WidthSpin->addAction(widthAction);
 	auto heightAction = new QAction(caption, m_HeightSpin);
-	connect(heightAction, SIGNAL(triggered(bool)), this, SLOT(PresetHeightActionTriggered(bool)), Qt::QueuedConnection);
+	connect(heightAction, SIGNAL(triggered(bool)), this, SLOT(PresetHeightActionTriggered(bool)), Qt::ConnectionType::QueuedConnection);
 	m_HeightSpin->addAction(heightAction);
 	m_HeightPresets[caption] = std::pair<int, int>(w, h);
 }

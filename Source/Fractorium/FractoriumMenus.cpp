@@ -7,45 +7,45 @@
 void Fractorium::InitMenusUI()
 {
 	//File menu.
-	connect(ui.ActionNewFlock,					  SIGNAL(triggered(bool)), this, SLOT(OnActionNewFlock(bool)),					  Qt::QueuedConnection);
-	connect(ui.ActionNewEmptyFlameInCurrentFile,  SIGNAL(triggered(bool)), this, SLOT(OnActionNewEmptyFlameInCurrentFile(bool)),  Qt::QueuedConnection);
-	connect(ui.ActionNewRandomFlameInCurrentFile, SIGNAL(triggered(bool)), this, SLOT(OnActionNewRandomFlameInCurrentFile(bool)), Qt::QueuedConnection);
-	connect(ui.ActionCopyFlameInCurrentFile,	  SIGNAL(triggered(bool)), this, SLOT(OnActionCopyFlameInCurrentFile(bool)),	  Qt::QueuedConnection);
-	connect(ui.ActionCreateReferenceFile,         SIGNAL(triggered(bool)), this, SLOT(OnActionCreateReferenceFile(bool)),         Qt::QueuedConnection);
-	connect(ui.ActionOpen,						  SIGNAL(triggered(bool)), this, SLOT(OnActionOpen(bool)),						  Qt::QueuedConnection);
-	connect(ui.ActionOpenExamples,                SIGNAL(triggered(bool)), this, SLOT(OnActionOpenExamples(bool)),				  Qt::QueuedConnection);
-	connect(ui.ActionSaveCurrentAsXml,			  SIGNAL(triggered(bool)), this, SLOT(OnActionSaveCurrentAsXml(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionSaveEntireFileAsXml,		  SIGNAL(triggered(bool)), this, SLOT(OnActionSaveEntireFileAsXml(bool)),		  Qt::QueuedConnection);
-	connect(ui.ActionSaveCurrentScreen,			  SIGNAL(triggered(bool)), this, SLOT(OnActionSaveCurrentScreen(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionExit,						  SIGNAL(triggered(bool)), this, SLOT(OnActionExit(bool)),						  Qt::QueuedConnection);
-	//Edit menu.
-	connect(ui.ActionUndo,				  SIGNAL(triggered(bool)), this, SLOT(OnActionUndo(bool)),				  Qt::QueuedConnection);
-	connect(ui.ActionRedo,				  SIGNAL(triggered(bool)), this, SLOT(OnActionRedo(bool)),				  Qt::QueuedConnection);
-	connect(ui.ActionCopyXml,			  SIGNAL(triggered(bool)), this, SLOT(OnActionCopyXml(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionCopyAllXml,		  SIGNAL(triggered(bool)), this, SLOT(OnActionCopyAllXml(bool)),		  Qt::QueuedConnection);
-	connect(ui.ActionPasteXmlAppend,	  SIGNAL(triggered(bool)), this, SLOT(OnActionPasteXmlAppend(bool)),	  Qt::QueuedConnection);
-	connect(ui.ActionPasteXmlOver,		  SIGNAL(triggered(bool)), this, SLOT(OnActionPasteXmlOver(bool)),		  Qt::QueuedConnection);
-	connect(ui.ActionCopySelectedXforms,  SIGNAL(triggered(bool)), this, SLOT(OnActionCopySelectedXforms(bool)),  Qt::QueuedConnection);
-	connect(ui.ActionPasteSelectedXforms, SIGNAL(triggered(bool)), this, SLOT(OnActionPasteSelectedXforms(bool)), Qt::QueuedConnection);
-	connect(ui.ActionCopyKernel,          SIGNAL(triggered(bool)), this, SLOT(OnActionCopyKernel(bool)),          Qt::QueuedConnection);
-	ui.ActionPasteSelectedXforms->setEnabled(false);
-	//View menu.
-	connect(ui.ActionResetWorkspace,       SIGNAL(triggered(bool)), this, SLOT(OnActionResetWorkspace(bool)),       Qt::QueuedConnection);
-	connect(ui.ActionAlternateEditorImage, SIGNAL(triggered(bool)), this, SLOT(OnActionAlternateEditorImage(bool)), Qt::QueuedConnection);
-	connect(ui.ActionResetScale,           SIGNAL(triggered(bool)), this, SLOT(OnActionResetScale(bool)),           Qt::QueuedConnection);
-	//Tools menu.
-	connect(ui.ActionAddReflectiveSymmetry, SIGNAL(triggered(bool)), this, SLOT(OnActionAddReflectiveSymmetry(bool)), Qt::QueuedConnection);
-	connect(ui.ActionAddRotationalSymmetry, SIGNAL(triggered(bool)), this, SLOT(OnActionAddRotationalSymmetry(bool)), Qt::QueuedConnection);
-	connect(ui.ActionAddBothSymmetry,		SIGNAL(triggered(bool)), this, SLOT(OnActionAddBothSymmetry(bool)),		  Qt::QueuedConnection);
-	connect(ui.ActionClearFlame,			SIGNAL(triggered(bool)), this, SLOT(OnActionClearFlame(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionFlatten,			    SIGNAL(triggered(bool)), this, SLOT(OnActionFlatten(bool)),			      Qt::QueuedConnection);
-	connect(ui.ActionUnflatten,			    SIGNAL(triggered(bool)), this, SLOT(OnActionUnflatten(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionStopRenderingPreviews,	SIGNAL(triggered(bool)), this, SLOT(OnActionStopRenderingPreviews(bool)), Qt::QueuedConnection);
-	connect(ui.ActionRenderPreviews,		SIGNAL(triggered(bool)), this, SLOT(OnActionRenderPreviews(bool)),		  Qt::QueuedConnection);
-	connect(ui.ActionFinalRender,			SIGNAL(triggered(bool)), this, SLOT(OnActionFinalRender(bool)),			  Qt::QueuedConnection);
-	connect(ui.ActionOptions,				SIGNAL(triggered(bool)), this, SLOT(OnActionOptions(bool)),				  Qt::QueuedConnection);
-	//Help menu.
-	connect(ui.ActionAbout, SIGNAL(triggered(bool)), this, SLOT(OnActionAbout(bool)), Qt::QueuedConnection);
+	 connect(ui.ActionNewFlock,                    SIGNAL(triggered(bool)), this, SLOT(OnActionNewFlock(bool)),                    Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionNewEmptyFlameInCurrentFile,  SIGNAL(triggered(bool)), this, SLOT(OnActionNewEmptyFlameInCurrentFile(bool)),  Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionNewRandomFlameInCurrentFile, SIGNAL(triggered(bool)), this, SLOT(OnActionNewRandomFlameInCurrentFile(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopyFlameInCurrentFile,      SIGNAL(triggered(bool)), this, SLOT(OnActionCopyFlameInCurrentFile(bool)),      Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCreateReferenceFile,         SIGNAL(triggered(bool)), this, SLOT(OnActionCreateReferenceFile(bool)),         Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionOpen,                        SIGNAL(triggered(bool)), this, SLOT(OnActionOpen(bool)),                        Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionOpenExamples,                SIGNAL(triggered(bool)), this, SLOT(OnActionOpenExamples(bool)),                Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionSaveCurrentAsXml,            SIGNAL(triggered(bool)), this, SLOT(OnActionSaveCurrentAsXml(bool)),            Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionSaveEntireFileAsXml,         SIGNAL(triggered(bool)), this, SLOT(OnActionSaveEntireFileAsXml(bool)),         Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionSaveCurrentScreen,           SIGNAL(triggered(bool)), this, SLOT(OnActionSaveCurrentScreen(bool)),           Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionExit,                        SIGNAL(triggered(bool)), this, SLOT(OnActionExit(bool)),                        Qt::ConnectionType::QueuedConnection);
+	 //Edit menu.
+	 connect(ui.ActionUndo,                SIGNAL(triggered(bool)), this, SLOT(OnActionUndo(bool)),                Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionRedo,                SIGNAL(triggered(bool)), this, SLOT(OnActionRedo(bool)),                Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopyXml,             SIGNAL(triggered(bool)), this, SLOT(OnActionCopyXml(bool)),             Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopyAllXml,          SIGNAL(triggered(bool)), this, SLOT(OnActionCopyAllXml(bool)),          Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionPasteXmlAppend,      SIGNAL(triggered(bool)), this, SLOT(OnActionPasteXmlAppend(bool)),      Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionPasteXmlOver,        SIGNAL(triggered(bool)), this, SLOT(OnActionPasteXmlOver(bool)),        Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopySelectedXforms,  SIGNAL(triggered(bool)), this, SLOT(OnActionCopySelectedXforms(bool)),  Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionPasteSelectedXforms, SIGNAL(triggered(bool)), this, SLOT(OnActionPasteSelectedXforms(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopyKernel,          SIGNAL(triggered(bool)), this, SLOT(OnActionCopyKernel(bool)),          Qt::ConnectionType::QueuedConnection);
+	 ui.ActionPasteSelectedXforms->setEnabled(false);
+	 //View menu.
+	 connect(ui.ActionResetWorkspace,       SIGNAL(triggered(bool)), this, SLOT(OnActionResetWorkspace(bool)),       Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionAlternateEditorImage, SIGNAL(triggered(bool)), this, SLOT(OnActionAlternateEditorImage(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionResetScale,           SIGNAL(triggered(bool)), this, SLOT(OnActionResetScale(bool)),           Qt::ConnectionType::QueuedConnection);
+	 //Tools menu.
+	 connect(ui.ActionAddReflectiveSymmetry, SIGNAL(triggered(bool)), this, SLOT(OnActionAddReflectiveSymmetry(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionAddRotationalSymmetry, SIGNAL(triggered(bool)), this, SLOT(OnActionAddRotationalSymmetry(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionAddBothSymmetry,       SIGNAL(triggered(bool)), this, SLOT(OnActionAddBothSymmetry(bool)),       Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionClearFlame,            SIGNAL(triggered(bool)), this, SLOT(OnActionClearFlame(bool)),            Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionFlatten,               SIGNAL(triggered(bool)), this, SLOT(OnActionFlatten(bool)),               Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionUnflatten,             SIGNAL(triggered(bool)), this, SLOT(OnActionUnflatten(bool)),             Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionStopRenderingPreviews, SIGNAL(triggered(bool)), this, SLOT(OnActionStopRenderingPreviews(bool)), Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionRenderPreviews,        SIGNAL(triggered(bool)), this, SLOT(OnActionRenderPreviews(bool)),        Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionFinalRender,           SIGNAL(triggered(bool)), this, SLOT(OnActionFinalRender(bool)),           Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionOptions,               SIGNAL(triggered(bool)), this, SLOT(OnActionOptions(bool)),               Qt::ConnectionType::QueuedConnection);
+	 //Help menu.
+	 connect(ui.ActionAbout, SIGNAL(triggered(bool)), this, SLOT(OnActionAbout(bool)), Qt::ConnectionType::QueuedConnection);
 }
 
 /// <summary>
@@ -712,7 +712,7 @@ void FractoriumEmberController<T>::PasteXmlAppend()
 
 	if (!embers.empty())
 	{
-        for (size_t i = 0; i < embers.size(); i++)
+		for (size_t i = 0; i < embers.size(); i++)
 		{
 			embers[i].m_Index = m_EmberFile.Size();
 			ConstrainDimensions(embers[i]);//Do not exceed the max texture size.
@@ -751,10 +751,10 @@ void FractoriumEmberController<T>::PasteXmlOver()
 	//auto b = codec->fromUnicode(QApplication::clipboard()->text());
 	s.reserve(b.size());
 
-    for (qsizetype i = 0; i < b.size(); i++)
+	for (qsizetype i = 0; i < b.size(); i++)
 	{
-        if (uint(b[i]) < 128u)
-            s.push_back(b[i]);
+		if (uint(b[i]) < 128u)
+			s.push_back(b[i]);
 	}
 
 	b.clear();
@@ -770,7 +770,7 @@ void FractoriumEmberController<T>::PasteXmlOver()
 	if (embers.size())
 	{
 		m_EmberFile.m_Embers = std::move(embers);//Will invalidate the pointers contained in the EmberTreeWidgetItems, UpdateLibraryTree() will resync.
-        size_t i = 0;
+		size_t i = 0;
 
 		for (auto it : m_EmberFile.m_Embers)
 		{

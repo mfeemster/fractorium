@@ -7,7 +7,7 @@
 /// of Qt Creator. Their license applies.
 /// </summary>
 
-namespace QCss
+namespace QCss2
 {
 QCssScanner::QCssScanner(const QString& inp)
 {
@@ -31,7 +31,7 @@ int QCssScanner::handleCommentStart()
 		++pos;
 	}
 
-	return QCss::TokenType::S;
+	return QCss2::TokenType2::S;
 }
 
 int QCssScanner::lex()
@@ -55,7 +55,7 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 33)
 	{
-		token = QCss::EXCLAMATION_SYM;
+		token = QCss2::TokenType2::EXCLAMATION_SYM;
 		goto found;
 	}
 
@@ -70,19 +70,19 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 40)
 	{
-		token = QCss::LPAREN;
+		token = QCss2::TokenType2::LPAREN;
 		goto found;
 	}
 
 	if (ch.unicode() == 41)
 	{
-		token = QCss::RPAREN;
+		token = QCss2::TokenType2::RPAREN;
 		goto found;
 	}
 
 	if (ch.unicode() == 42)
 	{
-		token = QCss::STAR;
+		token = QCss2::TokenType2::STAR;
 		goto found;
 	}
 
@@ -106,13 +106,13 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 58)
 	{
-		token = QCss::COLON;
+		token = QCss2::TokenType2::COLON;
 		goto found;
 	}
 
 	if (ch.unicode() == 59)
 	{
-		token = QCss::SEMICOLON;
+		token = QCss2::TokenType2::SEMICOLON;
 		goto found;
 	}
 
@@ -121,7 +121,7 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 61)
 	{
-		token = QCss::EQUAL;
+		token = QCss2::TokenType2::EQUAL;
 		goto found;
 	}
 
@@ -133,7 +133,7 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 91)
 	{
-		token = QCss::LBRACKET;
+		token = QCss2::TokenType2::LBRACKET;
 		goto found;
 	}
 
@@ -142,7 +142,7 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 93)
 	{
-		token = QCss::RBRACKET;
+		token = QCss2::TokenType2::RBRACKET;
 		goto found;
 	}
 
@@ -160,7 +160,7 @@ int QCssScanner::lex()
 
 	if (ch.unicode() == 125)
 	{
-		token = QCss::RBRACE;
+		token = QCss2::TokenType2::RBRACE;
 		goto found;
 	}
 
@@ -170,7 +170,7 @@ int QCssScanner::lex()
 	goto out;
 state_1:
 	lastAcceptingPos = pos;
-	token = QCss::S;
+	token = QCss2::TokenType2::S;
 	ch = next();
 
 	if (ch.unicode() >= 9 && ch.unicode() <= 10)
@@ -197,7 +197,7 @@ state_1:
 	goto out;
 state_3:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -249,7 +249,7 @@ state_4:
 	goto out;
 state_5:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -282,15 +282,15 @@ state_5:
 	goto out;
 state_9:
 	lastAcceptingPos = pos;
-	token = QCss::PLUS;
+	token = QCss2::TokenType2::PLUS;
 	goto out;
 state_10:
 	lastAcceptingPos = pos;
-	token = QCss::COMMA;
+	token = QCss2::TokenType2::COMMA;
 	goto out;
 state_11:
 	lastAcceptingPos = pos;
-	token = QCss::MINUS;
+	token = QCss2::TokenType2::MINUS;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -308,7 +308,7 @@ state_11:
 	goto out;
 state_12:
 	lastAcceptingPos = pos;
-	token = QCss::DOT;
+	token = QCss2::TokenType2::DOT;
 	ch = next();
 
 	if (ch.unicode() >= 48 && ch.unicode() <= 57)
@@ -317,7 +317,7 @@ state_12:
 	goto out;
 state_13:
 	lastAcceptingPos = pos;
-	token = QCss::SLASH;
+	token = QCss2::TokenType2::SLASH;
 	ch = next();
 
 	if (ch.unicode() == 42)
@@ -329,7 +329,7 @@ state_13:
 	goto out;
 state_14:
 	lastAcceptingPos = pos;
-	token = QCss::NUMBER;
+	token = QCss2::TokenType2::NUMBER;
 	ch = next();
 
 	if (ch.unicode() == 37)
@@ -363,7 +363,7 @@ state_17:
 	goto out;
 state_19:
 	lastAcceptingPos = pos;
-	token = QCss::GREATER;
+	token = QCss2::TokenType2::GREATER;
 	goto out;
 state_20:
 	ch = next();
@@ -402,7 +402,7 @@ state_22:
 	goto out;
 state_24:
 	lastAcceptingPos = pos;
-	token = QCss::IDENT;
+	token = QCss2::TokenType2::IDENT;
 	ch = next();
 
 	if (ch.unicode() == 40)
@@ -426,16 +426,16 @@ state_24:
 	goto out;
 state_25:
 	lastAcceptingPos = pos;
-	token = QCss::LBRACE;
+	token = QCss2::TokenType2::LBRACE;
 	goto out;
 state_26:
 	lastAcceptingPos = pos;
-	token = QCss::OR;
+	token = QCss2::TokenType2::OR;
 	ch = next();
 
 	if (ch.unicode() == 61)
 	{
-		token = QCss::DASHMATCH;
+		token = QCss2::TokenType2::DASHMATCH;
 		goto found;
 	}
 
@@ -445,14 +445,14 @@ state_28:
 
 	if (ch.unicode() == 61)
 	{
-		token = QCss::INCLUDES;
+		token = QCss2::TokenType2::INCLUDES;
 		goto found;
 	}
 
 	goto out;
 state_29:
 	lastAcceptingPos = pos;
-	token = QCss::S;
+	token = QCss2::TokenType2::S;
 	ch = next();
 
 	if (ch.unicode() >= 9 && ch.unicode() <= 10)
@@ -479,7 +479,7 @@ state_29:
 	goto out;
 state_30:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -512,7 +512,7 @@ state_30:
 	goto out;
 state_31:
 	lastAcceptingPos = pos;
-	token = QCss::STRING;
+	token = QCss2::TokenType2::STRING;
 	goto out;
 state_32:
 	ch = next();
@@ -544,7 +544,7 @@ state_32:
 	goto out;
 state_33:
 	lastAcceptingPos = pos;
-	token = QCss::HASH;
+	token = QCss2::TokenType2::HASH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -584,7 +584,7 @@ state_34:
 	goto out;
 state_35:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -617,7 +617,7 @@ state_35:
 	goto out;
 state_36:
 	lastAcceptingPos = pos;
-	token = QCss::STRING;
+	token = QCss2::TokenType2::STRING;
 	goto out;
 state_37:
 	ch = next();
@@ -652,14 +652,14 @@ state_38:
 
 	if (ch.unicode() == 62)
 	{
-		token = QCss::CDC;
+		token = QCss2::TokenType2::CDC;
 		goto found;
 	}
 
 	goto out;
 state_39:
 	lastAcceptingPos = pos;
-	token = QCss::NUMBER;
+	token = QCss2::TokenType2::NUMBER;
 	ch = next();
 
 	if (ch.unicode() == 37)
@@ -683,7 +683,7 @@ state_39:
 	goto out;
 state_41:
 	lastAcceptingPos = pos;
-	token = QCss::PERCENTAGE;
+	token = QCss2::TokenType2::PERCENTAGE;
 	goto out;
 state_42:
 	ch = next();
@@ -707,7 +707,7 @@ state_43:
 	goto out;
 state_44:
 	lastAcceptingPos = pos;
-	token = QCss::NUMBER;
+	token = QCss2::TokenType2::NUMBER;
 	ch = next();
 
 	if (ch.unicode() == 37)
@@ -753,7 +753,7 @@ state_45:
 	goto out;
 state_46:
 	lastAcceptingPos = pos;
-	token = QCss::LENGTH;
+	token = QCss2::LENGTH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -813,7 +813,7 @@ state_49:
 	goto out;
 state_50:
 	lastAcceptingPos = pos;
-	token = QCss::ATKEYWORD_SYM;
+	token = QCss2::TokenType2::ATKEYWORD_SYM;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -834,7 +834,7 @@ state_50:
 	goto out;
 state_51:
 	lastAcceptingPos = pos;
-	token = QCss::IDENT;
+	token = QCss2::TokenType2::IDENT;
 	ch = next();
 
 	if (ch.unicode() == 40)
@@ -858,11 +858,11 @@ state_51:
 	goto out;
 state_52:
 	lastAcceptingPos = pos;
-	token = QCss::FUNCTION;
+	token = QCss2::TokenType2::FUNCTION;
 	goto out;
 state_53:
 	lastAcceptingPos = pos;
-	token = QCss::IDENT;
+	token = QCss2::TokenType2::IDENT;
 	ch = next();
 
 	if (ch.unicode() == 40)
@@ -905,7 +905,7 @@ state_54:
 	goto out;
 state_57:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -938,7 +938,7 @@ state_57:
 	goto out;
 state_58:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -971,7 +971,7 @@ state_58:
 	goto out;
 state_59:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1004,7 +1004,7 @@ state_59:
 	goto out;
 state_60:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1040,7 +1040,7 @@ state_60:
 	goto out;
 state_61:
 	lastAcceptingPos = pos;
-	token = QCss::HASH;
+	token = QCss2::TokenType2::HASH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1080,7 +1080,7 @@ state_62:
 	goto out;
 state_63:
 	lastAcceptingPos = pos;
-	token = QCss::HASH;
+	token = QCss2::TokenType2::HASH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1101,7 +1101,7 @@ state_63:
 	goto out;
 state_64:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1134,7 +1134,7 @@ state_64:
 	goto out;
 state_65:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1167,7 +1167,7 @@ state_65:
 	goto out;
 state_66:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1200,7 +1200,7 @@ state_66:
 	goto out;
 state_67:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1236,7 +1236,7 @@ state_67:
 	goto out;
 state_69:
 	lastAcceptingPos = pos;
-	token = QCss::NUMBER;
+	token = QCss2::TokenType2::NUMBER;
 	ch = next();
 
 	if (ch.unicode() == 37)
@@ -1260,7 +1260,7 @@ state_69:
 	goto out;
 state_70:
 	lastAcceptingPos = pos;
-	token = QCss::LENGTH;
+	token = QCss2::TokenType2::LENGTH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1281,7 +1281,7 @@ state_70:
 	goto out;
 state_71:
 	lastAcceptingPos = pos;
-	token = QCss::LENGTH;
+	token = QCss2::TokenType2::LENGTH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1324,14 +1324,14 @@ state_73:
 
 	if (ch.unicode() == 45)
 	{
-		token = QCss::CDO;
+		token = QCss2::TokenType2::CDO;
 		goto found;
 	}
 
 	goto out;
 state_74:
 	lastAcceptingPos = pos;
-	token = QCss::ATKEYWORD_SYM;
+	token = QCss2::TokenType2::ATKEYWORD_SYM;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1352,7 +1352,7 @@ state_74:
 	goto out;
 state_75:
 	lastAcceptingPos = pos;
-	token = QCss::ATKEYWORD_SYM;
+	token = QCss2::TokenType2::ATKEYWORD_SYM;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1392,7 +1392,7 @@ state_76:
 	goto out;
 state_77:
 	lastAcceptingPos = pos;
-	token = QCss::IDENT;
+	token = QCss2::TokenType2::IDENT;
 	ch = next();
 
 	if (ch.unicode() == 40)
@@ -1416,7 +1416,7 @@ state_77:
 	goto out;
 state_78:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1449,7 +1449,7 @@ state_78:
 	goto out;
 state_79:
 	lastAcceptingPos = pos;
-	token = QCss::HASH;
+	token = QCss2::TokenType2::HASH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1470,7 +1470,7 @@ state_79:
 	goto out;
 state_80:
 	lastAcceptingPos = pos;
-	token = QCss::INVALID;
+	token = QCss2::TokenType2::INVALID;
 	ch = next();
 
 	if (ch.unicode() >= 1 && ch.unicode() <= 9)
@@ -1503,7 +1503,7 @@ state_80:
 	goto out;
 state_81:
 	lastAcceptingPos = pos;
-	token = QCss::LENGTH;
+	token = QCss2::TokenType2::LENGTH;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1524,7 +1524,7 @@ state_81:
 	goto out;
 state_83:
 	lastAcceptingPos = pos;
-	token = QCss::ATKEYWORD_SYM;
+	token = QCss2::TokenType2::ATKEYWORD_SYM;
 	ch = next();
 
 	if (ch.unicode() == 45)
@@ -1557,7 +1557,7 @@ out:
 }
 
 
-QString Scanner::preprocess(const QString& input, bool* hasEscapeSequences)
+QString Scanner2::preprocess(const QString& input, bool* hasEscapeSequences)
 {
 	QString output = input;
 
@@ -1576,7 +1576,7 @@ QString Scanner::preprocess(const QString& input, bool* hasEscapeSequences)
 			const int hexStart = i;
 
 			while (i < output.size()
-					&& isHexDigit(output.at(i).toLatin1())
+					&& isHexDigit2(output.at(i).toLatin1())
 					&& hexCount < 7)
 			{
 				++hexCount;
@@ -1614,17 +1614,17 @@ QString Scanner::preprocess(const QString& input, bool* hasEscapeSequences)
 	return output;
 }
 
-void Scanner::scan(const QString& preprocessedInput, QVector<Symbol>* symbols)
+void Scanner2::scan(const QString& preprocessedInput, QVector<Symbol2>* symbols)
 {
 	QCssScanner scanner(preprocessedInput);
-	Symbol sym;
+	Symbol2 sym;
 	int tok = scanner.lex();
 
 	if (symbols != nullptr)
 	{
 		while (tok != -1)
 		{
-			sym.token = static_cast<QCss::TokenType>(tok);
+			sym.token = static_cast<QCss2::TokenType2>(tok);
 			sym.text = scanner.input;
 			sym.start = scanner.lexemStart;
 			sym.len = scanner.lexemLength;

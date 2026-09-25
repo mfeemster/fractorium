@@ -8,21 +8,21 @@ void Fractorium::InitLibraryUI()
 {
 	ui.LibraryTree->SetMainWindow(this);
 	//Making the TreeItemChanged() events use a direct connection is absolutely critical.
-	connect(ui.LibraryTree,                 SIGNAL(itemChanged(QTreeWidgetItem*, int)),	      this, SLOT(OnEmberTreeItemChanged(QTreeWidgetItem*, int)),	   Qt::DirectConnection);
-	connect(ui.LibraryTree,                 SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(OnEmberTreeItemDoubleClicked(QTreeWidgetItem*, int)), Qt::QueuedConnection);
-	connect(ui.LibraryTree,                 SIGNAL(itemActivated(QTreeWidgetItem*, int)),	  this, SLOT(OnEmberTreeItemDoubleClicked(QTreeWidgetItem*, int)), Qt::QueuedConnection);
-	connect(ui.SequenceTree,                SIGNAL(itemChanged(QTreeWidgetItem*, int)),	      this, SLOT(OnSequenceTreeItemChanged(QTreeWidgetItem*, int)),	   Qt::DirectConnection);
-	connect(ui.SequenceStartPreviewsButton, SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceStartPreviewsButtonClicked(bool)),          Qt::QueuedConnection);
-	connect(ui.SequenceStopPreviewsButton,  SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceStopPreviewsButtonClicked(bool)),           Qt::QueuedConnection);
-	connect(ui.SequenceAllButton,           SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceAllButtonClicked(bool)),                    Qt::QueuedConnection);
-	connect(ui.SequenceGenerateButton,      SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceGenerateButtonClicked(bool)),               Qt::QueuedConnection);
-	connect(ui.SequenceRenderButton,        SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceRenderButtonClicked(bool)),                 Qt::QueuedConnection);
-	connect(ui.SequenceAnimateButton,       SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceAnimateButtonClicked(bool)),                Qt::QueuedConnection);
-	connect(ui.SequenceClearButton,         SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceClearButtonClicked(bool)),                  Qt::QueuedConnection);
-	connect(ui.SequenceSaveButton,          SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceSaveButtonClicked(bool)),                   Qt::QueuedConnection);
-	connect(ui.SequenceOpenButton,          SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceOpenButtonClicked(bool)),                   Qt::QueuedConnection);
-	connect(ui.SequenceStartFlameSpinBox,   SIGNAL(valueChanged(int)),                        this, SLOT(OnSequenceStartFlameSpinBoxChanged(int)),             Qt::QueuedConnection);
-	connect(ui.SequenceStopFlameSpinBox,    SIGNAL(valueChanged(int)),                        this, SLOT(OnSequenceStopFlameSpinBoxChanged(int)),              Qt::QueuedConnection);
+	connect(ui.LibraryTree,                 SIGNAL(itemChanged(QTreeWidgetItem*, int)),	      this, SLOT(OnEmberTreeItemChanged(QTreeWidgetItem*, int)),	   Qt::ConnectionType::DirectConnection);
+	connect(ui.LibraryTree,                 SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(OnEmberTreeItemDoubleClicked(QTreeWidgetItem*, int)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.LibraryTree,                 SIGNAL(itemActivated(QTreeWidgetItem*, int)),     this, SLOT(OnEmberTreeItemDoubleClicked(QTreeWidgetItem*, int)), Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceTree,                SIGNAL(itemChanged(QTreeWidgetItem*, int)),	      this, SLOT(OnSequenceTreeItemChanged(QTreeWidgetItem*, int)),	   Qt::ConnectionType::DirectConnection);
+	connect(ui.SequenceStartPreviewsButton, SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceStartPreviewsButtonClicked(bool)),          Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceStopPreviewsButton,  SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceStopPreviewsButtonClicked(bool)),           Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceAllButton,           SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceAllButtonClicked(bool)),                    Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceGenerateButton,      SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceGenerateButtonClicked(bool)),               Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceRenderButton,        SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceRenderButtonClicked(bool)),                 Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceAnimateButton,       SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceAnimateButtonClicked(bool)),                Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceClearButton,         SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceClearButtonClicked(bool)),                  Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceSaveButton,          SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceSaveButtonClicked(bool)),                   Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceOpenButton,          SIGNAL(clicked(bool)),                            this, SLOT(OnSequenceOpenButtonClicked(bool)),                   Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceStartFlameSpinBox,   SIGNAL(valueChanged(int)),                        this, SLOT(OnSequenceStartFlameSpinBoxChanged(int)),             Qt::ConnectionType::QueuedConnection);
+	connect(ui.SequenceStopFlameSpinBox,    SIGNAL(valueChanged(int)),                        this, SLOT(OnSequenceStopFlameSpinBoxChanged(int)),              Qt::ConnectionType::QueuedConnection);
 	//Animation FPS.
 	ui.SequenceAnimationFpsSpinBox->setValue(m_Settings->AnimationFps());
 }
@@ -41,13 +41,13 @@ void Fractorium::SelectLibraryItem(size_t index)
 		{
 			if (auto emberItem = dynamic_cast<EmberTreeWidgetItemBase*>(top->child(i)))
 			{
-                auto b = i == (int)index;
+				auto b = i == (int)index;
 
 				if (b)
 					item = emberItem;
 
 				emberItem->setSelected(b);
-				emberItem->setCheckState(NAME_COL, b ? Qt::Checked : Qt::Unchecked);
+				emberItem->setCheckState(NAME_COL, b ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 			}
 		}
 
@@ -78,7 +78,7 @@ vector<pair<size_t, QTreeWidgetItem*>> Fractorium::GetCurrentEmberIndex(bool isC
 			{
 				if (isChecked)
 				{
-					if (item->checkState(NAME_COL) == Qt::Checked)
+					if (item->checkState(NAME_COL) == Qt::CheckState::Checked)
 						v.push_back(make_pair(index, item));
 				}
 				else
@@ -123,16 +123,16 @@ void FractoriumEmberController<T>::SyncLibrary(uint update)
 		{
 			if (auto emberItem = dynamic_cast<EmberTreeWidgetItem<T>*>(top->child(i)))//Cast the child widget to the EmberTreeWidgetItem type.
 			{
-                if (update & static_cast<uint>(eLibraryUpdate::INDEX))
+				if (update & static_cast<uint>(eLibraryUpdate::INDEX))
 					it->m_Index = i;
 
-                if (update & static_cast<uint>(eLibraryUpdate::NAME))
+				if (update & static_cast<uint>(eLibraryUpdate::NAME))
 					emberItem->setText(NAME_COL, QString::fromStdString(it->m_Name));
 
-                if (update & static_cast<uint>(eLibraryUpdate::POINTER))
+				if (update & static_cast<uint>(eLibraryUpdate::POINTER))
 					emberItem->SetEmberPointer(&(*it));
 
-				if (emberItem->checkState(NAME_COL) == Qt::Checked)
+				if (emberItem->checkState(NAME_COL) == Qt::CheckState::Checked)
 					m_EmberFilePointer = emberItem->GetEmber();
 
 				emberItem->setText(INDEX_COL, ToString(i));
@@ -159,7 +159,7 @@ void FractoriumEmberController<T>::FillLibraryTree(int selectIndex)
 	QFileInfo info(m_EmberFile.m_Filename);
 	fileItem->setText(NAME_COL, info.fileName());
 	fileItem->setToolTip(NAME_COL, m_EmberFile.m_Filename);
-	fileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsDropEnabled);
+	fileItem->setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsEditable | Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsDropEnabled);
 	uint i = 0;
 
 	for (auto& it : m_EmberFile.m_Embers)
@@ -221,7 +221,7 @@ void FractoriumEmberController<T>::UpdateLibraryTree()
 		}
 
 		//When adding elements, ensure all indices are sequential.
-        SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX));
+		SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX));
 		m_Fractorium->SyncFileCountToSequenceCount();
 		RenderLibraryPreviews(origChildCount, static_cast<uint>(m_EmberFile.Size()));
 	}
@@ -260,7 +260,7 @@ void FractoriumEmberController<T>::EmberTreeItemChanged(QTreeWidgetItem* item, i
 
 			emberItem->UpdateEmberName();//Copy edit text to the ember's name variable.
 			m_EmberFile.MakeNamesUnique();//Ensure all names remain unique.
-            SyncLibrary(static_cast<uint>(eLibraryUpdate::NAME));//Copy all ember names to the tree items since some might have changed to be made unique.
+			SyncLibrary(static_cast<uint>(eLibraryUpdate::NAME));//Copy all ember names to the tree items since some might have changed to be made unique.
 			newName = emberItem->GetEmber()->m_Name;//Get the new, final, unique name.
 
 			if (m_EmberFilePointer && m_EmberFilePointer == emberItem->GetEmber() && oldName != newName)//If the ember edited was the current one, and the name was indeed changed, update the name of the current one.
@@ -304,7 +304,7 @@ void Fractorium::OnEmberTreeItemChanged(QTreeWidgetItem* item, int col)
 template <typename T>
 void FractoriumEmberController<T>::EmberTreeItemDoubleClicked(QTreeWidgetItem* item, int col)
 {
-	if (item->checkState(col) == Qt::Unchecked)
+	if (item->checkState(col) == Qt::CheckState::Unchecked)
 		SetEmber(m_Fractorium->ui.LibraryTree->currentIndex().row(), false);
 }
 
@@ -331,7 +331,7 @@ void FractoriumEmberController<T>::MoveLibraryItems(const QModelIndexList& items
 			names.push_back(temp->m_Name);
 
 	auto b = m_EmberFile.m_Embers.begin();
-    /*const auto result = */Gather(b, m_EmberFile.m_Embers.end(), Advance(b, destRow), [&](const Ember<T>& ember)
+	/*const auto result = */Gather(b, m_EmberFile.m_Embers.end(), Advance(b, destRow), [&](const Ember<T>& ember)
 	{
 		auto position = std::find(names.begin(), names.end(), ember.m_Name);
 
@@ -344,7 +344,7 @@ void FractoriumEmberController<T>::MoveLibraryItems(const QModelIndexList& items
 		return false;
 	});
 	tree->update();
-    SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
+	SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
 }
 
 /// <summary>
@@ -365,7 +365,7 @@ void FractoriumEmberController<T>::Delete(const vector<pair<size_t, QTreeWidgetI
 		{
 			last = uint(p.first - offset);
 			delete p.second;
-            SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
+			SyncLibrary(static_cast<uint>(eLibraryUpdate::INDEX) | static_cast<uint>(eLibraryUpdate::NAME) | static_cast<uint>(eLibraryUpdate::POINTER));
 			m_Fractorium->SyncFileCountToSequenceCount();
 		}
 
@@ -457,9 +457,9 @@ void FractoriumEmberController<T>::AddAnimationItem()
 {
 	auto fileItem = new QTreeWidgetItem(m_Fractorium->ui.SequenceTree);
 	fileItem->setText(NAME_COL, "Rendered Animation");
-	fileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	fileItem->setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable);
 	auto emberItem = new EmberTreeWidgetItemBase(fileItem);
-	emberItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	emberItem->setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable);
 	emberItem->setToolTip(INDEX_COL, "Animated Frame");
 	const uint size = PREVIEW_SIZE;
 	vector<unsigned char> empy_preview(size * size * 4);
@@ -486,7 +486,7 @@ void FractoriumEmberController<T>::FillSequenceTree()
 	QFileInfo info(m_SequenceFile.m_Filename);
 	fileItem->setText(NAME_COL, info.fileName());
 	fileItem->setToolTip(NAME_COL, m_SequenceFile.m_Filename);
-	fileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
+	fileItem->setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsEditable | Qt::ItemFlag::ItemIsSelectable);
 	uint i = 0;
 
 	for (auto& it : m_SequenceFile.m_Embers)
@@ -500,7 +500,7 @@ void FractoriumEmberController<T>::FillSequenceTree()
 			emberItem->setText(NAME_COL, it.m_Name.c_str());
 
 		emberItem->setText(INDEX_COL, istr);
-		emberItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+		emberItem->setFlags(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable);
 		emberItem->setToolTip(NAME_COL, emberItem->text(NAME_COL));
 		emberItem->SetImage(empy_preview, size, size);
 	}
@@ -607,7 +607,7 @@ void FractoriumEmberController<T>::SequenceGenerateButtonClicked()
 	const size_t start = ui.SequenceStartFlameSpinBox->value();
 	const size_t stop = ui.SequenceStopFlameSpinBox->value();
 	const size_t startCount = ui.SequenceStartCountSpinBox->value();
-    //const size_t keyFrames = (stop - start) + 1;
+	//const size_t keyFrames = (stop - start) + 1;
 	size_t frameCount = 0;
 	size_t fps = ui.SequenceAnimationFpsSpinBox->value();
 	double frames = 0;
@@ -778,7 +778,7 @@ void FractoriumEmberController<T>::SequenceAnimateNextFrame()
 				else
 				{
 					animate->m_Pixmap = QPixmap(nth->m_Pixmap);
-					animate->setData(NAME_COL, Qt::DecorationRole, animate->m_Pixmap);
+					animate->setData(NAME_COL, Qt::ItemDataRole::DecorationRole, animate->m_Pixmap);
 				}
 			}
 		}

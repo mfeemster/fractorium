@@ -274,8 +274,8 @@ public slots:
 	void OnXformWeightChanged(double d);
 	void OnEqualWeightButtonClicked(bool checked);
 	void OnXformNameChanged(const QString& s);
-	void OnXformAnimateLocalRotationCheckBoxStateChanged(int state);
-	void OnXformAnimateOriginRotationCheckBoxStateChanged(int state);
+	void OnXformAnimateLocalRotationCheckBoxStateChanged(Qt::CheckState state);
+	void OnXformAnimateOriginRotationCheckBoxStateChanged(Qt::CheckState state);
 
 	//Xforms Affine.
 	void OnPreAffineRowDoubleClicked(int logicalIndex);
@@ -310,7 +310,7 @@ public slots:
 
 	void OnAffineGroupBoxToggled(bool on);
 	void OnAffineDrawAllCurrentRadioButtonToggled(bool checked);
-	void OnPolarAffineCheckBoxStateChanged(int state);
+	void OnPolarAffineCheckBoxStateChanged(Qt::CheckState state);
 
 	//Xforms Color.
 	void OnXformColorIndexChanged(double d);
@@ -324,7 +324,7 @@ public slots:
 	void OnXformColorSpeedChanged(double d);
 	void OnXformOpacityChanged(double d);
 	void OnXformDirectColorChanged(double d);
-	void OnSoloXformCheckBoxStateChanged(int state);
+	void OnSoloXformCheckBoxStateChanged(Qt::CheckState state);
 	void OnXformRefPaletteResized(int logicalIndex, int oldSize, int newSize);
 	void OnResetCurvesButtonClicked(bool checked);
 	void OnCurvesPointChanged(int curveIndex, int pointIndex, const QPointF& point);
@@ -400,7 +400,7 @@ public:
 	//template<typename spinType, typename valType>//See below.
 	//static void SetupSpinner(QTableWidget* table, const QObject* receiver, int& row, int col, spinType*& spinBox, int height, valType min, valType max, valType step, const char* signal, const char* slot, bool incRow = true, valType val = 0, valType doubleClickZero = -999, valType doubleClickNonZero = -999);
 	static void SetupAffineSpinner(QTableWidget* table, const QObject* receiver, int row, int col, AffineDoubleSpinBox*& spinBox, int height, double min, double max, double step, double prec, const char* signal, const char* slot);
-	static void SetupCombo(QTableWidget* table, const QObject* receiver, int& row, int col, StealthComboBox*& comboBox, const vector<string>& vals, const char* signal, const char* slot, Qt::ConnectionType connectionType = Qt::QueuedConnection);
+	static void SetupCombo(QTableWidget* table, const QObject* receiver, int& row, int col, StealthComboBox*& comboBox, const vector<string>& vals, const char* signal, const char* slot, Qt::ConnectionType connectionType = Qt::ConnectionType::QueuedConnection);
 	static void SetFixedTableHeader(QHeaderView* header, QHeaderView::ResizeMode mode = QHeaderView::Fixed);
 
 protected:

@@ -90,7 +90,7 @@ ColorTriangle::ColorTriangle(QWidget* parent)
 	: QWidget(parent), bg(sizeHint(), QImage::Format_RGB32), selMode(Idle)
 {
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	setFocusPolicy(Qt::StrongFocus);
+	setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 	mustGenerateBackground = true;
 	QColor tmp;
 	tmp.setHsv(76, 184, 206);
@@ -204,7 +204,7 @@ void ColorTriangle::GenBackground()
 */
 void ColorTriangle::mouseMoveEvent(QMouseEvent* e)
 {
-	if ((e->buttons() & Qt::LeftButton) == 0)
+	if ((e->buttons() & Qt::MouseButton::LeftButton) == 0)
 		return;
 
 	const QPointF depos(static_cast<double>(e->pos().x()), static_cast<double>(e->pos().y()));
@@ -241,9 +241,9 @@ void ColorTriangle::mouseMoveEvent(QMouseEvent* e)
 	}
 	else
 	{
-		Vertex aa(Qt::black, _pa);
-		Vertex bb(Qt::black, _pb);
-		Vertex cc(Qt::black, _pc);
+		Vertex aa(Qt::GlobalColor::black, _pa);
+		Vertex bb(Qt::GlobalColor::black, _pb);
+		Vertex cc(Qt::GlobalColor::black, _pc);
 		Vertex* p1 = &aa;
 		Vertex* p2 = &bb;
 		Vertex* p3 = &cc;
@@ -285,7 +285,7 @@ void ColorTriangle::mouseMoveEvent(QMouseEvent* e)
 void ColorTriangle::mousePressEvent(QMouseEvent* e)
 {
 	// Only respond to the left mouse button.
-	if (e->button() != Qt::LeftButton)
+	if (e->button() != Qt::MouseButton::LeftButton)
 		return;
 
 	//QMessageBox::information(NULL, "Gradient", "press");
@@ -328,9 +328,9 @@ void ColorTriangle::mousePressEvent(QMouseEvent* e)
 	{
 		// triangle
 		selMode = SelectingSatValue;
-		Vertex aa(Qt::black, _pa);
-		Vertex bb(Qt::black, _pb);
-		Vertex cc(Qt::black, _pc);
+		Vertex aa(Qt::GlobalColor::black, _pa);
+		Vertex bb(Qt::GlobalColor::black, _pb);
+		Vertex cc(Qt::GlobalColor::black, _pc);
 		Vertex* p1 = &aa;
 		Vertex* p2 = &bb;
 		Vertex* p3 = &cc;
@@ -366,7 +366,7 @@ void ColorTriangle::mousePressEvent(QMouseEvent* e)
 */
 void ColorTriangle::mouseReleaseEvent(QMouseEvent* e)
 {
-	if (e->button() == Qt::LeftButton)
+	if (e->button() == Qt::MouseButton::LeftButton)
 		selMode = Idle;
 }
 
@@ -377,7 +377,7 @@ void ColorTriangle::keyPressEvent(QKeyEvent* e)
 {
 	switch (e->key())
 	{
-		case Qt::Key_Left:
+		case Qt::Key::Key_Left:
 		{
 			--curHue;
 
@@ -391,7 +391,7 @@ void ColorTriangle::keyPressEvent(QKeyEvent* e)
 		}
 		break;
 
-		case Qt::Key_Right:
+		case Qt::Key::Key_Right:
 		{
 			++curHue;
 
@@ -405,13 +405,13 @@ void ColorTriangle::keyPressEvent(QKeyEvent* e)
 		}
 		break;
 
-		case Qt::Key_Up:
+		case Qt::Key::Key_Up:
 		{
 			int h, s, v;
 			curColor.getHsv(&h, &s, &v);
 			QColor tmp;
 
-			if (e->modifiers() & Qt::ShiftModifier)
+			if (e->modifiers() & Qt::KeyboardModifier::ShiftModifier)
 			{
 				if (s > 5) s -= 5;
 				else s = 0;
@@ -427,13 +427,13 @@ void ColorTriangle::keyPressEvent(QKeyEvent* e)
 		}
 		break;
 
-		case Qt::Key_Down:
+		case Qt::Key::Key_Down:
 		{
 			int h, s, v;
 			curColor.getHsv(&h, &s, &v);
 			QColor tmp;
 
-			if (e->modifiers() & Qt::ShiftModifier)
+			if (e->modifiers() & Qt::KeyboardModifier::ShiftModifier)
 			{
 				if (s < 250) s += 5;
 				else s = 255;
@@ -509,9 +509,9 @@ void ColorTriangle::paintEvent(QPaintEvent* e)
 	hueColor.getRgb(&ri, &gi, &bi);
 
 	if ((ri * 30) + (gi * 59) + (bi * 11) > 12800)
-		painter.setPen(QPen(Qt::black, penWidth));
+		painter.setPen(QPen(Qt::GlobalColor::black, penWidth));
 	else
-		painter.setPen(QPen(Qt::white, penWidth));
+		painter.setPen(QPen(Qt::GlobalColor::white, penWidth));
 
 	painter.drawEllipse(static_cast<int>(_pd.x() - ellipseSize / 2.0),
 						static_cast<int>(_pd.y() - ellipseSize / 2.0),
@@ -521,9 +521,9 @@ void ColorTriangle::paintEvent(QPaintEvent* e)
 	// Find a color for painting the selector based on the brightness
 	// value of the color.
 	if ((ri * 30) + (gi * 59) + (bi * 11) > 12800)
-		painter.setPen(QPen(Qt::black, penWidth));
+		painter.setPen(QPen(Qt::GlobalColor::black, penWidth));
 	else
-		painter.setPen(QPen(Qt::white, penWidth));
+		painter.setPen(QPen(Qt::GlobalColor::white, penWidth));
 
 	// Draw the selector ellipse.
 	painter.drawEllipse(QRectF(selectorPos.x() - ellipseSize / 2.0,
@@ -552,8 +552,8 @@ void ColorTriangle::DrawTrigon(QImage* buf, const QPointF& pac,
 	// pb is the black corner
 	// pc is the white corner
 	Vertex aa(color, pac);
-	Vertex bb(Qt::black, pbc);
-	Vertex cc(Qt::white, pwc);
+	Vertex bb(Qt::GlobalColor::black, pbc);
+	Vertex cc(Qt::GlobalColor::white, pwc);
 	// Sort. Make p1 above p2, which is above p3 (using y coordinate).
 	// Bubble sorting is fastest here.
 	Vertex* p1 = &aa;
@@ -1207,9 +1207,9 @@ QPointF ColorTriangle::MovePointToTriangle(double x, double y, const Vertex& a,
 QPointF ColorTriangle::PointFromColor(const QColor& col) const
 {
 	// Simplifications for the corner cases.
-	if (col == Qt::black)
+	if (col == Qt::GlobalColor::black)
 		return _pb;
-	else if (col == Qt::white)
+	else if (col == Qt::GlobalColor::white)
 		return _pc;
 
 	// Find the x and y slopes
@@ -1291,8 +1291,8 @@ QColor ColorTriangle::ColorFromPoint(const QPointF& p) const
 	// See also drawTrigon(), which basically does exactly the same to
 	// determine all colors in the trigon.
 	Vertex aa(color, pa);
-	Vertex bb(Qt::black, pb);
-	Vertex cc(Qt::white, pc);
+	Vertex bb(Qt::GlobalColor::black, pb);
+	Vertex cc(Qt::GlobalColor::white, pc);
 	// Make sure p1 is above p2, which is above p3.
 	Vertex* p1 = &aa;
 	Vertex* p2 = &bb;

@@ -144,17 +144,17 @@ bool FractoriumEmberControllerBase::SaveCurrentRender(const QString& filename, c
 
 		auto data = pixels.data();
 
-		if (suffix.endsWith("bmp", Qt::CaseInsensitive) || suffix.endsWith("jpg", Qt::CaseInsensitive))
+		if (suffix.endsWith("bmp", Qt::CaseSensitivity::CaseInsensitive) || suffix.endsWith("jpg", Qt::CaseSensitivity::CaseInsensitive))
 		{
 			vector<unsigned char> rgb8Image(size * 3);
 			Rgba32ToRgb8(data, rgb8Image.data(), width, height);
 
-			if (suffix.endsWith("bmp", Qt::CaseInsensitive))
+			if (suffix.endsWith("bmp", Qt::CaseSensitivity::CaseInsensitive))
 				ret = WriteBmp(s.c_str(), rgb8Image.data(), width, height);
-			else if (suffix.endsWith("jpg", Qt::CaseInsensitive))
+			else if (suffix.endsWith("jpg", Qt::CaseSensitivity::CaseInsensitive))
 				ret = WriteJpeg(s.c_str(), rgb8Image.data(), width, height, 100, true, comments, id, url, nick);
 		}
-		else if (suffix.endsWith("png", Qt::CaseInsensitive))
+		else if (suffix.endsWith("png", Qt::CaseSensitivity::CaseInsensitive))
 		{
 			if (!png16Bit)
 			{
@@ -169,7 +169,7 @@ bool FractoriumEmberControllerBase::SaveCurrentRender(const QString& filename, c
 				ret = WritePng(s.c_str(), (unsigned char*)rgba16Image.data(), width, height, 2, true, comments, id, url, nick);
 			}
 		}
-		else if (suffix.endsWith("exr", Qt::CaseInsensitive))
+		else if (suffix.endsWith("exr", Qt::CaseSensitivity::CaseInsensitive))
 		{
 			if (!png16Bit)//Repurpose this for EXR 32-bit.
 			{
@@ -248,7 +248,7 @@ template <typename T>
 int FractoriumEmberController<T>::ProgressFunc(Ember<T>& ember, void* foo, double fraction, int stage, double etaMs)
 {
 	QString status;
-	QMetaObject::invokeMethod(m_Fractorium->m_ProgressBar, "setValue", Qt::QueuedConnection, Q_ARG(const int, int(fraction)));//Only really applies to iter and filter, because final accum only gives progress 0 and 100.
+	QMetaObject::invokeMethod(m_Fractorium->m_ProgressBar, "setValue", Qt::ConnectionType::QueuedConnection, Q_ARG(const int, int(fraction)));//Only really applies to iter and filter, because final accum only gives progress 0 and 100.
 
 	if (stage == 0)
 		status = "Iterating";
@@ -257,7 +257,7 @@ int FractoriumEmberController<T>::ProgressFunc(Ember<T>& ember, void* foo, doubl
 	else if (stage == 2)
 		status = "Spatial Filtering + Final Accumulation";
 
-	QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+	QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 	return m_ProcessActions.empty() ? 1 : 0;//If they've done anything, abort.
 }
 
@@ -360,7 +360,7 @@ bool FractoriumEmberController<T>::Render()
 	//Take care of solo xforms and set the current ember and action.
 	if (action != eProcessAction::NOTHING)
 	{
-        intmax_t i = 0;
+		intmax_t i = 0;
 		const auto solo = m_Ember.m_Solo;
 		const bool forceFinal = m_Fractorium->HaveFinal();
 
@@ -402,7 +402,7 @@ bool FractoriumEmberController<T>::Render()
 
 		m_Fractorium->m_ProgressBar->setValue(0);
 		const QString status = "Starting";
-		QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+		QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 	}
 
 	//If the rendering process hasn't finished, render with the current specified action.
@@ -443,7 +443,7 @@ bool FractoriumEmberController<T>::Render()
 				if (m_Renderer->RendererType() == eRendererType::OPENCL_RENDERER)
 				{
 					const QString status = "Iters: " + iters + ". Scaled quality: " + scaledQuality + ". Total time: " + QString::fromStdString(renderTime) + ".";
-					QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+					QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 				}
 				else
 				{
@@ -451,7 +451,7 @@ bool FractoriumEmberController<T>::Render()
 					auto badVals = ToString<qulonglong>(stats.m_Badvals);
 					auto badPercent = QLocale::system().toString(percent * 100, 'f', 2);
 					const QString status = "Iters: " + iters + ". Scaled quality: " + scaledQuality + ". Bad values: " + badVals + " (" + badPercent + "%). Total time: " + QString::fromStdString(renderTime) + ".";
-					QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+					QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 				}
 
 				if (m_LastEditWasUndoRedo && (m_UndoIndex == m_UndoList.size() - 1))//Traversing through undo list, reached the end, so put back in regular edit mode.
@@ -463,7 +463,7 @@ bool FractoriumEmberController<T>::Render()
 					const auto btn = QApplication::mouseButtons();
 
 					if ((action == eProcessAction::ACCUM_ONLY || action == eProcessAction::FILTER_AND_ACCUM) ||
-							(!btn.testFlag(Qt::LeftButton) && !btn.testFlag(Qt::RightButton) && !btn.testFlag(Qt::MiddleButton)))
+							(!btn.testFlag(Qt::MouseButton::LeftButton) && !btn.testFlag(Qt::MouseButton::RightButton) && !btn.testFlag(Qt::MouseButton::MiddleButton)))
 					{
 						m_UndoList.push_back(m_Ember);
 						m_UndoIndex = m_UndoList.size() - 1;
@@ -510,7 +510,7 @@ bool FractoriumEmberController<T>::Render()
 				//{
 				//	string s = "OpenCL Kernels: \r\n" + rendererCL->IterKernel() + "\r\n" + rendererCL->DEKernel() + "\r\n" + rendererCL->FinalAccumKernel();
 				//
-				//	QMetaObject::invokeMethod(m_Fractorium->ui.InfoRenderingTextEdit, "setText", Qt::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(s)));
+				//	QMetaObject::invokeMethod(m_Fractorium->ui.InfoRenderingTextEdit, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(s)));
 				//}
 			}
 		}
@@ -520,7 +520,7 @@ bool FractoriumEmberController<T>::Render()
 			success = false;
 			m_FailedRenders++;
 			const QString status = "Rendering failed, see info tab. Try changing parameters.";
-			QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+			QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 			m_Fractorium->ErrorReportToQTextEdit(errors, m_Fractorium->ui.InfoRenderingTextEdit);
 			m_Renderer->ClearErrorReport();
 
@@ -529,7 +529,7 @@ bool FractoriumEmberController<T>::Render()
 				m_Rendering = false;
 				StopRenderTimer(true);
 				const QString status2 = "Rendering failed 3 or more times, stopping all rendering, see info tab. Try changing renderer types.";
-				QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status2));
+				QMetaObject::invokeMethod(m_Fractorium->m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status2));
 				ClearFinalImages();
 				m_GLController->ClearWindow();
 
@@ -537,7 +537,7 @@ bool FractoriumEmberController<T>::Render()
 				{
 					//string s = "OpenCL Kernels: \r\n" + rendererCL->IterKernel() + "\r\n" + rendererCL->DEKernel() + "\r\n" + rendererCL->FinalAccumKernel();
 					rendererCL->ClearFinal();
-					//QMetaObject::invokeMethod(m_Fractorium->ui.InfoRenderingTextEdit, "setText", Qt::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(s)));
+					//QMetaObject::invokeMethod(m_Fractorium->ui.InfoRenderingTextEdit, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(s)));
 				}
 			}
 		}
@@ -722,7 +722,7 @@ bool Fractorium::CreateRendererFromOptions(bool updatePreviews)
 		rendererCL->m_CompileBegun = [&]()
 		{
 			const QString status = "Compiling OpenCL kernel...";
-			QMetaObject::invokeMethod(m_RenderStatusLabel, "setText", Qt::QueuedConnection, Q_ARG(const QString&, status));
+			QMetaObject::invokeMethod(m_RenderStatusLabel, "setText", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, status));
 			//m_RenderStatusLabel->repaint();
 			QApplication::processEvents();
 		};

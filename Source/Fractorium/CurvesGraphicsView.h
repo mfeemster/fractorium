@@ -94,7 +94,7 @@ public:
 		setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 		setFlag(QGraphicsItem::ItemIsSelectable);
 		setFlag(QGraphicsItem::ItemIsMovable);
-		setPen(Qt::NoPen);
+		setPen(Qt::PenStyle::NoPen);
 	}
 
 	/// <summary>

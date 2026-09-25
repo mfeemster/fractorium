@@ -129,16 +129,16 @@ void InfoTreeWidget::dragMoveEvent(QDragMoveEvent* dme)
 		{
 			if (auto itemat = itemFromIndex(index))
 			{
-				const auto dragpre = drag0->text(0).startsWith("pre_", Qt::CaseInsensitive);
-				const auto droppre = itemat->text(0).startsWith("pre_", Qt::CaseInsensitive);
-				const auto dragpost = drag0->text(0).startsWith("post_", Qt::CaseInsensitive);
-				const auto droppost = itemat->text(0).startsWith("post_", Qt::CaseInsensitive);
+				const auto dragpre = drag0->text(0).startsWith("pre_", Qt::CaseSensitivity::CaseInsensitive);
+				const auto droppre = itemat->text(0).startsWith("pre_", Qt::CaseSensitivity::CaseInsensitive);
+				const auto dragpost = drag0->text(0).startsWith("post_", Qt::CaseSensitivity::CaseInsensitive);
+				const auto droppost = itemat->text(0).startsWith("post_", Qt::CaseSensitivity::CaseInsensitive);
 
 				if (const auto par = itemat->parent())
 				{
 					if (drag0->parent() == par &&
-							(par->text(0).startsWith("xform ", Qt::CaseInsensitive) ||
-							 par->text(0).startsWith("final", Qt::CaseInsensitive)))
+							(par->text(0).startsWith("xform ", Qt::CaseSensitivity::CaseInsensitive) ||
+							 par->text(0).startsWith("final", Qt::CaseSensitivity::CaseInsensitive)))
 					{
                         if (dynamic_cast<const VariationTreeWidgetItem*>(itemat) != nullptr)
 						{

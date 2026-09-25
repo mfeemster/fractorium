@@ -11,8 +11,8 @@ void Fractorium::InitInfoUI()
 	treeHeader->setVisible(true);
 	treeHeader->setSectionsClickable(true);
 	treeHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
-	connect(treeHeader, SIGNAL(sectionClicked(int)), this, SLOT(OnSummaryTreeHeaderSectionClicked(int)), Qt::QueuedConnection);
-	connect(tableHeader, SIGNAL(sectionResized(int, int, int)), this, SLOT(OnSummaryTableHeaderResized(int, int, int)), Qt::QueuedConnection);
+	connect(treeHeader,  SIGNAL(sectionClicked(int)),           this, SLOT(OnSummaryTreeHeaderSectionClicked(int)),     Qt::ConnectionType::QueuedConnection);
+	connect(tableHeader, SIGNAL(sectionResized(int, int, int)), this, SLOT(OnSummaryTableHeaderResized(int, int, int)), Qt::ConnectionType::QueuedConnection);
 	SetFixedTableHeader(ui.SummaryTable->verticalHeader());
 	ui.SummaryTable->setItem(0, 0, m_InfoNameItem = new QTableWidgetItem(""));
 	ui.SummaryTable->setItem(1, 0, m_InfoPaletteItem = new QTableWidgetItem(""));
@@ -75,8 +75,8 @@ void FractoriumEmberController<T>::FillSummary()
 	const auto forceFinal = m_Fractorium->HaveFinal();
 	const auto total = m_Ember.TotalXformCount(forceFinal);
 	const auto table = m_Fractorium->ui.SummaryTable;
-	const auto nondraggable = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-	const auto draggable = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+	const auto nondraggable = Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable;
+	const auto draggable = Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsDragEnabled;
 	size_t x = 0;
 	Xform<T>* xform = nullptr;
 	QColor color;
@@ -90,7 +90,7 @@ void FractoriumEmberController<T>::FillSummary()
 	m_Fractorium->m_InfoFinalXformItem->setText(m_Ember.UseFinalXform() ? "Yes" : "No");
 	QPixmap pixmap(QPixmap::fromImage(m_FinalPaletteImage));//Create a QPixmap out of the QImage.
 	QSize size(table->columnWidth(0), table->rowHeight(1) + 1);
-	m_Fractorium->m_InfoPaletteItem->setData(Qt::DecorationRole, pixmap.scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	m_Fractorium->m_InfoPaletteItem->setData(Qt::ItemDataRole::DecorationRole, pixmap.scaled(size, Qt::AspectRatioMode::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
 
 	for (x = 0; x < total && (xform = m_Ember.GetTotalXform(x, forceFinal)); x++)
 	{
@@ -145,15 +145,15 @@ void FractoriumEmberController<T>::FillSummary()
 		auto colorSpeedItem = new QTreeWidgetItem(item1);
 		colorSpeedItem->setText(0, "Color speed");
 		colorSpeedItem->setText(1, QLocale::system().toString(xform->m_ColorSpeed, pc, p));
-		colorSpeedItem->setFlags(nondraggable | Qt::ItemNeverHasChildren);
+		colorSpeedItem->setFlags(nondraggable | Qt::ItemFlag::ItemNeverHasChildren);
 		auto opacityItem = new QTreeWidgetItem(item1);
 		opacityItem->setText(0, "Opacity");
 		opacityItem->setText(1, QLocale::system().toString(xform->m_Opacity, pc, p));
-		opacityItem->setFlags(nondraggable | Qt::ItemNeverHasChildren);
+		opacityItem->setFlags(nondraggable | Qt::ItemFlag::ItemNeverHasChildren);
 		auto dcItem = new QTreeWidgetItem(item1);
 		dcItem->setText(0, "Direct color");
 		dcItem->setText(1, QLocale::system().toString(xform->m_DirectColor, pc, p));
-		dcItem->setFlags(nondraggable | Qt::ItemNeverHasChildren);
+		dcItem->setFlags(nondraggable | Qt::ItemFlag::ItemNeverHasChildren);
 
 		if (dcItem->text(0) != tree->LastNonVarField())
 			throw "Last info tree non-variation index did not match expected value";
@@ -171,7 +171,7 @@ void FractoriumEmberController<T>::FillSummary()
 			{
 				auto params = parVar->Params();
 
-                for (size_t j = 0; j < parVar->ParamCount(); j++)
+				for (size_t j = 0; j < parVar->ParamCount(); j++)
 				{
 					if (!params[j].IsPrecalc())
 					{
@@ -204,7 +204,7 @@ void Fractorium::FillSummary()
 /// This will be called after the user performs a drag and drop operation on the variations in the
 /// info tree. So the variations will be in the newly desired order.
 /// </summary>
-/// <param name="dme">Pointer to the parent (xform level) tree widget item which contains the variation item being dragged</param>
+/// <param name="item">Pointer to the parent (xform level) tree widget item which contains the variation item being dragged</param>
 template <typename T>
 void FractoriumEmberController<T>::ReorderVariations(QTreeWidgetItem* item)
 {
@@ -262,8 +262,8 @@ void Fractorium::UpdateHistogramBounds()
 		auto urstr = ur.asprintf("UR: %3.3f, %3.3f", r->UpperRightX(), r->UpperRightY());
 		auto lrstr = lr.asprintf("LR: %3.3f, %3.3f", r->UpperRightX(), r->LowerLeftY());
 		auto llstr = ll.asprintf("LL: %3.3f, %3.3f", r->LowerLeftX(), r->LowerLeftY());
-        auto whstr = wh.asprintf("W x H: %4zu x %4zu", r->SuperRasW(), r->SuperRasH());
-        auto gstr = g.asprintf("%zu", r->GutterWidth());
+		auto whstr = wh.asprintf("W x H: %4zu x %4zu", r->SuperRasW(), r->SuperRasH());
+		auto gstr = g.asprintf("%zu", r->GutterWidth());
 		ui.InfoBoundsLabelUL->setText(ulstr);
 		ui.InfoBoundsLabelUR->setText(urstr);
 		ui.InfoBoundsLabelLR->setText(lrstr);
@@ -274,7 +274,7 @@ void Fractorium::UpdateHistogramBounds()
 		if (r->GetDensityFilter())
 		{
 			const auto deWidth = (r->GetDensityFilter()->FilterWidth() * 2) + 1;
-            auto destr = de.asprintf("%jd x %jd", deWidth, deWidth);
+			auto destr = de.asprintf("%jd x %jd", deWidth, deWidth);
 			ui.InfoBoundsTable->item(1, 1)->setText(destr);
 		}
 		else
@@ -295,10 +295,10 @@ void Fractorium::UpdateHistogramBounds()
 void Fractorium::ErrorReportToQTextEdit(const vector<string>& errors, QTextEdit* textEdit, bool clear)
 {
 	if (clear)
-		QMetaObject::invokeMethod(textEdit, "clear", Qt::QueuedConnection);
+		QMetaObject::invokeMethod(textEdit, "clear", Qt::ConnectionType::QueuedConnection);
 
 	for (auto& error : errors)
-		QMetaObject::invokeMethod(textEdit, "append", Qt::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(error) + "\n"));
+		QMetaObject::invokeMethod(textEdit, "append", Qt::ConnectionType::QueuedConnection, Q_ARG(const QString&, QString::fromStdString(error) + "\n"));
 }
 
 template class FractoriumEmberController<float>;

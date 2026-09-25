@@ -42,7 +42,7 @@ static void SetupSpinner(QTableWidget* table, const QObject* receiver, int& row,
 		table->setCellWidget(row, col, spinBox);
 
 	if (string(signal) != "" && string(slot) != "")
-		receiver->connect(spinBox, signal, receiver, slot, Qt::QueuedConnection);
+		receiver->connect(spinBox, signal, receiver, slot, Qt::ConnectionType::QueuedConnection);
 
 	if (doubleClickNonZero != -999 && doubleClickZero != -999)
 	{
@@ -245,7 +245,7 @@ static void SetupDeviceTable(QTableWidget* table, const QList<QVariant>& setting
 
 		if (settingsDevices.contains(QVariant::fromValue(i)))
 		{
-			checkItem->setCheckState(Qt::Checked);
+			checkItem->setCheckState(Qt::CheckState::Checked);
 
 			if (!primary)
 			{
@@ -254,12 +254,12 @@ static void SetupDeviceTable(QTableWidget* table, const QList<QVariant>& setting
 			}
 		}
 		else
-			checkItem->setCheckState(Qt::Unchecked);
+			checkItem->setCheckState(Qt::CheckState::Unchecked);
 	}
 
 	if (!primary && table->rowCount() > 0)//Primary was never set, so just default to the first device and hope it was the one detected as the main display.
 	{
-		table->item(0, 0)->setCheckState(Qt::Checked);
+		table->item(0, 0)->setCheckState(Qt::CheckState::Checked);
 		qobject_cast<QRadioButton*>(table->cellWidget(0, 1))->setChecked(true);
 	}
 }
@@ -274,12 +274,12 @@ static void SettingsToDeviceTable(QTableWidget* table, const QList<QVariant>& se
 {
 	if (settingsDevices.empty() && table->rowCount() > 0)
 	{
-		table->item(0, 0)->setCheckState(Qt::Checked);
+		table->item(0, 0)->setCheckState(Qt::CheckState::Checked);
 		qobject_cast<QRadioButton*>(table->cellWidget(0, 1))->setChecked(true);
 
 		for (auto row = 1; row < table->rowCount(); row++)
 			if (auto item = table->item(row, 0))
-				item->setCheckState(Qt::Unchecked);
+				item->setCheckState(Qt::CheckState::Unchecked);
 	}
 	else
 	{
@@ -289,7 +289,7 @@ static void SettingsToDeviceTable(QTableWidget* table, const QList<QVariant>& se
 			{
 				if (settingsDevices.contains(row))
 				{
-					item->setCheckState(Qt::Checked);
+					item->setCheckState(Qt::CheckState::Checked);
 
 					if (!settingsDevices.indexOf(QVariant::fromValue(row)))
 						if (const auto radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1)))
@@ -297,7 +297,7 @@ static void SettingsToDeviceTable(QTableWidget* table, const QList<QVariant>& se
 				}
 				else
 				{
-					item->setCheckState(Qt::Unchecked);
+					item->setCheckState(Qt::CheckState::Unchecked);
 				}
 			}
 		}
@@ -320,7 +320,7 @@ static QList<QVariant> DeviceTableToSettings(QTableWidget* table)
 		const auto checkItem = table->item(row, 0);
 		const auto radio = qobject_cast<QRadioButton*>(table->cellWidget(row, 1));
 
-		if (checkItem->checkState() == Qt::Checked)
+		if (checkItem->checkState() == Qt::CheckState::Checked)
 		{
 			if (radio && radio->isChecked())
 				devices.push_front(row);
@@ -358,8 +358,8 @@ static void HandleDeviceTableCheckChanged(QTableWidget* table, int row, int col)
 		primaryRow = 0;
 
 	if (const auto primaryItem = table->item(primaryRow, 0))
-		if (primaryItem->checkState() == Qt::Unchecked)
-			primaryItem->setCheckState(Qt::Checked);
+		if (primaryItem->checkState() == Qt::CheckState::Unchecked)
+			primaryItem->setCheckState(Qt::CheckState::Checked);
 }
 
 /// <summary>
@@ -375,13 +375,13 @@ static void AddPaletteToTable(QTableWidget* paletteTable, Palette<float>* palett
 	const auto v = palette->MakeRgbPaletteBlock(PALETTE_CELL_HEIGHT);
 	auto nameCol = std::make_unique<QTableWidgetItem>(palette->m_Name.c_str());
 	nameCol->setToolTip(palette->m_Name.c_str());
-	nameCol->setFlags(palette->m_SourceColors.empty() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable)
-					  : (Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable));
+	nameCol->setFlags(palette->m_SourceColors.empty() ? (Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable)
+					  : (Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsEditable | Qt::ItemFlag::ItemIsSelectable));
 	paletteTable->setItem(row, 0, nameCol.release());
 	const QImage image(v.data(), static_cast<int>(palette->Size()), PALETTE_CELL_HEIGHT, QImage::Format_RGB888);
 	auto paletteItem = std::make_unique<PaletteTableWidgetItem>(palette);
-	paletteItem->setData(Qt::DecorationRole, QPixmap::fromImage(image));
-	paletteItem->setFlags(paletteItem->flags() & ~Qt::ItemIsEditable);
+	paletteItem->setData(Qt::ItemDataRole::DecorationRole, QPixmap::fromImage(image));
+	paletteItem->setFlags(paletteItem->flags() & ~Qt::ItemFlag::ItemIsEditable);
 	paletteTable->setItem(row, 1, paletteItem.release());
 }
 
@@ -406,8 +406,8 @@ static bool FillPaletteTable(const string& s, QTableWidget* paletteTable, shared
 			//Headers get removed when clearing, so must re-create here.
 			auto nameHeader = std::make_unique<QTableWidgetItem>("Name");
 			auto paletteHeader = std::make_unique<QTableWidgetItem>("Palette");
-			nameHeader->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-			paletteHeader->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+			nameHeader->setTextAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
+			paletteHeader->setTextAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignVCenter);
 			paletteTable->setHorizontalHeaderItem(0, nameHeader.release());
 			paletteTable->setHorizontalHeaderItem(1, paletteHeader.release());
 
