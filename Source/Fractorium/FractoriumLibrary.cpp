@@ -41,7 +41,7 @@ void Fractorium::SelectLibraryItem(size_t index)
 		{
 			if (auto emberItem = dynamic_cast<EmberTreeWidgetItemBase*>(top->child(i)))
 			{
-				auto b = i == (int)index;
+                auto b = i == static_cast<int>(index);
 
 				if (b)
 					item = emberItem;
@@ -661,7 +661,7 @@ void FractoriumEmberController<T>::SequenceGenerateButtonClicked()
 		//Rotations on keyframes.
 		const auto rotations = it->m_Rotations;
 		//Number of frames it takes to rotate a keyframe.
-		const auto rotFrames = fps * (double)it->m_SecondsPerRotation;
+        const auto rotFrames = fps * static_cast<double>(it->m_SecondsPerRotation);
 		//Number of frames it takes to interpolate.
 		const auto framesBlend = fps * it->m_BlendSeconds;
 		const auto rotsPerBlend = it->m_RotationsPerBlend;

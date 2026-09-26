@@ -777,10 +777,9 @@ bool RendererCL<T, bucketT>::ResetBuckets(bool resetHist, bool resetAccum)
 /// <summary>
 /// Perform log scale density filtering on the primary device.
 /// </summary>
-/// <param name="forceOutput">Whether this output was forced due to an interactive render</param>
 /// <returns>True if success and not aborted, else false.</returns>
 template <typename T, typename bucketT>
-eRenderStatus RendererCL<T, bucketT>::LogScaleDensityFilter(bool forceOutput)
+eRenderStatus RendererCL<T, bucketT>::LogScaleDensityFilter()
 {
 	return RunLogScaleFilter();
 }

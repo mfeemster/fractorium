@@ -330,7 +330,7 @@ public:
 	/// </summary>
 	EmberOptions()
 	{
-		constexpr size_t size = (size_t)eOptionIDs::OPT_EXTRAS;
+        constexpr size_t size = static_cast<size_t>(eOptionIDs::OPT_EXTRAS);
 		m_BoolArgs.reserve(size);
 		m_IntArgs.reserve(size);
 		m_UintArgs.reserve(size);

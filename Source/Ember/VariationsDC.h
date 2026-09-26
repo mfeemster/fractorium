@@ -1569,9 +1569,9 @@ public:
 	{
 		T xl, yl;
 		sincos(m_Rad, &yl, &xl);
-		auto blockx = (int)Floor(helper.In.x * m_Width);//Calculate which block we're in.
+        auto blockx = int(Floor(helper.In.x * m_Width));//Calculate which block we're in.
 		blockx += int(2 - 4 * VarFuncs<T>::Hash(int(blockx * m_Seed + 1)));//Varying width and length.
-		auto blocky = (int)Floor(helper.In.y * m_Width);
+        auto blocky = int(Floor(helper.In.y * m_Width));
 		blocky += int(2 - 4 * VarFuncs<T>::Hash(int(blocky * m_Seed + 1)));
 		T fLen = (VarFuncs<T>::Hash(int(blocky + blockx * -m_Seed)) + VarFuncs<T>::Hash(int(blockx + blocky * m_Seed * T(0.5)))) * T(0.5); //doesnt matter just needs to be random enough
 		T r01 = rand.Frand01<T>();

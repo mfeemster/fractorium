@@ -170,7 +170,7 @@ public:
 	/// <returns>A value between 0 and the value passed in minus 1</returns>
 	inline T Rand(size_t upper)
 	{
-		return (upper == 0) ? Rand() : T(((size_t)Rand() * upper) >> 32);
+        return (upper == 0) ? Rand() : T((static_cast<size_t>(Rand()) * upper) >> 32);
 	}
 
 	/// <summary>

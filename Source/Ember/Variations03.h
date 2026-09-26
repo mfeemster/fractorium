@@ -2816,7 +2816,7 @@ public:
 		}
 		else
 		{
-			int root = (int)(rand.Frand01<T>() * m_Power);
+            int root = int(rand.Frand01<T>() * m_Power);
 			T a = std::atan2(preY, preX) * m_InvN + root * m_Inv2PiN;
 			T r = m_Weight * std::pow(helper.m_PrecalcSumSquares, m_Cn);
 			helper.Out.x = r * std::cos(a);

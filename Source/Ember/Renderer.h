@@ -76,7 +76,7 @@ protected:
 	virtual void MakeDmap(T colorScalar);
 	virtual bool Alloc(bool histOnly = false);
 	virtual bool ResetBuckets(bool resetHist = true, bool resetAccum = true);
-	virtual eRenderStatus LogScaleDensityFilter(bool forceOutput = false);
+    virtual eRenderStatus LogScaleDensityFilter();
 	virtual eRenderStatus GaussianDensityFilter();
 	virtual eRenderStatus AccumulatorToFinalImage(vector<v4F>& pixels, size_t finalOffset);
 	virtual EmberStats Iterate(size_t iterCount, size_t temporalSample);

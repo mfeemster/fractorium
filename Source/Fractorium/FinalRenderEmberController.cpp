@@ -662,7 +662,7 @@ bool FinalRenderEmberController<T>::SyncGuiToRenderer()
 		m_Renderer->EarlyClip(m_FinalRenderDialog->EarlyClip());
 		m_Renderer->YAxisUp(m_FinalRenderDialog->YAxisUp());
 		m_Renderer->ThreadCount(m_FinalRenderDialog->ThreadCount());
-		m_Renderer->Priority((eThreadPriority)m_FinalRenderDialog->ThreadPriority());
+        m_Renderer->Priority(static_cast<eThreadPriority>(m_FinalRenderDialog->ThreadPriority()));
 
 		if (const auto rendererCL = dynamic_cast<RendererCL<T, float>*>(m_Renderer.get()))
 			rendererCL->SubBatchPercentPerThread(m_FinalRenderDialog->OpenCLSubBatchPct());
@@ -675,7 +675,7 @@ bool FinalRenderEmberController<T>::SyncGuiToRenderer()
 			m_Renderers[i]->EarlyClip(m_FinalRenderDialog->EarlyClip());
 			m_Renderers[i]->YAxisUp(m_FinalRenderDialog->YAxisUp());
 			m_Renderers[i]->ThreadCount(m_FinalRenderDialog->ThreadCount());
-			m_Renderers[i]->Priority((eThreadPriority)m_FinalRenderDialog->ThreadPriority());
+            m_Renderers[i]->Priority(static_cast<eThreadPriority>(m_FinalRenderDialog->ThreadPriority()));
 
 			if (const auto rendererCL = dynamic_cast<RendererCL<T, float>*>(m_Renderers[i].get()))
 				rendererCL->SubBatchPercentPerThread(m_FinalRenderDialog->OpenCLSubBatchPct());
@@ -749,7 +749,7 @@ tuple<size_t, size_t, size_t> FinalRenderEmberController<T>::SyncAndComputeMemor
 {
 	size_t iterCount = 0;
 	pair<size_t, size_t> p(0, 0);
-	size_t strips;
+    size_t strips = 0;
 	SyncGuiToEmbers();
 
 	if (m_Renderer.get())

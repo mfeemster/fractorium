@@ -234,7 +234,7 @@ static void SetupDeviceTable(QTableWidget* table, const QList<QVariant>& setting
 	table->clearContents();
 	table->setRowCount(static_cast<int>(deviceNames.size()));
 
-	for (int i = 0; i < (int)deviceNames.size(); i++)
+    for (int i = 0; i < static_cast<int>(deviceNames.size()); i++)
 	{
 		const auto checkItem = new QTableWidgetItem();
 		const auto radio = new QRadioButton();
@@ -412,7 +412,7 @@ static bool FillPaletteTable(const string& s, QTableWidget* paletteTable, shared
 			paletteTable->setHorizontalHeaderItem(1, paletteHeader.release());
 
 			//Palette list table.
-			for (auto i = 0; i < (int)palettes->size(); i++)
+            for (auto i = 0; i < static_cast<int>(palettes->size()); i++)
 				if (const auto palette = &(*palettes)[i])
 					AddPaletteToTable(paletteTable, palette, i);
 

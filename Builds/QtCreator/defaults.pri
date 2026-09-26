@@ -211,13 +211,11 @@ win32 {
 	QMAKE_CXXFLAGS += -Wmain
 	QMAKE_CXXFLAGS += -Wfatal-errors
 	QMAKE_CXXFLAGS += -Wall -fpermissive
+	QMAKE_CXXFLAGS += -Wold-style-cast
+	QMAKE_CXXFLAGS += -Wmissing-include-dirs
+	QMAKE_CXXFLAGS += -Wzero-as-null-pointer-constant
 	QMAKE_CXXFLAGS += -Wno-unused-parameter
 	QMAKE_CXXFLAGS += -Wno-unused-function
-
-    # CL has lots of old-style-cast which clogs up warning logs
-	QMAKE_CXXFLAGS_DEBUG += -Wold-style-cast
-	QMAKE_CXXFLAGS_DEBUG += -Wmissing-include-dirs
-	QMAKE_CXXFLAGS_DEBUG += -Wzero-as-null-pointer-constant
 
     QMAKE_CXXFLAGS_RELEASE += -fomit-frame-pointer
 # NOTE: last path will be the first to search. gcc -I and -L appends to the

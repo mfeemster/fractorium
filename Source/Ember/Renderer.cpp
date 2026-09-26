@@ -673,7 +673,7 @@ FilterAndAccum:
 		//Apply appropriate filter if iterating is complete.
 		if (filterAndAccumOnly || temporalSample >= TemporalSamples())
 		{
-			fullRun = m_DensityFilter.get() ? GaussianDensityFilter() : LogScaleDensityFilter(forceOutput);
+            fullRun = m_DensityFilter.get() ? GaussianDensityFilter() : LogScaleDensityFilter();
 		}
 		else
 		{
@@ -681,7 +681,7 @@ FilterAndAccum:
 			if (m_DensityFilter.get() && m_InteractiveFilter == eInteractiveFilter::FILTER_DE)
 				fullRun = GaussianDensityFilter();
 			else if (!m_DensityFilter.get() || m_InteractiveFilter == eInteractiveFilter::FILTER_LOG)
-				fullRun = LogScaleDensityFilter(forceOutput);
+                fullRun = LogScaleDensityFilter();
 		}
 
 		//Only update state if iterating and filtering finished completely (didn't arrive here via forceOutput).
@@ -932,10 +932,9 @@ void Renderer<T, bucketT>::VectorizedLogScale(size_t row, size_t rowEnd)
 /// Base case for simple log scale density estimation as discussed (mostly) in the paper
 /// in section 4, p. 6-9.
 /// </summary>
-/// <param name="forceOutput">Whether this output was forced due to an interactive render</param>
 /// <returns>True if not prematurely aborted, else false.</returns>
 template <typename T, typename bucketT>
-eRenderStatus Renderer<T, bucketT>::LogScaleDensityFilter(bool forceOutput)
+eRenderStatus Renderer<T, bucketT>::LogScaleDensityFilter()
 {
 	size_t startRow = 0;
 	size_t endRow = m_SuperRasH;
@@ -1758,7 +1757,7 @@ void Renderer<T, bucketT>::ComputeCurves()
 	{
 		auto st = m_Csa.size();
 
-		for (glm::length_t i = 0; i < m_Ember.m_Curves.m_Points.size(); i++)//Overall, r, g, b.
+        for (glm::length_t i = 0; i < static_cast<glm::length_t>(m_Ember.m_Curves.m_Points.size()); i++)//Overall, r, g, b.
 		{
 			if (!m_Ember.m_Curves.m_Points[i].empty())
 			{

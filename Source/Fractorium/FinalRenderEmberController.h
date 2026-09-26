@@ -120,7 +120,7 @@ public:
 	void SaveCurrentAsXml(QString filename = "") override;
 	bool Render() override;
 	bool BumpQualityRender(double d)  override;
-    bool CreateRenderer(eRendererType renderType, const vector<pair<size_t, size_t>>& devices, bool updatePreviews, bool shared = true);
+    bool CreateRenderer(eRendererType renderType, const vector<pair<size_t, size_t>>& devices, bool updatePreviews, bool shared = true) override;
 	int ProgressFunc(Ember<T>& ember, void* foo, double fraction, int stage, double etaMs) override;
 	size_t Index() const noexcept override { return m_Ember->m_Index; }
 	uint SizeOfT() const noexcept override { return sizeof(T); }

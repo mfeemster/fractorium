@@ -166,7 +166,7 @@ bool FractoriumEmberControllerBase::SaveCurrentRender(const QString& filename, c
 			{
 				vector<glm::uint16> rgba16Image(size * 4);
 				Rgba32ToRgba16(data, rgba16Image.data(), width, height, transparency);
-				ret = WritePng(s.c_str(), (unsigned char*)rgba16Image.data(), width, height, 2, true, comments, id, url, nick);
+                ret = WritePng(s.c_str(), reinterpret_cast<unsigned char*>(rgba16Image.data()), width, height, 2, true, comments, id, url, nick);
 			}
 		}
 		else if (suffix.endsWith("exr", Qt::CaseSensitivity::CaseInsensitive))

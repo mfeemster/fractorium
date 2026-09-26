@@ -3249,7 +3249,7 @@ public:
 		T cs = std::cos(m_Pa);
 		T r2 = T(1) - (cs - 1) / (cs + std::cos(M_2PI / Zeps(m_Q)));
 		m_R  = (r2 > 0) ? T(1) / std::sqrt(r2) : T(1);
-		m_IP = T((int)m_P);
+        m_IP = T(int(m_P));
 	}
 
 	virtual vector<string> OpenCLGlobalFuncNames() const override
@@ -3796,7 +3796,7 @@ public:
 		}
 		else
 		{
-			auto root = (int)(m_AbsN * rand.Frand01<T>());
+            auto root = int(m_AbsN * rand.Frand01<T>());
 			a = (std::atan2(y, x) + root * M_2PI) / m_Power;
 		}
 

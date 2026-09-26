@@ -163,7 +163,7 @@ void Fractorium::InitXformsAffineUI()
 template <typename T>
 void FractoriumEmberController<T>::InitLockedScale() noexcept
 {
-	m_LockedScale = (T)std::min<size_t>(m_Ember.m_FinalRasW, m_Ember.m_FinalRasH) / 4.0;
+    m_LockedScale = T(std::min<size_t>(m_Ember.m_FinalRasW, m_Ember.m_FinalRasH)) / 4.0;
 	m_LockedX = m_Ember.m_CenterX;
 	m_LockedY = m_Ember.m_CenterY;
 }
