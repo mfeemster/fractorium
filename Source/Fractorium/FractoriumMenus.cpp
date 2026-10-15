@@ -28,6 +28,8 @@ void Fractorium::InitMenusUI()
 	 connect(ui.ActionCopySelectedXforms,  SIGNAL(triggered(bool)), this, SLOT(OnActionCopySelectedXforms(bool)),  Qt::ConnectionType::QueuedConnection);
 	 connect(ui.ActionPasteSelectedXforms, SIGNAL(triggered(bool)), this, SLOT(OnActionPasteSelectedXforms(bool)), Qt::ConnectionType::QueuedConnection);
 	 connect(ui.ActionCopyKernel,          SIGNAL(triggered(bool)), this, SLOT(OnActionCopyKernel(bool)),          Qt::ConnectionType::QueuedConnection);
+	 connect(ui.ActionCopyImage,           SIGNAL(triggered(bool)), this, SLOT(OnActionCopyImage(bool)),           Qt::ConnectionType::QueuedConnection);
+	 
 	 ui.ActionPasteSelectedXforms->setEnabled(false);
 	 //View menu.
 	 connect(ui.ActionResetWorkspace,       SIGNAL(triggered(bool)), this, SLOT(OnActionResetWorkspace(bool)),       Qt::ConnectionType::QueuedConnection);
@@ -853,6 +855,45 @@ void FractoriumEmberController<T>::CopyKernel()
 }
 
 void Fractorium::OnActionCopyKernel(bool checked) {	m_Controller->CopyKernel(); }
+
+/// <summary>
+/// Copy what is currently shown in the render window to the clipboard as an image.
+/// </summary>
+/// <param name="checked">Ignored</param>
+void Fractorium::OnActionCopyImage(bool checked)
+{
+	auto renderer = m_Controller->Renderer();
+	auto& pixels = *m_Controller->FinalImage();
+	auto rendererCL = dynamic_cast<RendererCLBase*>(renderer);
+	auto settings = FractoriumSettings::Instance();
+	auto transparency = settings->Transparency();
+	auto width = renderer->FinalRasW();
+	auto height = renderer->FinalRasH();
+	auto size = width * height;
+
+
+	if (rendererCL && renderer->PrepFinalAccumVector(pixels))
+	{
+		if (!rendererCL->ReadFinal(pixels.data()))
+		{
+			ShowCritical("GPU Read Error", "Could not read image from the GPU, aborting image save.", false);
+			return;
+		}
+	}
+
+	if (transparency)
+	{
+		vector<unsigned char> rgba8Image(size * 4);
+		Rgba32ToRgba8(pixels.data(), rgba8Image.data(), width, height, transparency);
+		QApplication::clipboard()->setImage(QImage(reinterpret_cast<const uchar*>(rgba8Image.data()), static_cast<int>(width), static_cast<int>(height), QImage::Format_RGBA8888).copy());
+	}
+	else
+	{
+		vector<unsigned char> rgb8Image(size * 3);
+		Rgba32ToRgb8(pixels.data(), rgb8Image.data(), width, height);
+		QApplication::clipboard()->setImage(QImage(reinterpret_cast<const uchar*>(rgb8Image.data()), static_cast<int>(width), static_cast<int>(height), QImage::Format_RGB888).copy());
+	}
+}
 
 /// <summary>
 /// Reset dock widgets and tabs to their default position.

@@ -163,6 +163,7 @@ public slots:
 	void OnActionPasteXmlOver(bool checked);
 	void OnActionCopySelectedXforms(bool checked);
 	void OnActionPasteSelectedXforms(bool checked);
+	void OnActionCopyImage(bool checked);
 	void OnActionCopyKernel(bool checked);
 
 	void OnActionResetWorkspace(bool checked);//View
