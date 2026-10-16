@@ -104,6 +104,9 @@ INSTALLS += themes
 macx:ICON = $$ASSETS_DIR/Fractorium.icns
 !macx:PRECOMPILED_HEADER = $$PRJ_SRC_DIR/FractoriumPch.h
 
+# QMAKE_CXXFLAGS_RELEASE -= -Wswitch-default
+# QMAKE_CXXFLAGS_RELEASE -= -Wmissing-include-dirs
+
 LIBS += -L$$absolute_path($$DESTDIR) -lember
 LIBS += -L$$absolute_path($$DESTDIR) -lembercl
 

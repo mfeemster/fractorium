@@ -2222,7 +2222,7 @@ bool XmlToEmber<T>::ParseEmberElement(xmlNode* emberNode, Ember<T>& currentEmber
 
 	if (soloXform >= 0)
 		for (i = 0; i < currentEmber.XformCount(); i++)
-            currentEmber.GetXform(i)->m_Opacity = T(i == (size_t)soloXform);//Will calc the cached adjusted viz value later.
+            currentEmber.GetXform(i)->m_Opacity = T(i == static_cast<size_t>(soloXform));//Will calc the cached adjusted viz value later.
 
 	return true;
 }

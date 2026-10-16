@@ -156,7 +156,7 @@ public:
 	const vector<unique_ptr<RendererClDevice>>& Devices() const;
 
 	//Virtual functions overridden from RendererCLBase.
-	virtual bool ReadFinal(v4F* pixels);
+    virtual bool ReadFinal(v4F* pixels) override;
 	virtual bool ClearFinal();
 
 	//Public virtual functions overridden from Renderer or RendererBase.
@@ -180,7 +180,7 @@ protected:
 	//Protected virtual functions overridden from Renderer.
 	bool Alloc(bool histOnly = false) override;
 	bool ResetBuckets(bool resetHist = true, bool resetAccum = true) override;
-	eRenderStatus LogScaleDensityFilter(bool forceOutput = false) override;
+    eRenderStatus LogScaleDensityFilter() override;
 	eRenderStatus GaussianDensityFilter() override;
 	eRenderStatus AccumulatorToFinalImage(vector<v4F>& pixels, size_t finalOffset) override;
 	EmberStats Iterate(size_t iterCount, size_t temporalSample) override;

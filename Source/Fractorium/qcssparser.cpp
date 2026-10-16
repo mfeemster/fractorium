@@ -1324,7 +1324,7 @@ static ColorData2 parseColorValue(QCss2::Value2 v)
 		const auto role = findKnownValue(lst.at(1).trimmed(), values, NumKnownValues2);
 
 		if (role >= Value_FirstColorRole2 && role <= Value_LastColorRole2)
-			return (QPalette::ColorRole)(role - Value_FirstColorRole2);
+            return QPalette::ColorRole(role - Value_FirstColorRole2);
 
 		return ColorData2();
 	}
@@ -1952,7 +1952,7 @@ static bool setFontSizeFromValue(QCss2::Value2 value, QFont* font, int* fontSize
 			s.chop(2);
 			value.variant = s;
 
-			if (value.variant.convert(QMetaType((QMetaType::Type)qMetaTypeId<qreal>())))
+            if (value.variant.convert(QMetaType(static_cast<QMetaType::Type>(qMetaTypeId<qreal>()))))
 			{
 				font->setPointSizeF(value.variant.toReal());
 				valid = true;
@@ -2637,7 +2637,7 @@ QColor Declaration2::colorValue(const QPalette& pal) const
 			return qvariant_cast<QColor>(d->parsed);
 
 		if (d->parsed.typeId() == QMetaType::Int)
-			return pal.color((QPalette::ColorRole)(d->parsed.toInt()));
+            return pal.color(QPalette::ColorRole(d->parsed.toInt()));
 	}
 
 	ColorData2 color = parseColorValue(d->values.at(0));
@@ -2645,7 +2645,7 @@ QColor Declaration2::colorValue(const QPalette& pal) const
 	if (color.type == ColorData2::Role)
 	{
 		d->parsed = QVariant::fromValue<int>(color.role);
-		return pal.color((QPalette::ColorRole)(color.role));
+        return pal.color(QPalette::ColorRole(color.role));
 	}
 	else
 	{
@@ -2665,7 +2665,7 @@ QBrush Declaration2::brushValue(const QPalette& pal) const
 			return qvariant_cast<QBrush>(d->parsed);
 
 		if (d->parsed.typeId() == QMetaType::Int)
-			return pal.color((QPalette::ColorRole)(d->parsed.toInt()));
+            return pal.color(QPalette::ColorRole(d->parsed.toInt()));
 	}
 
 	BrushData2 data = parseBrushValue(d->values.at(0), pal);
@@ -2673,7 +2673,7 @@ QBrush Declaration2::brushValue(const QPalette& pal) const
 	if (data.type == BrushData2::Role)
 	{
 		d->parsed = QVariant::fromValue<int>(data.role);
-		return pal.color((QPalette::ColorRole)(data.role));
+        return pal.color(QPalette::ColorRole(data.role));
 	}
 	else
 	{
@@ -2705,7 +2705,7 @@ void Declaration2::brushValues(QBrush* c, const QPalette& pal) const
 				}
 				else if (v.at(i).typeId() == QMetaType::Int)
 				{
-					c[i] = pal.color((QPalette::ColorRole)(v.at(i).toInt()));
+                    c[i] = pal.color(QPalette::ColorRole(v.at(i).toInt()));
 				}
 				else
 				{
@@ -2728,7 +2728,7 @@ void Declaration2::brushValues(QBrush* c, const QPalette& pal) const
 				if (data.type == BrushData2::Role)
 				{
 					v += QVariant::fromValue<int>(data.role);
-					c[i] = pal.color((QPalette::ColorRole)(data.role));
+                    c[i] = pal.color(QPalette::ColorRole(data.role));
 				}
 				else
 				{
@@ -2883,7 +2883,7 @@ void Declaration2::colorValues(QColor* c, const QPalette& pal) const
 				}
 				else
 				{
-					c[i] = pal.color((QPalette::ColorRole)(v.at(i).toInt()));
+                    c[i] = pal.color(QPalette::ColorRole(v.at(i).toInt()));
 				}
 			}
 		}
@@ -2898,7 +2898,7 @@ void Declaration2::colorValues(QColor* c, const QPalette& pal) const
 				if (color.type == ColorData2::Role)
 				{
 					v += QVariant::fromValue<int>(color.role);
-					c[i] = pal.color((QPalette::ColorRole)(color.role));
+                    c[i] = pal.color(QPalette::ColorRole(color.role));
 				}
 				else
 				{

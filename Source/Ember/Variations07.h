@@ -1106,7 +1106,7 @@ public:
 		T temp, x = helper.In.x / m_Width;
 		bool pos = x > 0;
 
-		if (std::cos((pos ? x - (int)x : x + (int)x) * T(M_PI)) < rand.Frand11<T>())
+        if (std::cos((pos ? x - int(x) : x + int(x)) * T(M_PI)) < rand.Frand11<T>())
 			temp = pos ? -m_Vwidth : m_Vwidth;
 		else
 			temp = 0;
@@ -7389,7 +7389,7 @@ public:
 	{
 		T ax = T(Floor<T>(helper.In.y * m_Freqx / M_2PI));
 		ax = std::sin(ax * T(12.9898) + ax * T(78.233) + T(1.0) + helper.In.y * m_Yfact001) * T(43758.5453);
-		ax = ax - (int)ax;
+        ax = ax - int(ax);
 
 		if (m_Cont == 1) ax = (ax > T(0.5)) ? T(1.0) : T(0.0);
 
@@ -7473,8 +7473,8 @@ public:
 	virtual void Func(IteratorHelper<T>& helper, Point<T>& outPoint, QTIsaac<ISAAC_SIZE, ISAAC_INT>& rand) override
 	{
 		T sinx, siny;
-		int px = (int)m_Powerx;
-		int py = (int)m_Powery;
+        int px = int(m_Powerx);
+        int py = int(m_Powery);
 
 		if (m_Modex < T(0.5))
 		{

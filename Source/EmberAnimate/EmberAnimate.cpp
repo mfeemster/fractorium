@@ -425,7 +425,7 @@ bool EmberAnimate(int argc, _TCHAR* argv[], EmberOptions& opt)
 					VerbosePrint("Writing " + fn);
 					vector<glm::uint16> rgba16Image(size * 4);
 					Rgba32ToRgba16(finalImagep, rgba16Image.data(), w, h, opt.Transparency());
-					const auto writeSuccess = WritePng(fn.c_str(), (unsigned char*)rgba16Image.data(), w, h, 2, opt.EnableComments(), comments, opt.Id(), opt.Url(), opt.Nick());
+                    const auto writeSuccess = WritePng(fn.c_str(), reinterpret_cast<unsigned char*>(rgba16Image.data()), w, h, 2, opt.EnableComments(), comments, opt.Id(), opt.Url(), opt.Nick());
 
 					if (!writeSuccess)
 						cout << "Error writing " << fn << "\n";

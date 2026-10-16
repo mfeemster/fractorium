@@ -9,7 +9,7 @@
 
 //Has to come first on non-Windows platforms due to some weird naming collisions on *nix.
 #ifndef _WIN32
-	#include <QtWidgets>
+    #include <QtWidgets>
 #endif
 
 #include "Renderer.h"

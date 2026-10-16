@@ -31,10 +31,19 @@
 #include "Timing.h"
 #include "Renderer.h"
 
+#ifndef _WIN32
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wold-style-cast"
+#endif
+
 #ifdef  OCL_USE_1_2_V
 	#include <CL/cl.hpp>
 #else
 	#include <CL/opencl.hpp>
+#endif
+
+#ifndef _WIN32
+    #pragma GCC diagnostic pop
 #endif
 
 #if defined(_WIN32)

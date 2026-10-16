@@ -414,7 +414,7 @@ bool Fractorium::eventFilter(QObject* o, QEvent* e)
 
 			if (fcount >= ftimes)
 			{
-				const auto val = ke->key() - (int)Qt::Key::Key_F1;
+                const auto val = ke->key() - static_cast<int>(Qt::Key::Key_F1);
 
 				if (shift)
 				{

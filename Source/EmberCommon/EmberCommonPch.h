@@ -65,6 +65,13 @@
 	#define OPENEXR_DLL 1
 #endif
 
+#ifndef _WIN32
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wold-style-cast"
+    #pragma GCC diagnostic ignored "-Wshadow"
+    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+
 #ifdef __APPLE__
 #include <OpenEXR/ImfRgbaFile.h>
 #include <OpenEXR/ImfStringAttribute.h>
@@ -91,6 +98,10 @@
 #include <ImfChannelList.h>
 #include <ImfOutputFile.h>
 #include <half.h>
+#endif
+
+#ifndef _WIN32
+    #pragma GCC diagnostic pop
 #endif
 
 using namespace Imf;

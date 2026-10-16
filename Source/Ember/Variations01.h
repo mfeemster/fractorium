@@ -1838,7 +1838,7 @@ public:
 		}
 		else
 		{
-			int root = (int)(m_Power * rand.Frand01<T>());
+            int root = int(m_Power * rand.Frand01<T>());
 			a = (helper.m_PrecalcAtanyx + root * M_2PI) / m_Power;
 		}
 

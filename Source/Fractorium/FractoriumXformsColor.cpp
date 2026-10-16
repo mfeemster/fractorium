@@ -48,7 +48,7 @@ void Fractorium::InitXformsColorUI()
 template <typename T>
 void FractoriumEmberController<T>::XformColorIndexChanged(double d, bool updateRender, bool updateSpinner, bool updateScroll, eXformUpdate update, size_t index)
 {
-	const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == (size_t)m_Fractorium->ui.CurrentXformCombo->currentIndex();
+    const auto updateGUI = update != eXformUpdate::UPDATE_SPECIFIC || index == static_cast<size_t>(m_Fractorium->ui.CurrentXformCombo->currentIndex());
 
 	if (updateRender)//False when just updating GUI in response to a change elsewhere, true when in response to a GUI change so update values and reset renderer.
 	{

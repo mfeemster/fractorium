@@ -495,22 +495,22 @@ static bool WriteExr32(const char* filename, float* r, float* g, float* b, float
 		FrameBuffer frameBuffer;
 		frameBuffer.insert("R",
 						   Slice(PixelType::FLOAT,
-								 (char*)r,
+                                 reinterpret_cast<char*>(r),
 								 sizeof(*r) * 1,
 								 sizeof(*r) * width));
 		frameBuffer.insert("G",
 						   Slice(PixelType::FLOAT,
-								 (char*)g,
+                                 reinterpret_cast<char*>(g),
 								 sizeof(*g) * 1,
 								 sizeof(*g) * width));
 		frameBuffer.insert("B",
 						   Slice(PixelType::FLOAT,
-								 (char*)b,
+                                 reinterpret_cast<char*>(b),
 								 sizeof(*b) * 1,
 								 sizeof(*b) * width));
 		frameBuffer.insert("A",
 						   Slice(PixelType::FLOAT,
-								 (char*)a,
+                                 reinterpret_cast<char*>(a),
 								 sizeof(*a) * 1,
 								 sizeof(*a) * width));
 		file->setFrameBuffer(frameBuffer);

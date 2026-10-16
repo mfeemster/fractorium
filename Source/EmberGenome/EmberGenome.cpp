@@ -76,7 +76,6 @@ bool EmberGenome(int argc, _TCHAR* argv[], EmberOptions& opt)
 		}
 		else if (opt.SumVars())
 		{
-			auto& reg = varList->RegVars();
 			auto matches = FindVarsWithout<T>(varList->RegVars(), assign);
 
 			for (auto& v : matches)

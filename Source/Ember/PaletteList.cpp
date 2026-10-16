@@ -136,7 +136,7 @@ bool PaletteList<T>::Replace(const string& filename, const Palette<T>& palette, 
 {
 	if (const auto p = GetPaletteListByFullPathOrFilename(filename))
 	{
-		if (index < p->size())
+        if (static_cast<size_t>(index) < p->size())
 		{
 			(*p)[index] = palette;
 			(*p)[index].m_Index = index;
@@ -162,7 +162,7 @@ bool PaletteList<T>::Delete(const string& filename, int index)
 
 	if (const auto p = GetPaletteListByFullPathOrFilename(filename))
 	{
-		if (index < p->size())
+        if (static_cast<size_t>(index) < p->size())
 		{
 			p->erase(p->begin() + index);
 

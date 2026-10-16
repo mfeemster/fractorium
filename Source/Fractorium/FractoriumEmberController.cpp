@@ -348,7 +348,7 @@ void FractoriumEmberController<T>::SetEmberPrivate(const Ember<U>& ember, bool v
 	m_XaosToggleEmber.Clear();
 
 	if (updatePointer && (typeid(T) == typeid(U)))
-		m_EmberFilePointer = (Ember<T>*)&ember;
+        m_EmberFilePointer = reinterpret_cast<Ember<T>*>(const_cast<Ember<U>*>(&ember));
 
 	if (!verbatim)
 	{

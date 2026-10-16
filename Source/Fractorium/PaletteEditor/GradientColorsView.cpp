@@ -274,7 +274,7 @@ void GradientColorsView::DistributeColors()
 		float index = 0;
 		const auto inc = 1.0f / std::max<size_t>(size_t(1), m_Arrows.size() - 1);
 
-		for (auto it : m_Arrows)
+        for (auto& it : m_Arrows)
 		{
 			arrows[index] = it.second;
 			index = std::min(1.0f, index + inc);
@@ -669,7 +669,7 @@ void GradientColorsView::mouseMoveEvent(QMouseEvent* e)
 				const qreal lastPos = it->first;
 				const qreal start = m_DragStart.x();
 				const qreal end = RectWidth();
-				const qreal dPos = ((qreal)e->pos().x() - start) / end;
+                const qreal dPos = (qreal(e->pos().x()) - start) / end;
 				const qreal newPos = lastPos + dPos;
 
 				if ((lastPos + dPos > 1) || (lastPos + dPos < 0))
@@ -712,7 +712,7 @@ void GradientColorsView::mouseMoveEvent(QMouseEvent* e)
 				const qreal lastPos = it.second.first;
 				const qreal start = m_DragStart.x();
 				const qreal end = RectWidth();
-				const qreal dPos = ((qreal)e->pos().x() - start) / end;
+                const qreal dPos = (qreal(e->pos().x()) - start) / end;
 				const qreal newPos = lastPos + dPos;
 
 				if ((lastPos + dPos > 1) || (lastPos + dPos < 0))
