@@ -1,7 +1,7 @@
 ﻿<Project Sdk="WixToolset.Sdk/6.0.2">
   <PropertyGroup>
     <ProductVersion>3.7</ProductVersion>
-    <OutputName>Fractorium_26.26.10.1</OutputName>
+    <OutputName>Fractorium-26.26.10.1</OutputName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>$(SolutionDir)..\..\..\Bin\$(Platform)\$(Configuration)\</OutputPath>
