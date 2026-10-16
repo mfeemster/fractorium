@@ -49,8 +49,8 @@
 	//
 
 	VS_VERSION_INFO VERSIONINFO
-	FILEVERSION 25, 25, 12, 1
-	PRODUCTVERSION 25, 25, 12, 1
+	FILEVERSION 26, 26, 10, 1
+	PRODUCTVERSION 26, 26, 10, 1
 	FILEFLAGSMASK 0x3fL
 	#ifdef _DEBUG
 		FILEFLAGS 0x1L
@@ -67,12 +67,12 @@
 	BEGIN
 	VALUE "CompanyName", "Open Source"
 	VALUE "FileDescription", "Renders fractal flames as single images"
-	VALUE "FileVersion", "25, 25, 12, 1"
+	VALUE "FileVersion", "26, 26, 10, 1"
 	VALUE "InternalName", "EmberRender.exe"
-	VALUE "LegalCopyright", "Copyright (C) Matt Feemster 2025, GPL v3"
+	VALUE "LegalCopyright", "Copyright (C) Matt Feemster 2026, GPL v3"
 	VALUE "OriginalFilename", "EmberRender.exe"
 	VALUE "ProductName", "Ember Render"
-	VALUE "ProductVersion", "25, 25, 12, 1"
+	VALUE "ProductVersion", "26, 26, 10, 1"
 	END
 	END
 	BLOCK "VarFileInfo"

@@ -1,3 +1,12 @@
+26.26.10.1 10/15/2026
+--User changes
+ -Add a menu item and toolbar button for copying the current image to the clipboard.
+ 
+--Code changes
+ -Migrate to Qt 6.11.2.
+ -Change various internal names that were colliding with Qt on modern versions of Qt.
+ -Clean up code to suppress most warnings.
+
 25.25.12.1 12/14/2025
 --User changes
  -Use the hex palette format when saving xmls from the final render dialog.

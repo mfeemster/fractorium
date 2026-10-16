@@ -234,7 +234,7 @@ void CurvesGraphicsView::mousePressEvent(QMouseEvent* e)
                 const auto threshAgain = threshParam;
 
 				if (xdist < threshAgain && ydist < threshAgain)
-					return i;
+					return static_cast<int>(i);
 			}
 		}
 

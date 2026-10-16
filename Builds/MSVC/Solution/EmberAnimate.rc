@@ -49,8 +49,8 @@
 	//
 
 	VS_VERSION_INFO VERSIONINFO
-	FILEVERSION 25, 25, 12, 1
-	PRODUCTVERSION 25, 25, 12, 1
+	FILEVERSION 26, 26, 10, 1
+	PRODUCTVERSION 26, 26, 10, 1
 	FILEFLAGSMASK 0x3fL
 	#ifdef _DEBUG
 		FILEFLAGS 0x1L
@@ -67,12 +67,12 @@
 	BEGIN
 	VALUE "CompanyName", "Open Source"
 	VALUE "FileDescription", "Renders fractal flames as animations with motion blur"
-	VALUE "FileVersion", "25, 25, 12, 1"
+	VALUE "FileVersion", "26, 26, 10, 1"
 	VALUE "InternalName", "EmberAnimate.exe"
-	VALUE "LegalCopyright", "Copyright (C) Matt Feemster 2025, GPL v3"
+	VALUE "LegalCopyright", "Copyright (C) Matt Feemster 2026, GPL v3"
 	VALUE "OriginalFilename", "EmberAnimate.exe"
 	VALUE "ProductName", "Ember Animate"
-	VALUE "ProductVersion", "25, 25, 12, 1"
+	VALUE "ProductVersion", "26, 26, 10, 1"
 	END
 	END
 	BLOCK "VarFileInfo"
