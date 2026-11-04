@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EmberCLPch.h"
-//#define NEW_OPTS 1
+#define NEW_OPTS 1
 
 /// <summary>
 /// Various data structures defined for the CPU and OpenCL.
