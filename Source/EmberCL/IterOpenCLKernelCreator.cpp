@@ -139,6 +139,10 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 		bool hasPreReg = (xform->PreVariationCount() + xform->VariationCount()) > 0;
 		v = varIndex = varCount = 0;
 		xformFuncs <<
+#ifdef NEW_OPTS
+			"inline " <<
+#endif
+
 				   "void Xform" << i << "(__constant XformCL* xform, __constant real_t* parVars, __global real_t* globalShared, Point* inPoint, Point* outPoint, uint2* mwc, VariationState* varState)\n" <<
 				   "{\n"
 				   "	real_t transX, transY, transZ;\n"
@@ -230,8 +234,14 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 
 				if (xform->NeedPrecalcAngles())
 				{
+#if NEW_OPTS
+					xformFuncs << "\treal_t precalcInvSqrt = (real_t)1.0 / Zeps(precalcSqrtSumSquares);\n";
+					xformFuncs << "\tprecalcCosa = transX * precalcInvSqrt;\n";
+					xformFuncs << "\tprecalcSina = transY * precalcInvSqrt;\n";
+#else
 					xformFuncs << "\tprecalcCosa = transX / Zeps(precalcSqrtSumSquares);\n";
 					xformFuncs << "\tprecalcSina = transY / Zeps(precalcSqrtSumSquares);\n";
+#endif
 				}
 
 				if (xform->NeedPrecalcAtanXY())

@@ -100,14 +100,17 @@ static inline size_t NowMs() noexcept { return duration_cast<milliseconds>(Clock
 
 //These two must always match.
 #ifdef _WIN32
-	#define ALIGN __declspec(align(16))
+	#define ALIGN  __declspec(align(16))
+	#define ALIGNT __declspec(align(sizeof(T)))
 	#define STATIC static
 #else
-	#define ALIGN __attribute__ ((aligned (16)))
+	#define ALIGN  __attribute__ ((aligned (16)))
+	#define ALIGNT __attribute__ ((aligned (sizeof(T))))
 	#define STATIC
 #endif
 
-#define ALIGN_CL "((aligned (16)))"//The extra parens are necessary.
+#define ALIGN_CL   "((aligned (16)))"//The extra parens are necessary.
+#define ALIGN_CL_T "((aligned (sizeof(real_t))))"
 
 #if GLM_VERSION >= 96
 	#define v2T  glm::tvec2<T, glm::defaultp>

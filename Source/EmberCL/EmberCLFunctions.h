@@ -179,6 +179,43 @@ static constexpr char RandFunctionString[] =
 	"	return (val == 0) ? MwcNext(s) : (uint)(((ulong)MwcNext(s) * (ulong)val) >> 32);\n"
 	"}\n"
 	"\n"
+#if NEW_OPTS
+	"inline real_t MwcNext01(uint2* s)\n"
+	"{\n"
+	"	return MwcNext(s) * MAX_UINT_RECIP;\n"
+	"}\n"
+	"\n"
+	"inline uint MwcNextCrand(uint2* s)\n"
+	"{\n"
+	"	return MwcNextRange(s, 32767u);\n"
+	"}\n"
+	"\n"
+	"inline real_t MwcNextFRange(uint2* s, real_t lower, real_t upper)\n"
+	"{\n"
+	"	real_t f = MwcNext(s) * MAX_UINT_RECIP;\n"
+#ifdef USEFMA
+	"	return fma(f, upper - lower, lower);\n"
+#else
+	"	return (f * (upper - lower) + lower);\n"
+#endif
+	"}\n"
+	"\n"
+	"inline real_t MwcNextNeg1Pos1(uint2* s)\n"
+	"{\n"
+	"	real_t f = MwcNext(s) * MAX_UINT_RECIP;\n"
+#ifdef USEFMA
+	"	return fma(f, (real_t)2.0, (real_t)-1.0);\n"
+#else
+	"	return (f * (real_t)2.0 + (real_t)-1.0);\n"
+#endif
+	"}\n"
+	"\n"
+	"inline real_t MwcNext0505(uint2* s)\n"
+	"{\n"
+	"	real_t f = MwcNext(s) * MAX_UINT_RECIP;\n"
+	"	return (real_t)-0.5 + f;\n"
+	"}\n"
+#else
 	"inline real_t MwcNext01(uint2* s)\n"
 	"{\n"
 	"	return MwcNext(s) * (real_t)(1.0 / 4294967296.0);\n"
@@ -214,6 +251,7 @@ static constexpr char RandFunctionString[] =
 	"	real_t f = (real_t)MwcNext(s) / (real_t)UINT_MAX;\n"
 	"	return -0.5 + f;\n"
 	"}\n"
+#endif
 	"\n";
 
 /// <summary>

@@ -1592,7 +1592,7 @@ void TestOperations()
 
 void TestArbitrary()
 {
-	vector<string> stringVec, withoutVec;
+	vector<string> stringVec, withoutVec, emptyVec;
 	auto varList = VariationList<float>::Instance();
 	auto& vars = varList->AllVars();
 	stringVec.push_back("switch");
@@ -1607,13 +1607,21 @@ void TestArbitrary()
 	//stringVec.push_back("sin(");
 	//stringVec.push_back("cos(");
 	//stringVec.push_back("sincos(");
-	auto varVec = FindVarsWith<float>(vars, stringVec, true, true);
-	//auto varVec = FindVarsWithWithout<float>(vars, stringVec, withoutVec);
+	auto varVecWith = FindVarsWith<float>(vars, stringVec, true, true);
+	auto varVecWithout = FindVarsWithWithout<float>(vars, emptyVec, withoutVec);
 
-	for (auto& it : varVec)
+	for (auto& it : varVecWith)
+		cout << "Variation " << it->Name() << " contained the desired 'with' strings." << endl;
+
+	if (varVecWithout.size() > 0)
 	{
-		cout << "Variation " << it->Name() << " contained the desired w/wo strings." << endl;
+		cout << "There shouldn't be any variations that don't contain =, < or >. They were: " << endl;
+		
+		for (auto& it : varVecWithout)
+			cout << "\t" << it->Name() << endl;
 	}
+	else
+		cout << "All variations contained =, < or >." << endl;
 }
 
 template <typename T>

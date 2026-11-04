@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EmberCLPch.h"
+//#define NEW_OPTS 1
 
 /// <summary>
 /// Various data structures defined for the CPU and OpenCL.
@@ -40,8 +41,7 @@ static string ConstantDefinesString(bool doublePrecision)
 		   "typedef float4 real4_bucket;\n"//And here too.
 		   "#define EPS (DBL_EPSILON)\n"
 		   "#define TLOW (DBL_MIN)\n"
-		   "#define TMAX (DBL_MAX)\n"
-		   ;
+		   "#define TMAX (DBL_MAX)\n";
 	}
 	else
 	{
@@ -55,11 +55,13 @@ static string ConstantDefinesString(bool doublePrecision)
 		   "typedef float4 real4_bucket;\n"
 		   "#define EPS (FLT_EPSILON)\n"
 		   "#define TLOW (FLT_MIN)\n"
-		   "#define TMAX (FLT_MAX)\n"
-		   ;
+		   "#define TMAX (FLT_MAX)\n";
 	}
 
 	os <<
+#ifdef __APPLE__
+		"#define fma(a, b, c) mad((a), (b), (c))\n"
+#endif
 	   "typedef          long int int64;\n"
 	   "typedef unsigned long int uint64;\n"
 	   "\n"
@@ -92,6 +94,7 @@ static string ConstantDefinesString(bool doublePrecision)
 	   "#define DEG_2_RAD (MPI / 180)\n"
 	   "#define CURVES_LENGTH_M1 ((real_bucket_t)" << CURVES_LENGTH_M1 << ")\n" <<
 	   "#define ONE_OVER_CURVES_LENGTH_M1 ((real_bucket_t)" << ONE_OVER_CURVES_LENGTH_M1 << ")\n" <<
+	   "#define MAX_UINT_RECIP ((real_t)(2.32831e-10))\n"//1 / ((2^32)-1).
 	   "\n"
 	   "//Index in each dimension of a thread within a block.\n"
 	   "#define THREAD_ID_X   (get_local_id(0))\n"
@@ -139,8 +142,19 @@ static string ConstantDefinesString(bool doublePrecision)
 /// It might seem better to use vec4, however 2D palettes and even 3D coordinates may eventually
 /// be supported, which will make it more than 4 members.
 /// </summary>
+#ifdef NEW_OPTS
+	#ifdef _WIN32
+		#pragma pack(push, 1)
+	#endif
+#endif
 template <typename T>
-struct ALIGN PointCL
+struct
+#ifdef NEW_OPTS
+	#ifndef _WIN32
+		__attribute__((packed))
+	#endif
+#endif
+PointCL
 {
 	T m_X;
 	T m_Y;
@@ -148,6 +162,11 @@ struct ALIGN PointCL
 	T m_ColorX;
 	uint m_LastXfUsed;
 };
+#ifdef NEW_OPTS
+	#ifdef _WIN32
+		#pragma pack(pop)
+	#endif
+#endif
 
 /// <summary>
 /// The point structure used to iterate in OpenCL.
@@ -155,14 +174,18 @@ struct ALIGN PointCL
 /// be supported, which will make it more than 4 members.
 /// </summary>
 static constexpr char PointCLStructString[] =
-	"typedef struct __attribute__ " ALIGN_CL " _Point\n"
+	"typedef struct _Point\n"
 	"{\n"
 	"	real_t m_X;\n"
 	"	real_t m_Y;\n"
 	"	real_t m_Z;\n"
 	"	real_t m_ColorX;\n"
 	"	uint m_LastXfUsed;\n"
+#ifdef NEW_OPTS
+	"} __attribute__((packed)) Point;\n"
+#else
 	"} Point;\n"
+#endif
 	"\n";
 
 /// <summary>
@@ -342,7 +365,7 @@ struct ALIGN SpatialFilterCL
 /// Note that the actual filter buffer is held elsewhere.
 /// </summary>
 static constexpr char SpatialFilterCLStructString[] =
-	"typedef struct __attribute__ ((aligned (16))) _SpatialFilterCL\n"
+	"typedef struct __attribute__" ALIGN_CL "_SpatialFilterCL\n"
 	"{\n"
 	"	uint m_SuperRasW;\n"
 	"	uint m_SuperRasH;\n"

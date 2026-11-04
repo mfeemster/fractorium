@@ -1410,12 +1410,10 @@ template <typename T>
 class CropNVariation : public ParametricVariation<T>
 {
 public:
-	using Variation<T>::m_NeedPrecalcSumSquares;
 	using Variation<T>::m_NeedPrecalcAngles;
 	CropNVariation(T weight = 1.0) : ParametricVariation<T>("cropn", eVariationId::VAR_CROPN, weight, true, true, true, false, true)
 	{
 		Init();
-		m_NeedPrecalcSumSquares = !Compat::m_Compat;
 		m_NeedPrecalcAngles = Compat::m_Compat;
 	}
 
@@ -1451,13 +1449,13 @@ public:
 		}
 		else
 		{
-			T r2 = helper.m_PrecalcSumSquares;
+			//T r2 = helper.m_PrecalcSumSquares;
 			T aModAlpha = std::fmod(helper.m_PrecalcAtanyx + T(M_PI), m_Alpha);
 			T xang = std::cos(aModAlpha < m_AlphaDiv2 ? aModAlpha : m_Alpha - aModAlpha);
 			T xr = xang > 0 ? m_Radius / Zeps(xang) : T(1);
 			T xr2 = xr * xr;
 
-			if ((r2 > xr2) == (m_Power > 0))
+			if ((helper.m_PrecalcSumSquares > xr2) == (m_Power > 0))
 			{
 				if (m_Zero == 0)
 				{
@@ -1465,7 +1463,7 @@ public:
 				}
 				else
 				{
-					T temp = (xr + rand.Frand01<T>() * m_ScatterDist) * m_Weight / Zeps(std::sqrt(r2));
+					T temp = (xr + rand.Frand01<T>() * m_ScatterDist) * m_Weight / Zeps(helper.m_PrecalcSqrtSumSquares);
 					helper.Out.x = temp * helper.In.x;
 					helper.Out.y = temp * helper.In.y;
 				}
@@ -1532,13 +1530,12 @@ public:
 		}
 		else
 		{
-			ss << "\t\treal_t r2 = precalcSumSquares;\n"
-			   << "\t\treal_t aModAlpha = fmod(precalcAtanyx + MPI, alpha);\n"
+			ss << "\t\treal_t aModAlpha = fmod(precalcAtanyx + MPI, alpha);\n"
 			   << "\t\treal_t xang = cos(aModAlpha < " << alphaDiv2 << " ? aModAlpha : alpha - aModAlpha);\n"
 			   << "\t\treal_t xr = xang > 0 ? " << radius << " / Zeps(xang) : (real_t)1.0;\n"
 			   << "\t\treal_t xr2 = xr * xr;\n"
 			   << "\n"
-			   << "\t\tif ((r2 > xr2) == (" << power << " > 0))\n"
+			   << "\t\tif ((precalcSumSquares > xr2) == (" << power << " > 0))\n"
 			   << "\t\t{\n"
 			   << "\t\t	if (" << zero << " == 0)\n"
 			   << "\t\t	{\n"
@@ -1546,7 +1543,7 @@ public:
 			   << "\t\t	}\n"
 			   << "\t\t	else\n"
 			   << "\t\t	{\n"
-			   << "\t\t		real_t temp = fma(MwcNext01(mwc), " << scatterDist << ", xr) * weight / Zeps(sqrt(r2));\n"
+			   << "\t\t		real_t temp = fma(MwcNext01(mwc), " << scatterDist << ", xr) * weight / Zeps(precalcSqrtSumSquares);\n"
 			   << "\n"
 			   << "\t\t		vOut.x = temp * vIn.x;\n"
 			   << "\t\t		vOut.y = temp * vIn.y;\n"
@@ -1588,7 +1585,6 @@ public:
 		}
 
 		m_AlphaDiv2 = m_Alpha / 2;
-		m_NeedPrecalcSumSquares = !Compat::m_Compat;
 		m_NeedPrecalcAngles = Compat::m_Compat;
 	}
 
