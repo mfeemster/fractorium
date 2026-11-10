@@ -115,7 +115,7 @@ echo
 echo "== Copying Fractorium binaries to AppDir =="
 cp -f "$BUILD_DIR"/fractorium "$APPDIR/usr/bin/fractorium"
 cp -f "$BUILD_DIR"/ember* "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -f "$BUILD_DIR"/lib* "$APPDIR/usr/bin/" 2>/dev/null || true
+cp -f "$BUILD_DIR"/lib* "$APPDIR/usr/lib/" 2>/dev/null || true
 
 # Extra runtime data required by the app
 echo "== Copying palettes, stylesheets and examples to AppDir =="
@@ -163,37 +163,63 @@ Categories=Graphics
 StartupNotify=true
 EOF
 
-#install -m 0644 "$ROOT_DIR/dist/misc/fractorium.desktop" \
-#  "$APPDIR/usr/share/applications/fractorium.desktop"
-
 # ----------------------------------------------------------------------
 # AppRun must preserve the symlink behavior
 # ----------------------------------------------------------------------
+#cp $DIST_DIR/appimage/AppRun $APPDIR
 cat > "$APPDIR/AppRun" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-APPDIR="$(dirname "$(readlink -f "$0")")"
-export LD_LIBRARY_PATH="${APPDIR}/usr/lib:${LD_LIBRARY_PATH:-}"
+export LD_LIBRARY_PATH="${APPDIR}/usr/lib:${LD_LIBRARY_PATH}"
 export QT_PLUGIN_PATH="${APPDIR}/usr/lib/plugins:${QT_PLUGIN_PATH:-}"
 
-CMD_NAME="$(basename "$0")"
+CONFIG_PATH=~/.config/fractorium
+DARK_LINUX=$CONFIG_PATH/dark_linux.qss
+LIGHT_DARK=$CONFIG_PATH/lightdark.qss
+URANIUM=$CONFIG_PATH/uranium.qss
+
+if [ ! -e "$DARK_LINUX" ] ; then
+  mkdir -p $CONFIG_PATH
+  cp $APPDIR/usr/bin/dark_linux.qss $CONFIG_PATH
+fi
+
+if [ ! -e "$LIGHT_DARK" ] ; then
+  mkdir -p $CONFIG_PATH
+  cp $APPDIR/usr/bin/lightdark.qss $CONFIG_PATH
+fi
+
+if [ ! -e "$URANIUM" ] ; then
+  mkdir -p $CONFIG_PATH
+  cp $APPDIR/usr/bin/uranium.qss $CONFIG_PATH
+fi
+
+BIN_DIR="$(dirname "$0")/usr/bin"
+CMD_NAME=$(basename "$ARGV0")
+
+# Debug output
+# echo "=== AppImage Debug ==="
+# echo "Working directory: $(pwd)"
+# echo "Invocation path (\$0): $0"
+# echo "CMD_NAME variable: '$CMD_NAME'"
+# echo "All arguments (\$@): $@"
+# echo "======================"
 
 case "$CMD_NAME" in
   fractorium)
-    exec "${APPDIR}/usr/bin/fractorium" "$@"
+    exec "$BIN_DIR/fractorium" "$@"
     ;;
   emberrender)
-    exec "${APPDIR}/usr/bin/emberrender" "$@"
+    exec "$BIN_DIR/emberrender" "$@"
     ;;
   embergenome)
-    exec "${APPDIR}/usr/bin/embergenome" "$@"
+    exec "$BIN_DIR/embergenome" "$@"
     ;;
   emberanimate)
-    exec "${APPDIR}/usr/bin/emberanimate" "$@"
+    exec "$BIN_DIR/emberanimate" "$@"
     ;;
   *)
-    exec "${APPDIR}/usr/bin/fractorium" "$@"
+    exec "$BIN_DIR/fractorium" "$@"
     ;;
 esac
 EOF
@@ -326,10 +352,8 @@ cp -f $DATA_DIR/Bench/* $DEBDIR/usr/share/fractorium/bench
 echo
 echo "== Building Debian package =="
 cd "$BUILD_DIR"
-#cd "$DEBDIR"
 
 if command -v dpkg-buildpackage >/dev/null 2>&1; then
-#  dpkg-buildpackage -b
   dpkg -b Fractorium.DebDir
   echo
   echo "Debian package build complete."

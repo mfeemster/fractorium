@@ -7,7 +7,7 @@ FRACTORIUM_RELEASE_ROOT=$PWD/../Bin/release
 QT_DIR=~/Qt/6.11.3/macos
 QT_MACDEPLOY=$QT_DIR/bin/macdeployqt6
 QT_LIB_PATH=$QT_DIR/lib
-DIST_DIR=$PWD/../dist/scripts
+DIST_DIR=$PWD/../dist
 
 cd $FRACTORIUM_RELEASE_ROOT
 
@@ -63,8 +63,8 @@ cp uranium.qss $FRACTORIUM_FINAL_ROOT
 cp flam3-palettes.xml $FRACTORIUM_FINAL_ROOT
 cp *.gradient $FRACTORIUM_FINAL_ROOT
 cp *.ugr $FRACTORIUM_FINAL_ROOT
-cp $DIST_DIR/fractorium-sh $FRACTORIUM_FINAL_ROOT
-cp $DIST_DIR/Info.plist $FRACTORIUM_FINAL_ROOT/../
+cp $DIST_DIR/scripts/fractorium-sh $FRACTORIUM_FINAL_ROOT
+cp $DIST_DIR/mac/Info.plist $FRACTORIUM_FINAL_ROOT/../
 cp -r Bench $FRACTORIUM_FINAL_ROOT
 cp -r examples $FRACTORIUM_FINAL_ROOT
 
@@ -76,3 +76,4 @@ mv fractorium.app Fractorium.app
 codesign --force --deep --sign - Fractorium.app
 
 hdiutil create -format UDBZ -quiet -srcfolder Fractorium.app Fractorium.dmg
+
