@@ -101,7 +101,7 @@ INSTALLS += themes
 	INSTALLS += launcher
 }
 
-macx:ICON = $$ASSETS_DIR/Fractorium.icns
+macx:ICON = $$PRJ_SRC_DIR/Icons/Fractorium.icns
 !macx:PRECOMPILED_HEADER = $$PRJ_SRC_DIR/FractoriumPch.h
 
 # QMAKE_CXXFLAGS_RELEASE -= -Wswitch-default

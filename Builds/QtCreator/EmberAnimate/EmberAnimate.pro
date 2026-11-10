@@ -42,7 +42,7 @@ INSTALLS += palettes
 	INSTALLS += launcher
 }
 
-macx:ICON = $$ASSETS_DIR/Fractorium.icns
+macx:ICON = $$PRJ_SRC_DIR/Icons/Fractorium.icns
 !macx:PRECOMPILED_HEADER = $$SRC_COMMON_DIR/EmberCommonPch.h
 
 LIBS += -L$$absolute_path($$DESTDIR) -lember
