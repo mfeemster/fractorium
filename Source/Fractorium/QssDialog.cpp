@@ -638,8 +638,8 @@ void QssDialog::SetupFileDialog()
 	{
 		m_FileDialog = new QFileDialog(this);
 		m_FileDialog->setViewMode(QFileDialog::List);
-		//m_FileDialog->setDirectory(m_Parent->m_SettingsPath);
-		m_FileDialog->setDirectory("./");
+		m_FileDialog->setDirectory(m_Parent->m_SettingsPath);
+		//m_FileDialog->setDirectory("./");
 		m_FileDialog->setOption(QFileDialog::DontUseNativeDialog, true);
 		m_FileDialog->setSidebarUrls(dynamic_cast<Fractorium*>(parent())->Urls());
 	}
@@ -653,6 +653,7 @@ void QssDialog::SetupFileDialog()
 /// <returns>The file selected if any, else empty string.</returns>
 QString QssDialog::OpenFile()
 {
+	QString filename;
 #ifndef __APPLE__
 	QStringList filenames;
 	SetupFileDialog();
@@ -663,13 +664,18 @@ QString QssDialog::OpenFile()
 	m_FileDialog->selectNameFilter("*.qss");
 
 	if (m_FileDialog->exec() == QDialog::Accepted)
-		filenames = m_FileDialog->selectedFiles();
+		filenames = m_FileDialog->selectedFiles();		
 
-	return !filenames.empty() ? filenames[0] : "";
+	if (!filenames.empty())
+		filename = filenames[0];
 #else
-    auto filename = QFileDialog::getOpenFileName(this, tr("Open Stylesheet"), m_Parent->m_SettingsPath, tr("Qss (*.qss)"));
-	return filename.size() > 0 ? filename : "";
+    filename = QFileDialog::getOpenFileName(this, tr("Open Stylesheet"), m_Parent->m_SettingsPath, tr("Qss (*.qss)"));
 #endif
+
+	if (filename.size() > 0)
+		m_Parent->m_SettingsPath = QFileInfo(filename).absoluteDir().absolutePath();
+
+	return filename;
 }
 
 /// <summary>
@@ -678,6 +684,7 @@ QString QssDialog::OpenFile()
 /// <returns>The file selected for saving if any, else empty string.</returns>
 QString QssDialog::SaveFile()
 {
+	QString filename;
 #ifndef __APPLE__
 	QStringList filenames;
 	SetupFileDialog();
@@ -690,9 +697,13 @@ QString QssDialog::SaveFile()
 	if (m_FileDialog->exec() == QDialog::Accepted)
 		filenames = m_FileDialog->selectedFiles();
 
-	return !filenames.empty() ? filenames[0] : "";
+	if (!filenames.empty())
+		filename = filenames[0];
 #else
-	auto filename = QFileDialog::getSaveFileName(this, tr("Save Stylesheet"), m_Parent->m_SettingsPath, tr("Qss (*.qss)"));
-	return filename.size() > 0 ? filename : "";
+	filename = QFileDialog::getSaveFileName(this, tr("Save Stylesheet"), m_Parent->m_SettingsPath, tr("Qss (*.qss)"));
 #endif
+	if (filename.size() > 0)
+		m_Parent->m_SettingsPath = QFileInfo(filename).absoluteDir().absolutePath();
+
+	return filename;
 }
