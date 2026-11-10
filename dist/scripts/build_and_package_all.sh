@@ -166,13 +166,15 @@ EOF
 # ----------------------------------------------------------------------
 # AppRun must preserve the symlink behavior
 # ----------------------------------------------------------------------
-#cp $DIST_DIR/appimage/AppRun $APPDIR
 cat > "$APPDIR/AppRun" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-export LD_LIBRARY_PATH="${APPDIR}/usr/lib:${LD_LIBRARY_PATH}"
-export QT_PLUGIN_PATH="${APPDIR}/usr/lib/plugins:${QT_PLUGIN_PATH:-}"
+APPDIR="$(dirname "$(readlink -f "$0")")"
+export LD_LIBRARY_PATH="${APPDIR}/usr/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export QT_PLUGIN_PATH="${APPDIR}/usr/lib/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
+#export QT_QPA_PLATFORM_PLUGIN_PATH="${APPDIR}/usr/lib/plugins/platforms${QT_QPA_PLATFORM_PLUGIN_PATH:+:${QT_QPA_PLATFORM_PLUGIN_PATH}}"
+#export XDG_DATA_DIRS="${APPDIR}/usr/share${XDG_DATA_DIRS:+:${XDG_DATA_DIRS}}"
 
 CONFIG_PATH=~/.config/fractorium
 DARK_LINUX=$CONFIG_PATH/dark_linux.qss
@@ -194,16 +196,8 @@ if [ ! -e "$URANIUM" ] ; then
   cp $APPDIR/usr/bin/uranium.qss $CONFIG_PATH
 fi
 
-BIN_DIR="$(dirname "$0")/usr/bin"
+BIN_DIR="$APPDIR/usr/bin"
 CMD_NAME=$(basename "$ARGV0")
-
-# Debug output
-# echo "=== AppImage Debug ==="
-# echo "Working directory: $(pwd)"
-# echo "Invocation path (\$0): $0"
-# echo "CMD_NAME variable: '$CMD_NAME'"
-# echo "All arguments (\$@): $@"
-# echo "======================"
 
 case "$CMD_NAME" in
   fractorium)
@@ -232,7 +226,7 @@ echo
 echo "== Creating AppImage =="
 $APPIMAGETOOL_BIN --appdir=$APPDIR --output=appimage --executable=$APPDIR/usr/bin/fractorium --desktop-file=$APPDIR/usr/share/applications/fractorium.desktop --plugin=qt
 chmod +x "$APPIMAGE_OUT"
-cp -f Fractorium-x86_64.AppImage $DIST_DIR/Fractorium-$APP_VERSION.x86_64.AppImage
+cp -f "$APPIMAGE_OUT" $DIST_DIR/Fractorium-$APP_VERSION.x86_64.AppImage
 
 echo
 echo "AppImage ready:"
@@ -340,6 +334,10 @@ EOF
 
 #Reuse the desktop file created for the AppImage
 cp $APPDIR/usr/share/applications/fractorium.desktop $DEBDIR/usr/share/applications/fractorium.desktop
+
+#The desktop file is different for a deb than an AppImage
+sed -i '/^Icon=fractorium$/c\Icon=/usr/share/fractorium/fractorium.png' $DEBDIR/usr/share/applications/fractorium.desktop
+
 cp $ROOT_DIR/Source/Fractorium/Icons/Fractorium.png $DEBDIR/usr/share/fractorium/fractorium.png
 
 #Benchmarking files only get used with the .deb and .rpm, not with the standalone AppImage
