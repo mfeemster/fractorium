@@ -19,7 +19,7 @@ git clone https://github.com/mfeemster/fractorium.git
 Install the dependencies.
 
 ```
-sudo apt-get install g++ libxcb-cursor0 libc6-dev libgl1-mesa-dev libgl-dev libglm-dev libjpeg-dev libpng-dev libpng16-16 libxml2-dev libqt6opengl6-dev qt6-base-dev qmake6 qtchooser ocl-icd-libopencl1 ocl-icd-opencl-dev opencl-headers libopenexr-dev libopenexr-3-1-30
+sudo apt-get install g++ libxcb-cursor0 libc6-dev libgl1-mesa-dev mesa-opencl-icd libgl-dev libglm-dev libjpeg-dev libpng-dev libpng16-16 libxml2-dev ocl-icd-libopencl1 ocl-icd-opencl-dev opencl-headers libopenexr-dev libopenexr-3-1-30
 ```
 
 Install the OpenCL drivers and opencl support for your hardware.
@@ -36,20 +36,21 @@ Optionally you can install the Nvidia-specific `nvidia-libopencl1-535` package,
 but keep in mind that this will remove the generic ones (`ocl-icd-opencl-dev`
 and `ocl-icd-libopencl1`).
 
-If you have both Qt 5 and 6 installed, select Qt 6 before compilation:
+Fractorium is built using a specific version of Qt because the versions built into the linux distribution are always out of date.
 
-```
-export QT_SELECT=qt6
-```
+Go to [qt.io](http://www.qt.io/download/) and download the latest version and install it to your system.
+
+Assuming you place it in a location like:
+`~/Dev/Qt/6.11.2`
+You will need to explicitly reference this path when calling qmake below.
 
 Compile the binaries, they will be created in the `Bin/release` folder.
 ```
 cd fractorium
-# Note that you may need to explicitly use /usr/lib/qt6/bin/qmake here because Qt sometimes has trouble finding itself.
-qmake main.pro -r -spec linux-g++-64 CONFIG+="release native"
+~/Dev/Qt/6.11.2/gcc_64/bin/qmake main.pro -r -spec linux-g++-64 CONFIG+="release"
 make
 ```
 
-Or open main.pro in Qt Creator and build all.
+Or open main.pro in Qt Creator and build all. This will require some configuration to get QtCreator to use your specific install of Qt mentioned above.
 
 `sudo make install` will install the files directly. `sudo make uninstall` is also available.

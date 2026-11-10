@@ -11,7 +11,7 @@ Install [Microsoft Visual Studio 2026 or later](https://www.visualstudio.com/dow
 
 ### Qt
 
-Install []Qt for Windows 64-bit 6.11.2](http://www.qt.io/download/) or later.
+Install [Qt for Windows 64-bit 6.11.2](http://www.qt.io/download/) or later.
 
 Add system environment variable named `QTPATH` and point it to the location of the Qt folder. On a default install, this will be something like:
 
@@ -63,15 +63,13 @@ This will download and build `glm libopenexr libpng libxml zlib`. You will have 
 
 ```
 [fractorium]
-│  
 ├─[glm]
 ├─[libjpeg]
 ├─[libpng]
 ├─[libxml2]
 ├─[openexr]
 └─[fractorium]
-  │
-  ├─[Deps]
+  └─[Deps]
     │
     ├─Iex-3_4.dll
     ├─IlmThread-3_4.dll

@@ -36,8 +36,9 @@ URGENCY="${URGENCY:-medium}"
 
 QT_PREFIX="${QT_PREFIX:-$HOME/Dev/Qt/6.11.2/gcc_64}"
 QMAKE_BIN="${QMAKE_BIN:-$QT_PREFIX/bin/qmake6}"
-LINUXDEPLOYQT_BIN="${LINUXDEPLOYQT_BIN:-$HOME/Dev/DeployTools/linuxdeploy-plugin-qt-x86_64.AppImage}"
-APPIMAGETOOL_BIN="${APPIMAGETOOL_BIN:-$HOME/Dev/DeployTools/linuxdeploy-x86_64.AppImage}"
+DEPLOY_TOOLS_DIR="$ROOT_DIR/../DeployTools"
+LINUXDEPLOYQT_BIN="${LINUXDEPLOYQT_BIN:-$DEPLOY_TOOLS_DIR/linuxdeploy-plugin-qt-x86_64.AppImage}"
+APPIMAGETOOL_BIN="${APPIMAGETOOL_BIN:-$DEPLOY_TOOLS_DIR/linuxdeploy-x86_64.AppImage}"
 EXTRA_LIBS="${EXTRA_LIBS:-/usr/lib/x86_64-linux-gnu}"
 
 export PATH="${QT_PREFIX}/bin:${PATH}"
@@ -64,9 +65,48 @@ echo "Target distro:     $DISTRO"
 echo "Urgency:           $URGENCY"
 
 # ----------------------------------------------------------------------
+# Get the AppImage packaging tools
+# ----------------------------------------------------------------------
+mkdir -p "$DEPLOY_TOOLS_DIR"
+
+# URLs to download
+declare -A DOWNLOAD_URLS=(
+  ["linuxdeploy-x86_64.AppImage"]="https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage"
+  ["linuxdeploy-plugin-qt-x86_64.AppImage"]="https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/latest/download/linuxdeploy-plugin-qt-x86_64.AppImage"
+)
+
+for filename in "${!DOWNLOAD_URLS[@]}"; do
+  url="${DOWNLOAD_URLS[$filename]}"
+  dest="$DEPLOY_TOOLS_DIR/$filename"
+
+  echo "Checking $filename..."
+
+  # Download only if file is missing or remote is newer than local
+  # -z checks the file timestamp against the server
+  if [[ -f "$dest" ]]; then
+    curl -fsSL --retry 3 --retry-delay 2 -z "$dest" -o "$dest" "$url" || {
+      echo "No newer version available for $filename, or download failed."
+      continue
+    }
+  else
+	echo "Downloading $filename to $dest..."
+    curl -fsSL --retry 3 --retry-delay 2 -o "$dest" "$url"
+  fi
+
+  # If the file is empty, skip it
+  if [[ ! -s "$dest" ]]; then
+    echo "Downloaded file is empty: $dest"
+    continue
+  fi
+
+  chmod +x "$dest"
+done
+
+echo "Done."
+
+# ----------------------------------------------------------------------
 # Sanity checks
 # ----------------------------------------------------------------------
-
 if [[ ! -x "$QMAKE_BIN" ]]; then
   echo "Error: qmake not found at $QMAKE_BIN"
   exit 1
@@ -317,8 +357,8 @@ License: GPL-2+
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
 EOF
 
-#Do not programmatically generate the debian/changelog file.
-#Instead, it must be manually edited.
+#Do not programmatically generate the debian/changelog file
+#Instead, it must be manually edited beforehand and copied here
 cp $DIST_DIR/debian/changelog $DEBDIR/debian/changelog
 
 cat > "$DEBDIR/debian/rules" <<'EOF'
@@ -366,7 +406,7 @@ fi
 cd "$ROOT_DIR"
 
 # ----------------------------------------------------------------------
-# Build the RPM package (legacy flow retained for compatibility)
+# Build the RPM package
 # ----------------------------------------------------------------------
 echo
 echo "== Building RPM package =="

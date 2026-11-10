@@ -2,7 +2,7 @@
 
 Install Xcode from the App Store
 
-Install Qt 6.5.1
+Install Qt 6.11.2
 
 Install [homebrew](http://brew.sh/).
 
@@ -24,7 +24,7 @@ Add the Qt `bin` folder to `PATH` to make `qmake` available. In
 `~/.bash_profile` or `~/.bashrc`:
 
 ```
-PATH=/usr/local/opt/qt5/bin:$PATH
+PATH=/usr/local/opt/qt6/bin:$PATH
 export PATH
 ```
 

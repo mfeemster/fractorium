@@ -53,12 +53,12 @@ All builds are 64-bit.
 
 ## Windows
 
-[Build Guide for Visual Studio 2026 or Qt Creator](Data/BuildGuideQtCreator.md)
+[Build Guide for Visual Studio 2026 or Qt Creator](./Docs/BuildGuideQtCreator.md)
 
 ## Linux
 
-[Build Guide for Linux](./Data/BuildGuideLinux.md)
+[Build Guide for Linux](./Docs/BuildGuideLinux.md)
 
 ## Mac OS/X Sierra, El Capitan, Yosemite and Mavericks
 
-[Build Guide for Mac OS/X](./Data/BuildGuideMacOSX.md)
+[Build Guide for Mac OS/X](./Docs/BuildGuideMacOSX.md)
