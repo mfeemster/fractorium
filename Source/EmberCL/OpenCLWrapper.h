@@ -183,6 +183,7 @@ public:
 	size_t LocalMemSize() const;
 	size_t GlobalMemSize() const;
 	size_t MaxAllocSize() const;
+	size_t WarpSize();
 
 	//Public virtual functions overridden from base classes.
 	void ClearErrorReport() noexcept override;
@@ -201,6 +202,7 @@ private:
 	size_t m_LocalMemSize = 0;
 	size_t m_GlobalMemSize = 0;
 	size_t m_MaxAllocSize = 0;
+	size_t m_WarpSize = 0;
 	cl::Platform m_Platform;
 	cl::Context m_Context;
 	cl::Device m_Device;

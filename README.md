@@ -30,7 +30,7 @@ cd ~/Downloads
 sudo dpkg -i Fractorium-25.25.12.1.x86_64.deb
 ```
 
-### Install App Image .rpm
+### Install App Image from .rpm
 
 Download: [Fractorium-25.25.12.1.x86_64.rpm](https://drive.google.com/file/d/1eFynIUYNW-a9BjxWoeRrty0ym0Slzg3m/view?usp=sharing)
 

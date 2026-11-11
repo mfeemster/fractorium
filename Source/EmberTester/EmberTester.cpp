@@ -137,7 +137,7 @@ string GetEmberCLKernelString(Ember<float>& ember, bool iter, bool log, bool de,
 	iterCreator.SharedDataIndexDefines(ember, pair2);
 
 	if (iter)
-		os << "Iter kernel: \n" << iterCreator.CreateIterKernelString(ember, pair.first, pair2.first, true);
+		os << "Iter kernel: \n" << iterCreator.CreateIterKernelString(ember, pair.first, pair2.first, true, 32);//Assume a warp size of 32, nvidia.
 
 	if (log)
 		os << "Log scale de kernel: \n" << deCreator.LogScaleAssignDEKernel();

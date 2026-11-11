@@ -732,12 +732,6 @@ bool RendererCL<T, bucketT>::Alloc(bool histOnly)
 
 		if (b && !(b = device->m_Wrapper.AddBuffer(m_PointsBufferName, IterGridKernelCount() * sizeof(PointCL<T>))))   { ErrorStr(loc, "Failed to set points buffer", device.get()); break; }//Points between iter calls.
 
-#ifdef KNL_USE_GLOBAL_CONSEC
-
-		if (b && !(b = device->m_Wrapper.AddBuffer(m_ConsecBufferName, IterGridKernelCount() * sizeof(cl_uchar))))                     { ErrorStr(loc, "Failed to set consec buffer", device.get()); break; }//Global sequence.
-
-#endif
-
 		if (m_VarStates.size())
 			if (b && !(b = device->m_Wrapper.AddBuffer(m_VarStateBufferName, SizeOf(m_VarStates))))                        { ErrorStr(loc, "Failed to set variation state buffer", device.get()); break; }//Points between iter calls.
 
@@ -979,16 +973,21 @@ bool RendererCL<T, bucketT>::BuildIterProgramForEmber(bool doAccum)
 	if (b)
 	{
 		m_CompileBegun();
-		m_IterKernel = m_IterOpenCLKernelCreator.CreateIterKernelString(m_Ember, m_Params.first, m_GlobalShared.first, m_OptAffine, m_LockAccum, doAccum);
 		//cout << "Building: " << "\n" << iterProgram << "\n";
 		vector<std::thread> threads;
 		std::function<void(RendererClDevice*)> func = [&](RendererClDevice * dev)
 		{
-			if (!dev->m_Wrapper.AddProgram(m_IterOpenCLKernelCreator.IterEntryPoint(), m_IterKernel, m_IterOpenCLKernelCreator.IterEntryPoint(), m_DoublePrecision))
+			auto warpSize = dev->WarpSize();
+			auto kernel = m_IterOpenCLKernelCreator.CreateIterKernelString(m_Ember, m_Params.first, m_GlobalShared.first, m_OptAffine, warpSize, m_LockAccum, doAccum);
+
+			if (dev == m_Devices[0].get())
+				m_IterKernel = kernel;//Only save the first one, which will usually be the case anyway as running on multiple devices is extremely rare.
+
+			if (!dev->m_Wrapper.AddProgram(m_IterOpenCLKernelCreator.IterEntryPoint(), kernel, m_IterOpenCLKernelCreator.IterEntryPoint(), m_DoublePrecision))
 			{
 				rlg l(m_ResizeCs);//Just use the resize CS for lack of a better one.
 				b = false;
-				ErrorStr(loc, "Building the following program failed\n"s + m_IterKernel, dev);
+				ErrorStr(loc, "Building the following program failed\n"s + kernel, dev);
 			}
 			else if (!m_GlobalShared.second.empty())
 			{
@@ -1125,12 +1124,6 @@ bool RendererCL<T, bucketT>::RunIter(size_t iterCount, size_t temporalSample, si
 			if (b && !(b = wrapper.SetImageArg (kernelIndex, argIndex++, false, "Palette")))          { ErrorStr(loc, "Setting palette argument failed", m_Devices[dev].get()); }//Palette.
 
 			if (b && !(b = wrapper.SetBufferArg(kernelIndex, argIndex++, m_PointsBufferName)))        { ErrorStr(loc, "Setting points buffer argument failed", m_Devices[dev].get()); }//Random start points.
-
-#ifdef KNL_USE_GLOBAL_CONSEC
-
-			if (b && !(b = wrapper.SetBufferArg(kernelIndex, argIndex++, m_ConsecBufferName)))        { ErrorStr(loc, "Setting consec buffer argument failed", m_Devices[dev].get()); }//Global sequence.
-
-#endif
 
 			if (b && !(b = wrapper.RunKernel(kernelIndex,
 											 IterGridKernelWidth(),//Total grid dims.

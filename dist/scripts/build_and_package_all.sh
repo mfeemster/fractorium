@@ -461,6 +461,7 @@ https://www.deviantart.com/mfeemster
 
 #bench files
 %attr(0644, root, root) "/usr/share/fractorium/bench/EmberBench.ps1"
+%attr(0644, root, root) "/usr/share/fractorium/bench/BenchCombine.ps1"
 %attr(0644, root, root) "/usr/share/fractorium/bench/golubaja_rippingfrominside_complexcode.flame"
 %attr(0644, root, root) "/usr/share/fractorium/bench/mfeemster_basicmemory.flame"
 %attr(0644, root, root) "/usr/share/fractorium/bench/tatasz_springcrown_manysimplexforms.flame"

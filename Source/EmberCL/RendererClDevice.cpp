@@ -41,7 +41,11 @@ bool RendererClDevice::Init()
 	if (b && m_Wrapper.Ok() && !m_Init)
 	{
 		m_NVidia = Find(ToLower(m_Info->PlatformName(m_PlatformIndex)), "nvidia") && m_Wrapper.LocalMemSize() > (32 * 1024);
-		m_WarpSize = m_NVidia ? 32 : 64;
+		m_WarpSize = m_Wrapper.WarpSize();
+
+		if (m_WarpSize == 0)
+			m_WarpSize = m_NVidia ? 32 : 64;//If the warp size is not available, then assume 32 for nVidia and 64 for AMD.
+
 		m_Init = true;
 	}
 

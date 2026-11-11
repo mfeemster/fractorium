@@ -226,9 +226,9 @@ win32 {
 }
 
 macx {
-	QMAKE_MAC_SDK = macosx12.1
-	QMAKE_MACOSX_DEPLOYMENT_TARGET = 11.0
-	QMAKE_CXXFLAGS += -mmacosx-version-min=11.0 -arch x86_64
+	QMAKE_MAC_SDK = macosx14.2
+	QMAKE_MACOSX_DEPLOYMENT_TARGET = 13.0
+	QMAKE_CXXFLAGS += -mmacosx-version-min=13.0 -arch x86_64
 	QMAKE_CXXFLAGS += -stdlib=libc++
 }
 

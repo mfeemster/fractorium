@@ -94,7 +94,7 @@ static string ConstantDefinesString(bool doublePrecision)
 	   "#define DEG_2_RAD (MPI / 180)\n"
 	   "#define CURVES_LENGTH_M1 ((real_bucket_t)" << CURVES_LENGTH_M1 << ")\n" <<
 	   "#define ONE_OVER_CURVES_LENGTH_M1 ((real_bucket_t)" << ONE_OVER_CURVES_LENGTH_M1 << ")\n" <<
-	   "#define MAX_UINT_RECIP ((real_t)(2.32831e-10))\n"//1 / ((2^32)-1).
+	   "#define MAX_UINT_RECIP ((real_t)(1.0 / 4294967295.0))\n"//1 / ((2^32)-1).
 	   "\n"
 	   "//Index in each dimension of a thread within a block.\n"
 	   "#define THREAD_ID_X   (get_local_id(0))\n"

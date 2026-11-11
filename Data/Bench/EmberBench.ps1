@@ -1,7 +1,8 @@
 $exe = ""
 if ([System.Environment]::OSVersion.Platform.ToString().ToLower() -like "*win*")
 {
-    $exe = "./EmberRender.exe"
+    # $exe = "./EmberRender.exe"
+    $exe = "D:\Dev\fractorium\Bin\x64\Release\EmberRender.exe"
 }
 else
 {
@@ -9,7 +10,7 @@ else
 }
 
 $benchprefix = "./bench/"
-$devices = "2"#Set this to whatever device index your main GPU resides at. If you are unsure, just run emberrender --openclinfo to find out.
+$devices = "0"#Set this to whatever device index your main GPU resides at. If you are unsure, just run emberrender --openclinfo to find out.
 $cpuquality = 150
 $gpuquality = 2000
 $verbose = "--verbose"
@@ -85,8 +86,9 @@ function BenchAllForFile([string]$filename)
     #this usually results in a roughly 1% speed improvement.
     #however, it can cause the render to fail, especially on the golubaja_rippingfrominside_complexcode and zy0rg_six_bigcomplexcode flames when using double precision.
     $misc = "--opencl --device=" + $devices
-    TestFileSupersamples $filename "--sp" "_f32_cpu" $script:cpuquality ""
-    TestFileSupersamples $filename "" "_f64_cpu" $script:cpuquality ""
+    #Comment these first two out if you only want to test on the GPU.
+    #TestFileSupersamples $filename "--sp" "_f32_cpu" $script:cpuquality ""
+    #TestFileSupersamples $filename "" "_f64_cpu" $script:cpuquality ""
     TestFileSupersamples $filename "--sp" "_f32_opencl" $script:gpuquality $misc
     TestFileSupersamples $filename "" "_f64_opencl" $script:gpuquality $misc
 }

@@ -14,7 +14,6 @@
 //This is counterintuitive, and lends further weight to the idea that OpenCL on Mac
 //is horribly broken.
 #ifdef __APPLE__
-	#define KNL_USE_GLOBAL_CONSEC
 	#define OCL_USE_1_2_V
 #endif
 

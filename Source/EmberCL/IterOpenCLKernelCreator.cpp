@@ -110,11 +110,12 @@ template <typename T> const string& IterOpenCLKernelCreator<T>::IterEntryPoint()
 /// <param name="ember">The ember to create the kernel string for</param>
 /// <param name="params">The parametric variation #define string</param>
 /// <param name="optAffine">True to optimize with a simple assignment when the pre affine transform is empty, else false. True is better for final renders, false for interactive to reduce repeated compilations.</param>
+/// <param name="warpSize">The warp size for the OpenCL device.</param>
 /// <param name="lockAccum">Whether to lock when accumulating to the histogram. This is only for debugging. Default: false.</param>
 /// <param name="doAccum">Debugging parameter to include or omit accumulating to the histogram. Default: true.</param>
 /// <returns>The kernel string</returns>
 template <typename T>
-string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember, const string& parVarDefines, const string& globalSharedDefines, bool optAffine, bool lockAccum, bool doAccum)
+string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember, const string& parVarDefines, const string& globalSharedDefines, bool optAffine, size_t warpSize, bool lockAccum, bool doAccum)
 {
 	bool doublePrecision = typeid(T) == typeid(double);
 	size_t i = 0, v, varIndex, varCount;
@@ -140,7 +141,7 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 		v = varIndex = varCount = 0;
 		xformFuncs <<
 #ifdef NEW_OPTS
-			"inline " <<
+			"__attribute__((always_inline)) inline " <<
 #endif
 
 				   "void Xform" << i << "(__constant XformCL* xform, __constant real_t* parVars, __global real_t* globalShared, Point* inPoint, Point* outPoint, uint2* mwc, VariationState* varState)\n" <<
@@ -369,13 +370,7 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 	os <<
 	   "	uint histSize,\n"
 	   "	__read_only image2d_t palette,\n"
-	   "	__global Point* points"
-#ifndef KNL_USE_GLOBAL_CONSEC
-	   "\n"
-#else
-	   ",\n"
-	   "	__global uchar* consec\n"
-#endif
+	   "	__global Point* points\n"
 	   "\t)\n"
 	   "{\n"
 	   "	bool fuse, ok;\n"
@@ -384,9 +379,7 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 	   "	uint blockStartIndex = BLOCK_START_INDEX_IN_GRID_2D;\n"
 	   "	uint blockStartThreadIndex = blockStartIndex + threadIndex;\n"
 	   "	uint i, itersToDo;\n"
-#ifndef KNL_USE_GLOBAL_CONSEC
 	   "	uint consec = 0;\n"
-#endif
 	   //"	int badvals = 0;\n"
 	   "	uint histIndex;\n"
 	   "	real_t p00, p01;\n"
@@ -456,7 +449,7 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 		   "\n"
 		   "	if (THREAD_ID_Y == 0 && THREAD_ID_X < NWARPS)\n"
 		   "		xfsel[THREAD_ID_X] = MwcNext(&mwc) & " << CHOOSE_XFORM_GRAIN_M1 << "u;\n"//It's faster to do the & here ahead of time than every time an xform is looked up to use inside the loop.
-		   "\n";
+			"\n";
 #endif
 	}
 	else
@@ -472,16 +465,12 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 	   "\n"
 	   "	for (i = 0; i < itersToDo; i++)\n"
 	   "	{\n"
-#ifndef KNL_USE_GLOBAL_CONSEC
 	   "		consec = 0;\n"
-#else
-	   "		consec[blockStartThreadIndex] = 0;\n"
-#endif
 	   ;
 
 	if (ember.XformCount() > 1)
 	{
-		//If xaos is present, the a hybrid of the cuburn method is used.
+		//If xaos is present, then a hybrid of the cuburn method is used.
 		//This makes each thread in a row pick the same offset into a distribution, using xfsel.
 		//However, the distribution the offset is in, is determined by firstPoint.m_LastXfUsed.
 		if (ember.XaosPresent())
@@ -490,24 +479,31 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 #ifdef STRAIGHT_RAND
 			   "		secondPoint.m_LastXfUsed = xformDistributions[(MwcNext(&mwc) & " << CHOOSE_XFORM_GRAIN_M1 << "u) + (" << CHOOSE_XFORM_GRAIN << "u * (firstPoint.m_LastXfUsed + 1u))];\n\n";
 #else
-			   "		secondPoint.m_LastXfUsed = xformDistributions[xfsel[THREAD_ID_Y] + (" << CHOOSE_XFORM_GRAIN << "u * (firstPoint.m_LastXfUsed + 1u))];\n\n";//Partial cuburn hybrid.
+				//Halve the number of warp execution paths when the warp size is 64 or larger.
+				//This gives better performance most of the time on AMD, sometimes dramatically so.
+				//The downside is that there is slightly less randomness, because the same xform is used for two rows in the block instead of each row having its own.
+				//However, after testing various flames, there was no visible difference in the output, and the performance gain is significant in some cases.
+				//Note that collapsing it further, such as shifting by 2, 3, or 4, caused noticeable visual artifacts.
+				"		secondPoint.m_LastXfUsed = xformDistributions[xfsel[THREAD_ID_Y" << (warpSize >= 64 ? " >> 1" : "") << "] + (" << CHOOSE_XFORM_GRAIN << "u * (firstPoint.m_LastXfUsed + 1u))];\n\n";
 #endif
 		}
 		else
 		{
 			os <<
 #ifdef STRAIGHT_RAND
-			   "		secondPoint.m_LastXfUsed = xformDistributions[MwcNext(&mwc) & " << CHOOSE_XFORM_GRAIN_M1 << "u];\n\n";//For testing, using straight rand flam4/fractron style instead of cuburn.
+				"		secondPoint.m_LastXfUsed = xformDistributions[MwcNext(&mwc) & " << CHOOSE_XFORM_GRAIN_M1 << "u];\n\n";//For testing, using straight rand flam4/fractron style instead of cuburn.
 #else
-			   "		secondPoint.m_LastXfUsed = xformDistributions[xfsel[THREAD_ID_Y]];\n\n";
+				//Same as above for the non-xaos case. Halve the number of warp execution paths when the warp size is 64 or larger.
+				"		secondPoint.m_LastXfUsed = xformDistributions[xfsel[THREAD_ID_Y" << (warpSize >= 64 ? " >> 1" : "") << "]];\n\n";
 #endif
 		}
 	}
 
 	os <<
+	   "#pragma unroll 1\n"
 	   "		do\n"
 	   "		{\n";
-
+ 
 	for (i = 0; i < ember.XformCount(); i++)
 	{
 		if (ember.XformCount() > 1)
@@ -526,7 +522,7 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 			   "					break;\n"
 			   "				}\n";
 
-			if (i == ember.XformCount() - 1)
+			if (i == ember.XformCount() - 1) 
 			{
 				os <<
 				   "			}\n";
@@ -549,19 +545,11 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 	   "				firstPoint.m_Y = MwcNextFRange(&mwc, -ember->m_RandPointRange, ember->m_RandPointRange);\n"
 	   "				firstPoint.m_Z = 0.0;\n"
 	   "				firstPoint.m_ColorX = secondPoint.m_ColorX;\n"
-#ifndef KNL_USE_GLOBAL_CONSEC
 	   "				consec++;\n"
-#else
-	   "				consec[blockStartThreadIndex]++;\n"
-#endif
 	   //"				badvals++;\n"
 	   "			}\n"
 	   "		}\n"
-#ifndef KNL_USE_GLOBAL_CONSEC
 	   "		while (!ok && consec < 5);\n"
-#else
-	   "		while (!ok && consec[blockStartThreadIndex] < 5);\n"
-#endif
 	   "\n"
 	   "		if (!ok)\n"
 	   "		{\n"
@@ -577,17 +565,14 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 		   "\n"//Rotate points between threads. This is how randomization is achieved.
 		   "		uint swr = threadXY + ((i & 1u) * threadXDivRows);\n"
 		   "		uint sw = (swr * THREADS_PER_WARP + THREAD_ID_X) & threadsMinus1;\n"
-		   "\n"
-		   //Write to another thread's location.
+		   "\n"//Write to another thread's location.
 		   "		swap[sw] = secondPoint;\n";
 		os <<
-		   "\n"
-		   //Populate randomized xform index buffer with new random values.
+		   "\n"//Populate randomized xform index buffer with new random values.
 		   "		if (THREAD_ID_Y == 0 && THREAD_ID_X < NWARPS)\n"
 		   "			xfsel[THREAD_ID_X] = MwcNext(&mwc) & " << CHOOSE_XFORM_GRAIN_M1 << "u;\n"
 		   "\n"
-		   "		barrier(CLK_LOCAL_MEM_FENCE);\n"
-		   //Another thread will have written to this thread's location, so read the new value and use it for accumulation below.
+		   "		barrier(CLK_LOCAL_MEM_FENCE);\n"//Another thread will have written to this thread's location, so read the new value and use it for accumulation below.
 		   "		firstPoint = swap[threadIndex];\n";
 	}
 	else
@@ -770,12 +755,11 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 		   "			}\n"//CarToRasInBounds.
 		   "		}\n"//Opacity != 0.
 		   "\n";
-		os <<
-		   "		barrier(CLK_GLOBAL_MEM_FENCE);\n";//Barrier every time, whether or not the point was in bounds, else artifacts will occur when doing strips.
 
 		if (hasVarState && ember.XformCount() > 1)
 		{
 			os <<
+			   "		barrier(CLK_GLOBAL_MEM_FENCE);\n"//Barrier every time when using variation state, whether or not the point was in bounds, else artifacts will occur when doing strips.
 			   "		varState = varStates[blockStartThreadIndex];\n"
 			   ;
 		}
@@ -932,7 +916,7 @@ void IterOpenCLKernelCreator<T>::ParVarIndexDefines(const Ember<T>& ember, pair<
 
 						if (doVals)
 						{
-                            for (size_t l = 0; l < elements; l++)
+							for (size_t l = 0; l < elements; l++)
 								params.second.push_back(*(parVar->Params()[k].Param() + l));
 						}
 

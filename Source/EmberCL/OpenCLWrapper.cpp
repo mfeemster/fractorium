@@ -1001,6 +1001,36 @@ const string& OpenCLWrapper::DeviceName() const { return m_Info->DeviceName(m_Pl
 size_t OpenCLWrapper::LocalMemSize() const { return m_LocalMemSize; }
 size_t OpenCLWrapper::GlobalMemSize() const { return m_GlobalMemSize; }
 size_t OpenCLWrapper::MaxAllocSize() const { return m_MaxAllocSize; }
+size_t OpenCLWrapper::WarpSize()
+{
+	if (m_WarpSize == 0)
+	{
+		try
+		{
+			auto width = m_Info->GetInfo<cl_uint>(m_PlatformIndex, m_DeviceIndex, CL_DEVICE_WAVEFRONT_WIDTH_AMD);
+		
+			if (width != 0)
+			{
+				m_WarpSize = static_cast<size_t>(width);
+				return m_WarpSize;
+			}
+
+			width = m_Info->GetInfo<cl_uint>(m_PlatformIndex, m_DeviceIndex, CL_DEVICE_WARP_SIZE_NV);
+
+			if (width != 0)
+			{
+				m_WarpSize = static_cast<size_t>(width);
+				return m_WarpSize;
+			}
+		}
+		catch (const std::exception& e)
+		{
+			AddToReport("Exception in OpenCLWrapper::WarpSize(): " + string(e.what()));
+		}
+	}
+
+	return m_WarpSize;
+}
 
 /// <summary>
 /// Clear the error report for this class as well as the global OpenCLInfo instance.

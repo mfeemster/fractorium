@@ -49,8 +49,7 @@ Extract the source contents into the folder you created such that it is arranged
 
 ```
 [fractorium]
-│  
-├─libjpeg
+└─[libjpeg]
 ```
 
 Go into the fractorium folder and run this script which will get the rest of the prerequisites from git and build them:
