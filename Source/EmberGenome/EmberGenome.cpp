@@ -799,10 +799,10 @@ bool EmberGenome(int argc, _TCHAR* argv[], EmberOptions& opt)
 
 					if (0   == finalImage[i].r && 0   == finalImage[i].g && 0   == finalImage[i].b) totb++;
 
-					if (1 == finalImage[i].r && 1 == finalImage[i].g && 1 == finalImage[i].g) totw++;
+					if (1 == finalImage[i].r && 1 == finalImage[i].g && 1 == finalImage[i].b) totw++;
 				}
 
-				avgPix = (tot / (3 * n));
+				avgPix = (tot / (3 * n) * 255);
 				fractionBlack = totb / T(n);
 				fractionWhite = totw / T(n);
 
