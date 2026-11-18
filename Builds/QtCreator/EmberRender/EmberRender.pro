@@ -1,9 +1,6 @@
 TEMPLATE = app
 CONFIG += console
 
-# Uncomment this if you only want to build a binary instead of an app bundle.
-#macx:CONFIG -= app_bundle
-
 CONFIG -= qt
 
 TARGET = emberrender
@@ -42,7 +39,6 @@ INSTALLS += palettes
 	INSTALLS += launcher
 }
 
-macx:ICON = $$PRJ_SRC_DIR/Icons/Fractorium.icns
 !macx:PRECOMPILED_HEADER = $$SRC_COMMON_DIR/EmberCommonPch.h
 
 LIBS += -L$$absolute_path($$DESTDIR) -lember
