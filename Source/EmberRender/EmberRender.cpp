@@ -146,7 +146,7 @@ bool EmberRender(int argc, _TCHAR* argv[], EmberOptions& opt)
 
 	//Final setup steps before running.
 	os.imbue(std::locale(""));
-	padding = uint(std::log10(static_cast<double>(embers.size()))) + 1;
+	padding = opt.Padding() ? uint(opt.Padding()) : uint(std::log10(static_cast<double>(embers.size()))) + 1;
 	renderer->EarlyClip(opt.EarlyClip());
 	renderer->YAxisUp(opt.YAxisUp());
 	renderer->LockAccum(opt.LockAccum());
