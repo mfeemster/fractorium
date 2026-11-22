@@ -15,6 +15,9 @@
 //is horribly broken.
 #ifdef __APPLE__
 	#define OCL_USE_1_2_V
+    //These macros are not defined in Apple's OpenCL headers.
+    #define CL_DEVICE_WAVEFRONT_WIDTH_AMD  0x4043
+    #define CL_DEVICE_WARP_SIZE_NV         0x4003
 #endif
 
 #define NOMINMAX
