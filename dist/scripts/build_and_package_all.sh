@@ -42,7 +42,7 @@ APPIMAGETOOL_BIN="${APPIMAGETOOL_BIN:-$DEPLOY_TOOLS_DIR/linuxdeploy-x86_64.AppIm
 EXTRA_LIBS="${EXTRA_LIBS:-/usr/lib/x86_64-linux-gnu}"
 
 export PATH="${QT_PREFIX}/bin:${PATH}"
-#export LD_LIBRARY_PATH="${QT_PREFIX}/lib:${LD_LIBRARY_PATH:-}"
+export LD_LIBRARY_PATH="${QT_PREFIX}/lib:${LD_LIBRARY_PATH:-}"
 export QT_PLUGIN_PATH="${QT_PREFIX}/plugins:${QT_PLUGIN_PATH:-}"
 
 echo "== Release build starting =="

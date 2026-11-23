@@ -1,11 +1,15 @@
-26.26.10.1 10/15/2026
+26.26.10.1 11/22/2026
 --User changes
  -Add a menu item and toolbar button for copying the current image to the clipboard.
- 
+
 --Code changes
  -Migrate to Qt 6.11.2.
  -Change various internal names that were colliding with Qt on modern versions of Qt.
  -Clean up code to suppress most warnings.
+ -Change the OpenCL iteration kernel to use 4 sets of 64 threads of xforms on AMD hardware so that all 64 wavefront
+ threads operate on a single xform. Leave it as 8x32 for nvidia. This slight decrease in randomness did not show any image degredation,
+ but did show a performance increase on most test flames. Some increases were substantial, while a few showed a slight decrease in performance.
+ -Completely redo all packaging scripts for linux and mac and remove legacy scripts.
 
 25.25.12.1 12/14/2025
 --User changes
