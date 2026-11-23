@@ -1,13 +1,13 @@
 #!/bin/bash
 
 OSX_BUILD_PATH=$PWD
-FRACTORIUM_RELEASE_ROOT=$PWD/../Bin/release
+FRACTORIUM_RELEASE_ROOT=$PWD/../../Bin/release
 
 # Replace 6.11.3 with your Qt version, and ensure the installation path is the same
 QT_DIR=~/Qt/6.11.3/macos
 QT_MACDEPLOY=$QT_DIR/bin/macdeployqt6
 QT_LIB_PATH=$QT_DIR/lib
-DIST_DIR=$PWD/../dist
+DIST_DIR=$PWD/..
 
 cd $FRACTORIUM_RELEASE_ROOT
 
@@ -55,7 +55,7 @@ install_name_tool -delete_rpath $QT_LIB_PATH $FRACTORIUM_FINAL_FRAMEWORKS/libemb
 install_name_tool -delete_rpath $QT_LIB_PATH $FRACTORIUM_FINAL_FRAMEWORKS/libembercl.dylib 2>/dev/null || true
 
 cd $OSX_BUILD_PATH
-cd ../Data
+cd ../../Data
 
 cp dark_mac.qss $FRACTORIUM_FINAL_ROOT
 cp lightdark.qss $FRACTORIUM_FINAL_ROOT

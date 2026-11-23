@@ -324,7 +324,7 @@ bool EmberAnimate(int argc, _TCHAR* argv[], EmberOptions& opt)
 	}
 
 	//Final setup steps before running.
-	padding = uint(std::log10(double(embers.size()))) + 1;
+	padding = opt.Padding() ? uint(opt.Padding()) : uint(std::log10(double(embers.size()))) + 1;
 
 	for (auto& r : renderers)
 	{
