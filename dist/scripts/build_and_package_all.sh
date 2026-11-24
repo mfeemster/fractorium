@@ -25,9 +25,9 @@ DATA_DIR="${ROOT_DIR}/Data"
 DIST_DIR="${ROOT_DIR}/dist"
 PROJECTS_DIR="${ROOT_DIR}/Builds/QtCreator"
 BUILD_DIR="${BUILD_DIR:-$ROOT_DIR/Bin/release}"
-APPDIR="${APPDIR:-$BUILD_DIR/Fractorium.AppDir}"
-DEBDIR="${DEBDIR:-$BUILD_DIR/Fractorium.DebDir}"
-RPMDIR="${RPMAPPDIR:-$BUILD_DIR/Fractorium.RpmDir}"
+APP_DIR="${APP_DIR:-$BUILD_DIR/Fractorium.AppDir}"
+DEB_DIR="${DEB_DIR:-$BUILD_DIR/Fractorium.DebDir}"
+RPM_DIR="${RPM_DIR:-$BUILD_DIR/Fractorium.RpmDir}"
 APPIMAGE_OUT="${APPIMAGE_OUT:-$ROOT_DIR/Fractorium-x86_64.AppImage}"
 APP_VERSION="${APP_VERSION:-26.26.10.1}"
 DEBIAN_REV="${DEBIAN_REV:-1}"
@@ -42,7 +42,7 @@ APPIMAGETOOL_BIN="${APPIMAGETOOL_BIN:-$DEPLOY_TOOLS_DIR/linuxdeploy-x86_64.AppIm
 EXTRA_LIBS="${EXTRA_LIBS:-/usr/lib/x86_64-linux-gnu}"
 
 export PATH="${QT_PREFIX}/bin:${PATH}"
-export LD_LIBRARY_PATH="${QT_PREFIX}/lib:${LD_LIBRARY_PATH:-}"
+export LD_LIBRARY_PATH="${QT_PREFIX}/lib:${BUILD_DIR}:${LD_LIBRARY_PATH:-}" # This is critically important otherwise it cannot find libember.so and libembercl.so
 export QT_PLUGIN_PATH="${QT_PREFIX}/plugins:${QT_PLUGIN_PATH:-}"
 
 echo "== Release build starting =="
@@ -50,7 +50,7 @@ echo "Root dir:          $ROOT_DIR"
 echo "Build dir:         $BUILD_DIR"
 echo "Projects dir:      $PROJECTS_DIR"
 echo "Dist dir:          $DIST_DIR"
-echo "App dir:           $APPDIR"
+echo "App dir:           $APP_DIR"
 echo "AppImage out:      $APPIMAGE_OUT"
 echo "Extra libs:        $EXTRA_LIBS"
 echo "Qt prefix:         $QT_PREFIX"
@@ -133,10 +133,10 @@ if [[ ! -f "$PROJECTS_DIR/Fractorium/Fractorium.pro" ]]; then
 fi
 
 #rm -rf "$BUILD_DIR" ; Do this for a clean rebuild.
-rm -rf "$APPDIR"
-mkdir -p "$BUILD_DIR" "$APPDIR/usr/bin" "$APPDIR/usr/lib" \
-  "$APPDIR/usr/share/applications" \
-  "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+rm -rf "$APP_DIR"
+mkdir -p "$BUILD_DIR" "$APP_DIR/usr/bin" "$APP_DIR/usr/lib" \
+  "$APP_DIR/usr/share/applications" \
+  "$APP_DIR/usr/share/icons/hicolor/256x256/apps"
 
 # ----------------------------------------------------------------------
 # Build against custom Qt
@@ -153,17 +153,17 @@ make
 # ----------------------------------------------------------------------
 echo
 echo "== Copying Fractorium binaries to AppDir =="
-cp -f "$BUILD_DIR"/fractorium "$APPDIR/usr/bin/fractorium"
-cp -f "$BUILD_DIR"/ember* "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -f "$BUILD_DIR"/lib* "$APPDIR/usr/lib/" 2>/dev/null || true
+cp -f "$BUILD_DIR"/fractorium "$APP_DIR/usr/bin/fractorium"
+cp -f "$BUILD_DIR"/ember* "$APP_DIR/usr/bin/" 2>/dev/null || true
+cp -f "$BUILD_DIR"/lib* "$APP_DIR/usr/lib/" 2>/dev/null || true
 
 # Extra runtime data required by the app
 echo "== Copying palettes, stylesheets and examples to AppDir =="
-cp -f "$ROOT_DIR/Data"/*.qss "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -f "$ROOT_DIR/Data"/*.gradient "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -f "$ROOT_DIR/Data"/*.ugr "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -f "$ROOT_DIR/Data"/flam3-palettes.xml "$APPDIR/usr/bin/" 2>/dev/null || true
-cp -a "$ROOT_DIR/Data/examples" "$APPDIR/usr/bin/" 2>/dev/null || true
+cp -f "$ROOT_DIR/Data"/*.qss "$APP_DIR/usr/bin/" 2>/dev/null || true
+cp -f "$ROOT_DIR/Data"/*.gradient "$APP_DIR/usr/bin/" 2>/dev/null || true
+cp -f "$ROOT_DIR/Data"/*.ugr "$APP_DIR/usr/bin/" 2>/dev/null || true
+cp -f "$ROOT_DIR/Data"/flam3-palettes.xml "$APP_DIR/usr/bin/" 2>/dev/null || true
+cp -a "$ROOT_DIR/Data/examples" "$APP_DIR/usr/bin/" 2>/dev/null || true
 
 # Bundle non-Qt runtime libraries required by the app.
 # These were explicitly copied in the legacy build script because they are
@@ -180,15 +180,15 @@ for lib in \
   libz.so
 do
   if [[ -f "$EXTRA_LIBS/$lib" ]]; then
-    cp -f "$EXTRA_LIBS/$lib" "$APPDIR/usr/lib/"
+    cp -f "$EXTRA_LIBS/$lib" "$APP_DIR/usr/lib/"
   fi
 done
 
 # Desktop file and icon
 cp -f "$ROOT_DIR/Source/Fractorium/Icons/Fractorium.png" \
-  "$APPDIR/usr/share/icons/hicolor/256x256/apps/fractorium.png"
+  "$APP_DIR/usr/share/icons/hicolor/256x256/apps/fractorium.png"
 
-cat > "$APPDIR/usr/share/applications/fractorium.desktop" <<EOF
+cat > "$APP_DIR/usr/share/applications/fractorium.desktop" <<EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -206,15 +206,15 @@ EOF
 # ----------------------------------------------------------------------
 # AppRun must preserve the symlink behavior
 # ----------------------------------------------------------------------
-cat > "$APPDIR/AppRun" <<'EOF'
+cat > "$APP_DIR/AppRun" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-APPDIR="$(dirname "$(readlink -f "$0")")"
-export LD_LIBRARY_PATH="${APPDIR}/usr/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-export QT_PLUGIN_PATH="${APPDIR}/usr/lib/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
-#export QT_QPA_PLATFORM_PLUGIN_PATH="${APPDIR}/usr/lib/plugins/platforms${QT_QPA_PLATFORM_PLUGIN_PATH:+:${QT_QPA_PLATFORM_PLUGIN_PATH}}"
-#export XDG_DATA_DIRS="${APPDIR}/usr/share${XDG_DATA_DIRS:+:${XDG_DATA_DIRS}}"
+APP_DIR="$(dirname "$(readlink -f "$0")")"
+export LD_LIBRARY_PATH="${APP_DIR}/usr/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export QT_PLUGIN_PATH="${APP_DIR}/usr/lib/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
+export QT_QPA_PLATFORM_PLUGIN_PATH="${APP_DIR}/usr/lib/plugins/platforms${QT_QPA_PLATFORM_PLUGIN_PATH:+:${QT_QPA_PLATFORM_PLUGIN_PATH}}"
+export XDG_DATA_DIRS="${APP_DIR}/usr/share${XDG_DATA_DIRS:+:${XDG_DATA_DIRS}}"
 
 CONFIG_PATH=~/.config/fractorium
 DARK_LINUX=$CONFIG_PATH/dark_linux.qss
@@ -223,20 +223,20 @@ URANIUM=$CONFIG_PATH/uranium.qss
 
 if [ ! -e "$DARK_LINUX" ] ; then
   mkdir -p $CONFIG_PATH
-  cp $APPDIR/usr/bin/dark_linux.qss $CONFIG_PATH
+  cp $APP_DIR/usr/bin/dark_linux.qss $CONFIG_PATH
 fi
 
 if [ ! -e "$LIGHT_DARK" ] ; then
   mkdir -p $CONFIG_PATH
-  cp $APPDIR/usr/bin/lightdark.qss $CONFIG_PATH
+  cp $APP_DIR/usr/bin/lightdark.qss $CONFIG_PATH
 fi
 
 if [ ! -e "$URANIUM" ] ; then
   mkdir -p $CONFIG_PATH
-  cp $APPDIR/usr/bin/uranium.qss $CONFIG_PATH
+  cp $APP_DIR/usr/bin/uranium.qss $CONFIG_PATH
 fi
 
-BIN_DIR="$APPDIR/usr/bin"
+BIN_DIR="$APP_DIR/usr/bin"
 CMD_NAME=$(basename "$ARGV0")
 
 case "$CMD_NAME" in
@@ -257,14 +257,14 @@ case "$CMD_NAME" in
     ;;
 esac
 EOF
-chmod +x "$APPDIR/AppRun"
+chmod +x "$APP_DIR/AppRun"
 
 # ----------------------------------------------------------------------
 # Create the final AppImage
 # ----------------------------------------------------------------------
 echo
 echo "== Creating AppImage =="
-$APPIMAGETOOL_BIN --appdir=$APPDIR --output=appimage --executable=$APPDIR/usr/bin/fractorium --desktop-file=$APPDIR/usr/share/applications/fractorium.desktop --plugin=qt
+$APPIMAGETOOL_BIN --appdir=$APP_DIR --output=appimage --executable=$APP_DIR/usr/bin/fractorium --desktop-file=$APP_DIR/usr/share/applications/fractorium.desktop --plugin=qt
 chmod +x "$APPIMAGE_OUT"
 cp -f "$APPIMAGE_OUT" $DIST_DIR/Fractorium-$APP_VERSION.x86_64.AppImage
 
@@ -278,17 +278,17 @@ echo "  $APPIMAGE_OUT"
 echo
 echo "== Writing Debian package metadata =="
 
-rm -rf "$DEBDIR"
-mkdir -p "$DEBDIR"
-mkdir -p "$DEBDIR/DEBIAN"
-mkdir -p "$DEBDIR/debian"
-mkdir -p "$DEBDIR/debian/source"
-mkdir -p "$DEBDIR/usr/bin"
-mkdir -p "$DEBDIR/usr/share/applications"
-mkdir -p "$DEBDIR/usr/share/fractorium/bench"
+rm -rf "$DEB_DIR"
+mkdir -p "$DEB_DIR"
+mkdir -p "$DEB_DIR/DEBIAN"
+mkdir -p "$DEB_DIR/debian"
+mkdir -p "$DEB_DIR/debian/source"
+mkdir -p "$DEB_DIR/usr/bin"
+mkdir -p "$DEB_DIR/usr/share/applications"
+mkdir -p "$DEB_DIR/usr/share/fractorium/bench"
 
-mv Fractorium-x86_64.AppImage "$DEBDIR/usr/bin"
-cd $DEBDIR/usr/bin
+mv Fractorium-x86_64.AppImage "$DEB_DIR/usr/bin"
+cd $DEB_DIR/usr/bin
 
 create_symlinks()
 {
@@ -302,7 +302,7 @@ create_symlinks
 cd $BUILD_DIR
 
 #Note the capital DEBIAN here
-cat > "$DEBDIR/DEBIAN/control" <<EOF
+cat > "$DEB_DIR/DEBIAN/control" <<EOF
 Package: fractorium
 Source: fractorium
 Version: $APP_VERSION
@@ -332,7 +332,7 @@ Description: fractal flame editor with GPU support
  https://www.deviantart.com/mfeemster
 EOF
 
-cat > "$DEBDIR/debian/copyright" <<'EOF'
+cat > "$DEB_DIR/debian/copyright" <<'EOF'
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: fractorium
 Source: https://github.com/mfeemster/fractorium
@@ -359,29 +359,29 @@ EOF
 
 #Do not programmatically generate the debian/changelog file
 #Instead, it must be manually edited beforehand and copied here
-cp $DIST_DIR/debian/changelog $DEBDIR/debian/changelog
+cp $DIST_DIR/debian/changelog $DEB_DIR/debian/changelog
 
-cat > "$DEBDIR/debian/rules" <<'EOF'
+cat > "$DEB_DIR/debian/rules" <<'EOF'
 #!/usr/bin/make -f
 %:
 	dh $@
 EOF
-chmod +x "$DEBDIR/debian/rules"
+chmod +x "$DEB_DIR/debian/rules"
 
-cat > "$DEBDIR/debian/source/format" <<'EOF'
+cat > "$DEB_DIR/debian/source/format" <<'EOF'
 3.0 (quilt)
 EOF
 
 #Reuse the desktop file created for the AppImage
-cp $APPDIR/usr/share/applications/fractorium.desktop $DEBDIR/usr/share/applications/fractorium.desktop
+cp $APP_DIR/usr/share/applications/fractorium.desktop $DEB_DIR/usr/share/applications/fractorium.desktop
 
 #The desktop file is different for a deb than an AppImage
-sed -i '/^Icon=fractorium$/c\Icon=/usr/share/fractorium/fractorium.png' $DEBDIR/usr/share/applications/fractorium.desktop
+sed -i '/^Icon=fractorium$/c\Icon=/usr/share/fractorium/fractorium.png' $DEB_DIR/usr/share/applications/fractorium.desktop
 
-cp $ROOT_DIR/Source/Fractorium/Icons/Fractorium.png $DEBDIR/usr/share/fractorium/fractorium.png
+cp $ROOT_DIR/Source/Fractorium/Icons/Fractorium.png $DEB_DIR/usr/share/fractorium/fractorium.png
 
 #Benchmarking files only get used with the .deb and .rpm, not with the standalone AppImage
-cp -f $DATA_DIR/Bench/* $DEBDIR/usr/share/fractorium/bench
+cp -f $DATA_DIR/Bench/* $DEB_DIR/usr/share/fractorium/bench
 
 # ----------------------------------------------------------------------
 # Build the Debian package if toolchain is available
@@ -410,18 +410,18 @@ cd "$ROOT_DIR"
 # ----------------------------------------------------------------------
 echo
 echo "== Building RPM package =="
-rm -rf "$RPMDIR"
-mkdir -p "$RPMDIR/BUILD" \
-         "$RPMDIR/BUILDROOT" \
-         "$RPMDIR/RPMS" \
-         "$RPMDIR/SOURCES" \
-         "$RPMDIR/SPECS" \
-         "$RPMDIR/SRPMS" \
-         "$RPMDIR/tmp"
+rm -rf "$RPM_DIR"
+mkdir -p "$RPM_DIR/BUILD" \
+         "$RPM_DIR/BUILDROOT" \
+         "$RPM_DIR/RPMS" \
+         "$RPM_DIR/SOURCES" \
+         "$RPM_DIR/SPECS" \
+         "$RPM_DIR/SRPMS" \
+         "$RPM_DIR/tmp"
 
-cat > "$RPMDIR/SPECS/Fractorium.spec" <<EOF
+cat > "$RPM_DIR/SPECS/Fractorium.spec" <<EOF
 %define _topdir       %(pwd)
-%define buildroot     $RPMDIR/BUILDROOT
+%define buildroot     $RPM_DIR/BUILDROOT
 
 Name:           Fractorium
 Version:        $APP_VERSION
@@ -472,14 +472,14 @@ https://www.deviantart.com/mfeemster
 EOF
 
 #Instead of manually recreating the same folder structure, just copy the one we made above for the deb
-cp -r $DEBDIR/usr $RPMDIR/BUILDROOT
+cp -r $DEB_DIR/usr $RPM_DIR/BUILDROOT
 
-cd $RPMDIR
+cd $RPM_DIR
 # Build the RPM
-rpmbuild -v -bb "$RPMDIR/SPECS/Fractorium.spec"
+rpmbuild -v -bb "$RPM_DIR/SPECS/Fractorium.spec"
 
 # Rename to a predictable release name
-mv "$RPMDIR/RPMS/x86_64/Fractorium-${APP_VERSION}-1.x86_64.rpm" "$DIST_DIR/Fractorium-${APP_VERSION}.x86_64.rpm"
+mv "$RPM_DIR/RPMS/x86_64/Fractorium-${APP_VERSION}-1.x86_64.rpm" "$DIST_DIR/Fractorium-${APP_VERSION}.x86_64.rpm"
 
 echo "RPM package build complete."
 
