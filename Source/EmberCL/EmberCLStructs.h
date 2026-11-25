@@ -42,6 +42,14 @@ static string ConstantDefinesString(bool doublePrecision)
 		   "#define EPS (DBL_EPSILON)\n"
 		   "#define TLOW (DBL_MIN)\n"
 		   "#define TMAX (DBL_MAX)\n";
+#if !(__APPLE__ || _WIN32)//The OpenCL compiler on linux will crash the entire program if it encounteres tan(double). So redefine it here.
+
+		os <<
+			"static inline double safe_tan_d(double x) {\n"
+			"\treturn sin(x) / cos(x);\n"
+			"}\n"
+			"#define tan(x) safe_tan_d(x)\n";
+#endif
 	}
 	else
 	{

@@ -57,7 +57,6 @@ void Fractorium::InitMenusUI()
 template <typename T>
 void FractoriumEmberController<T>::NewFlock(size_t count)
 {
-	bool nv = false;
 	Ember<T> ember;
 	StopAllPreviewRenderers();
 	m_EmberFile.Clear();
@@ -66,21 +65,17 @@ void FractoriumEmberController<T>::NewFlock(size_t count)
 	vector<eVariationId>* filteredVariationsRef = &m_FilteredVariations;
 	auto& deviceNames = OpenCLInfo::Instance()->AllDeviceNames();
 
-	for (auto& dev : deviceNames)
-		if (Find(ToLower(dev), "nvidia"))
-			nv = true;
-
-	if (nv)//Nvidia cannot handle synth. It takes over a minute to compile and uses about 4GB of memory.
+	//Nvidia cannot handle synth. It takes over a minute to compile and uses about 4GB of memory.
+	//On linux, AMD can't compile it without freezing.
+	//So just disable it completely for random creation.
+	filteredVariations = m_FilteredVariations;
+	filteredVariations.erase(std::remove_if(filteredVariations.begin(), filteredVariations.end(),
+											[&](const eVariationId & id) -> bool
 	{
-		filteredVariations = m_FilteredVariations;
-		filteredVariations.erase(std::remove_if(filteredVariations.begin(), filteredVariations.end(),
-												[&](const eVariationId & id) -> bool
-		{
-			return id == eVariationId::VAR_SYNTH || id == eVariationId::VAR_PRE_SYNTH || id == eVariationId::VAR_POST_SYNTH;
-		}
-											   ), filteredVariations.end());
-		filteredVariationsRef = &filteredVariations;
+		return id == eVariationId::VAR_SYNTH || id == eVariationId::VAR_PRE_SYNTH || id == eVariationId::VAR_POST_SYNTH;
 	}
+											), filteredVariations.end());
+	filteredVariationsRef = &filteredVariations;
 
 	for (size_t i = 0; i < count; i++)
 	{

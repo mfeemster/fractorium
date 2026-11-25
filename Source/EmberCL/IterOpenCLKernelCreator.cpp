@@ -500,7 +500,9 @@ string IterOpenCLKernelCreator<T>::CreateIterKernelString(const Ember<T>& ember,
 	}
 
 	os <<
+#ifdef __APPLE__
 	   "#pragma unroll 1\n"
+#endif
 	   "		do\n"
 	   "		{\n";
  

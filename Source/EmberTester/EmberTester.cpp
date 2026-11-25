@@ -129,6 +129,8 @@ void writeRgba1(const char filename[],
 string GetEmberCLKernelString(Ember<float>& ember, bool iter, bool log, bool de, uint ss, bool accum)
 {
 	ostringstream os;
+	OpenCLWrapper wrapper;
+	wrapper.Init(0, 0);
 	IterOpenCLKernelCreator<float> iterCreator;
 	DEOpenCLKernelCreator deCreator(false, false);
 	FinalAccumOpenCLKernelCreator accumCreator(false);
@@ -137,7 +139,7 @@ string GetEmberCLKernelString(Ember<float>& ember, bool iter, bool log, bool de,
 	iterCreator.SharedDataIndexDefines(ember, pair2);
 
 	if (iter)
-		os << "Iter kernel: \n" << iterCreator.CreateIterKernelString(ember, pair.first, pair2.first, true, 32);//Assume a warp size of 32, nvidia.
+		os << "Iter kernel: \n" << iterCreator.CreateIterKernelString(ember, pair.first, pair2.first, true, wrapper.WarpSize());
 
 	if (log)
 		os << "Log scale de kernel: \n" << deCreator.LogScaleAssignDEKernel();
