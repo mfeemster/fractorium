@@ -212,8 +212,9 @@ set -euo pipefail
 
 APP_DIR="$(dirname "$(readlink -f "$0")")"
 export LD_LIBRARY_PATH="${APP_DIR}/usr/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-export QT_PLUGIN_PATH="${APP_DIR}/usr/lib/plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
-export QT_QPA_PLATFORM_PLUGIN_PATH="${APP_DIR}/usr/lib/plugins/platforms${QT_QPA_PLATFORM_PLUGIN_PATH:+:${QT_QPA_PLATFORM_PLUGIN_PATH}}"
+export QT_PLUGIN_PATH="${APP_DIR}/usr/plugins"
+export QT_QPA_PLATFORM_PLUGIN_PATH="${APP_DIR}/usr/plugins/platforms"
+export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-xcb}"
 export XDG_DATA_DIRS="${APP_DIR}/usr/share${XDG_DATA_DIRS:+:${XDG_DATA_DIRS}}"
 
 CONFIG_PATH=~/.config/fractorium
@@ -237,7 +238,7 @@ if [ ! -e "$URANIUM" ] ; then
 fi
 
 BIN_DIR="$APP_DIR/usr/bin"
-CMD_NAME=$(basename "$ARGV0")
+CMD_NAME=$(basename "${ARGV0:-$0}")
 
 case "$CMD_NAME" in
   fractorium)
@@ -264,7 +265,7 @@ chmod +x "$APP_DIR/AppRun"
 # ----------------------------------------------------------------------
 echo
 echo "== Creating AppImage =="
-$APPIMAGETOOL_BIN --appdir=$APP_DIR --output=appimage --executable=$APP_DIR/usr/bin/fractorium --desktop-file=$APP_DIR/usr/share/applications/fractorium.desktop --plugin=qt
+QMAKE="$QMAKE_BIN" "$APPIMAGETOOL_BIN" --appdir="$APP_DIR" --output=appimage --executable="$APP_DIR/usr/bin/fractorium" --desktop-file="$APP_DIR/usr/share/applications/fractorium.desktop" --plugin=qt
 chmod +x "$APPIMAGE_OUT"
 cp -f "$APPIMAGE_OUT" $DIST_DIR/Fractorium-$APP_VERSION.x86_64.AppImage
 
